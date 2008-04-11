@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://morekomodo/locale/pref.dtd" >
+ 
+<window xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    orient="vertical"
+    onload="fileTimeOnLoad();">
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/prefs.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/pref/pref-morekomodo-statusbar.js" />
+
+  <groupbox orient="vertical">
+    <caption label="&filetime.label;"/>
+ 
+    <checkbox id="showStatusbar"
+              label="&show.statusbar.label;"/>
+
+    <groupbox orient="horizontal" id="timeFormat.groupbox">
+      <caption label="&timeformat.label;"/>
+      <textbox id="timeFormat"
+              value=""
+               flex="1"
+               disabled="true"/>
+      <button id="defaultTimeFormat"
+              label="&default.timeformat.label;"
+              oncommand="onDefaultTimeFormatCommand();"
+              disabled="true"/>
+    </groupbox>
+  </groupbox>
+</window>
+ 
+

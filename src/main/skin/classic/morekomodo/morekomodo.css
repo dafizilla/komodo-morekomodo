@@ -1,0 +1,45 @@
+.button-favorites {
+  list-style-image: url("chrome://morekomodo/skin/favorite.png");
+}
+
+.link {
+  color: #0000FF;
+  text-decoration: underline !important;
+  cursor: pointer;
+}
+
+.button-findresults-copy {
+  list-style-image: url("chrome://morekomodo/skin/copy.png");
+}
+
+.button-findresults-copy:hover {
+  list-style-image: url("chrome://morekomodo/skin/copy_hover.png");
+}
+
+.button-findresults-refresh {
+  list-style-image: url("chrome://morekomodo/skin/refresh.png");
+}
+
+.button-findresults-refresh[disabled="true"] {
+  -moz-opacity: 0.5;
+}
+
+.button-findresults-openfoundfiles {
+  list-style-image: url("chrome://morekomodo/skin/folder.png");
+}
+
+.button-findresults-openfoundfiles[disabled="true"] {
+  -moz-opacity: 0.5;
+}
+
+.button-morekomodo-lockedit[checked] {
+  list-style-image: url("chrome://morekomodo/skin/edit_lock.png");
+}
+
+.button-morekomodo-lockedit {
+  list-style-image: url("chrome://morekomodo/skin/edit_unlock.png");
+}
+
+.button-morekomodo-lockedit[disabled="true"] {
+  -moz-opacity: 0.5;
+}

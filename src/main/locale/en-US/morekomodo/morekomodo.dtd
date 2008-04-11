@@ -1,0 +1,39 @@
+<!ENTITY rename.label "Rename...">
+<!ENTITY delete.label "Delete...">
+<!ENTITY move.label "Move...">
+<!ENTITY make.backup.label "Make Backup...">
+<!ENTITY lockedit.label "Lock Edit">
+<!ENTITY copy.file.name.label "Copy File Name">
+<!ENTITY copy.full.path.label "Copy Full Path">
+<!ENTITY copy.directory.path.label "Copy Directory Name">
+
+<!ENTITY show.file.manager "Show In File Manager">
+<!ENTITY menuitem-openfavorites.label "Open Favorites...">
+<!ENTITY menuitem-openfavorites.accesskey "v">
+<!ENTITY menuitem-favoritelist.label "Favorites List">
+<!ENTITY toolbar.favorites.label "Favorites">
+<!ENTITY toolbar.favorites.tooltip "Access To Favorite Files And Directories">
+
+<!ENTITY menuitem-textconversion.label "Convert Selected Text">
+<!ENTITY menuitem-textconversion-capitalize.label "Capitalize">
+<!ENTITY menuitem-textconversion-encodehtmlnumeric.label "Encode HTML Entities As Numeric">
+<!ENTITY menuitem-textconversion-encodehtml.label "Encode HTML Entities">
+<!ENTITY menuitem-textconversion-decodehtml.label "Decode HTML Entities">
+<!ENTITY menuitem-textconversion-d2upath.label "Convert DOS To Unix Separators">
+<!ENTITY menuitem-textconversion-doubledossep.label "Double DOS Separators">
+<!ENTITY menuitem-textconversion-stripdos.label "Remove Double DOS Separators">
+
+<!ENTITY menuitem-sort.label "Sort...">
+
+<!ENTITY menuitem-pastehtml.label "Paste HTML">
+<!ENTITY menuitem-copyappend.label "Copy And Append">
+<!ENTITY menuitem-cutappend.label "Cut And Append">
+
+<!ENTITY findresults.tooltiptext "Copy Find Results">
+<!ENTITY findresults.copy.filenames "Copy File Names">
+<!ENTITY findresults.copy.contents "Copy Content">
+<!ENTITY findresults.refresh.tooltip "Refresh">
+<!ENTITY findresults.openfoundfiles.tooltip "Open Found Files">
+
+<!ENTITY lockedit.label "Lock Edit">
+<!ENTITY toolbar.lockedit.tooltip "Lock Edit Buffer">

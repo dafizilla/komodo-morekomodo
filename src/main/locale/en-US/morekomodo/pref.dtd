@@ -1,0 +1,16 @@
+<!ENTITY morekomodo.label "MoreKomodo">
+<!ENTITY morekomodo.description "MoreKomodo enhances the Komodo experience.">
+
+<!ENTITY show.statusbar.label "Show Statusbar">
+
+<!ENTITY filetime.label "File Last Modified Time">
+<!ENTITY timeformat.label "Time Format">
+<!ENTITY default.timeformat.label "Restore Default Format">
+
+<!ENTITY homepage.label "Visit MoreKomodo website">
+<!ENTITY homepage.tooltip "MoreKomodo is written by Davide Ficano">
+<!ENTITY homepage.url "http://dafizilla.sourceforge.net/morekomodo">
+
+<!ENTITY find.results.label "Find Results">
+<!ENTITY open.files.selection.dialog.label "Selection Dialog for Found Files to Open">
+<!ENTITY do.not.show.dialog "Show dialog only when file count is greater than">

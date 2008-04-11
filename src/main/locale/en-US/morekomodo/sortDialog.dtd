@@ -1,0 +1,11 @@
+<!ENTITY title.dialog "Sort options">
+<!ENTITY order.reverse "Reverse the result of comparisons">
+<!ENTITY remove.duplicate "Remove duplicates">
+<!ENTITY ignore.case "Ignore case">
+<!ENTITY numeric.sort "Numeric sort">
+<!ENTITY caption.sort.option "Sort options">
+<!ENTITY sort "Sort">
+<!ENTITY close "Close">
+<!ENTITY label.sel "Sort selected text">
+<!ENTITY label.all "Sort entire document">
+

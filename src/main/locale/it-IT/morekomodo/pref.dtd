@@ -1,0 +1,12 @@
+<!ENTITY morekomodo.label "MoreKomodo">
+<!ENTITY morekomodo.description "MoreKomodo migliora l'esperienza con Komodo.">
+
+<!ENTITY show.statusbar.label "Visualizza barra di stato">
+
+<!ENTITY filetime.label "Orario ultima modifica file">
+<!ENTITY timeformat.label "Formato orario">
+<!ENTITY default.timeformat.label "Ripristina il formato predefinito">
+
+<!ENTITY homepage.label "Visita il sito di MoreKomodo">
+<!ENTITY homepage.tooltip "MoreKomodo e' scritto da Davide Ficano">
+<!ENTITY homepage.url "http://dafizilla.sourceforge.net/morekomodo">

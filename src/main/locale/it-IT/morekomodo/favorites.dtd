@@ -1,0 +1,37 @@
+<!ENTITY favorites.title "Gestione Preferiti">
+<!ENTITY favorites.close "Chiudi">
+<!ENTITY openfile.button.label "Apri file">
+<!ENTITY openfile.accesskey "p">
+
+<!ENTITY add.menu.label "Aggiungi...">
+<!ENTITY add.menu.accesskey "a">
+
+<!ENTITY addfiles.button.label "Altri file...">
+<!ENTITY addfiles.accesskey "l">
+
+<!ENTITY addCurrentFile.button.label "File corrente">
+<!ENTITY addCurrentFile.accesskey "F">
+
+<!ENTITY addCurrentFolder.button.label "Cartella corrente">
+<!ENTITY addCurrentFolder.accesskey "C">
+
+<!ENTITY addAllFiles.button.label "Tutti i file aperti">
+<!ENTITY addAllFiles.accesskey "t">
+
+<!ENTITY addFolder.button.label "Altra cartella...">
+<!ENTITY addFolder.accesskey "t">
+
+<!ENTITY remove.button.label "Rimuovi">
+<!ENTITY remove.accesskey "r">
+
+<!ENTITY edit.button.label "Modifica...">
+<!ENTITY edit.accesskey "m">
+
+<!ENTITY favorites.tree.label "Lista File">
+<!ENTITY description.from.path.label "Usa Nome Per Descrizione">
+<!ENTITY description.from.path.accesskey "U">
+
+
+<!ENTITY favorite.edit.dialog.title "Modifica preferito">
+<!ENTITY favorite.edit.path.label "Percorso">
+<!ENTITY favorite.edit.description.label "Descrizione">

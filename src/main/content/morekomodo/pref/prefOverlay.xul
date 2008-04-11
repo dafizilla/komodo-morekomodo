@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://morekomodo/locale/pref.dtd" >
+
+<overlay id="morekomodoPrefOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <hbox id="prefsTree">
+        <treechildren id="panelChildren">
+            <treeitem container="true" id="uiMoreKomodoMain">
+                <treerow>
+                    <treecell class="treecell-indent"
+                              url="chrome://morekomodo/content/pref/pref-morekomodo-main.xul"
+                              label="&morekomodo.label;"/>
+                </treerow>
+
+                <treechildren id="uiMoreKomodoLastModificationStatusbar">
+                    <treeitem container="false" id="editLastModificationStatusbar">
+                        <treerow>
+                            <treecell class="treecell-indent"
+                                      url="chrome://morekomodo/content/pref/pref-morekomodo-statusbar.xul"
+                                      label="&filetime.label;"/>
+                        </treerow>
+                    </treeitem>
+
+                    <treeitem container="false" id="morekomodoFindResults">
+                        <treerow>
+                            <treecell class="treecell-indent"
+                                      url="chrome://morekomodo/content/pref/pref-morekomodo-openfoundfiles.xul"
+                                      label="&find.results.label;"/>
+                        </treerow>
+                    </treeitem>
+                </treechildren>
+
+            </treeitem>
+        </treechildren>
+    </hbox>
+</overlay>

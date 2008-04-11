@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://morekomodo/skin/favorites.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://morekomodo/locale/favorites.dtd" >
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    id="favorites-dialog"
+    minwidth="400"
+    minheight="300"
+    onload="return gFavorites.onLoad();"
+    buttons="cancel"
+    ondialogcancel="gFavorites.onCancel();"
+    title="&favorites.title;"
+    buttonlabelcancel="&favorites.close;"
+    persist="width height screenX screenY">
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/favorites/favoriteInfo.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/prefs.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/favorites/favoritesTreeview.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/favorites/favorites.js" />
+
+    <stringbundle id="strings"
+                  src="chrome://morekomodo/locale/favorites.properties"/>
+
+    <hbox flex="1">
+        <tree id="fileList-tree"
+                flex="1"
+                hidecolumnpicker="true"
+                seltype="multiple"
+                onselect="gFavorites.onSelect()"
+                onkeypress="gFavorites.onTreeKeyPress(event);">
+          <treecols>
+            <treecol id="file-treecol"
+                      label="&favorites.tree.label;"
+                      flex="1"
+                      persist="width"/>
+          </treecols>
+          <treechildren class="fileListChildren" ondblclick="gFavorites.onDblClick(event);"/>
+        </tree>
+
+    <vbox>
+        <button
+                id="open"
+                oncommand="gFavorites.openSelected();"
+                accesskey="&openfile.accesskey;"
+                label="&openfile.button.label;"/>
+	<button label="&add.menu.label;" accesskey="&add.menu.accesskey;" type="menu">
+	    <menupopup>
+	    <menuitem
+		id="addCurrentFile"
+		oncommand="gFavorites.addCurrentFile();"
+		accesskey="&addCurrentFile.accesskey;"
+		label="&addCurrentFile.button.label;"/>
+	    <menuitem
+		id="addFiles"
+		oncommand="gFavorites.addFiles();"
+		accesskey="&addfiles.accesskey;"
+		label="&addfiles.button.label;"/>
+	    <menuitem
+		id="addAllFiles"
+		oncommand="gFavorites.addAllFiles();"
+		accesskey="&addAllFiles.accesskey;"
+		label="&addAllFiles.button.label;"/>
+	    <menuseparator id="add-file-menuseparator" />
+	    <menuitem
+		id="addCurrentFolder"
+		oncommand="gFavorites.addCurrentFolder();"
+		accesskey="&addCurrentFolder.accesskey;"
+		label="&addCurrentFolder.button.label;"/>
+	    <menuitem
+		id="addFolder"
+		oncommand="gFavorites.addFolder();"
+		accesskey="&addFolder.accesskey;"
+		label="&addFolder.button.label;"/>
+	    </menupopup>
+	</button>
+    
+        <button
+                id="editButton"
+                oncommand="gFavorites.onEdit();"
+                accesskey="&edit.accesskey;"
+                label="&edit.button.label;"/>
+        <button
+                id="removeButton"
+                oncommand="gFavorites.remove();"
+                accesskey="&remove.accesskey;"
+                label="&remove.button.label;"/>
+        <hbox>
+        <button
+                id="moveUpButton"
+                class="itemtreebox-up"
+                oncommand="gFavorites.fileListTreeView.moveSelectedItem(true);"/>
+        <spacer flex="1"/>
+        <button
+                id="moveDownButton"
+                class="itemtreebox-down"
+                oncommand="gFavorites.fileListTreeView.moveSelectedItem(false);"/>
+        </hbox>
+        <hbox align="center">
+            <label value="Max menu items"/>
+            <textbox id="maxMenuItems" size="3" oninput="gFavorites.onMaxItemKeyPress(event)"/>
+        </hbox>
+    </vbox>
+
+    </hbox>
+    <vbox>
+    <checkbox id="descriptionFromPath"
+          accesskey="&description.from.path.accesskey;"
+        label="&description.from.path.label;"
+        persist="checked" />
+    <textbox class="labeledit" id="selectedPath" readonly="true" />
+    </vbox>
+    <separator class="groove-thin" />
+</dialog>

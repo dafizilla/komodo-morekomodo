@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://morekomodo/skin/morekomodo.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://morekomodo/locale/pref.dtd" >
+
+<window xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        class="kodialog" orient="vertical">
+
+    <groupbox>
+        <caption label="&morekomodo.label;"/>
+	<description style="margin-top: 10px;">
+        &morekomodo.description;
+	</description>
+
+        <separator class="thin"/>
+        <label value="&homepage.label;"
+               id="homepageLink"
+               tooltiptext="&homepage.tooltip;"
+               class="link"
+               url="&homepage.url;"
+               onclick="parent.opener.ko.browse.openUrlInDefaultBrowser(this.getAttribute('url'))"/>
+    </groupbox>
+    <separator class="thin"/>
+
+</window>

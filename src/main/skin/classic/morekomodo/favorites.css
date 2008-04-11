@@ -1,0 +1,43 @@
+.itemtreebox-up {
+  list-style-image: url("chrome://morekomodo/skin/arrow_up.png");
+}               
+
+.itemtreebox-up[disabled="true"] {
+  list-style-image: url("chrome://morekomodo/skin/arrow_up_dis.png");
+}
+
+.itemtreebox-down {
+  list-style-image: url("chrome://morekomodo/skin/arrow_down.png");
+}
+
+.itemtreebox-down[disabled="true"] {
+  list-style-image: url("chrome://morekomodo/skin/arrow_down_dis.png");
+}
+
+.labeledit,
+.labeledit > .textbox-internal-box,
+.labeledit > .textarea-internal-box {
+  background: transparent !important;
+  border: none;
+  padding: 0px;
+  -moz-appearance: none;
+}
+
+.fileListChildren::-moz-tree-cell(showInMenu) {
+  background-color: #EEEEEE;
+}
+
+.fileListChildren::-moz-tree-cell-text(showInMenu) {
+  border-color: #3333FF;
+  color: #000000;
+  font-style: italic;
+}
+
+.fileListChildren::-moz-tree-cell(showInMenu, selected) {
+  background-color: #999999;
+}
+
+.fileListChildren::-moz-tree-cell-text(showInMenu, selected) {
+  color: #FFFFFF;
+  font-style: italic;
+}

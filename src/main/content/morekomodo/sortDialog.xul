@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://morekomodo/locale/sortDialog.dtd">
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    id="sort-dialog"
+    title="&title.dialog;"
+    minwidth="300"
+    minheight="260"
+    buttons="accept,cancel"
+    buttonlabelaccept="&sort;"
+    buttonlabelcancel="&close;"
+    onload="return gSortDialog.onLoad();"
+    persist="screenX screenY"
+    ondialogaccept="return gSortDialog.onAccept();"
+    ondialogcancel="return gSortDialog.onCancel();">
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/textutil.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/sortDialog.js" />
+
+    <vbox>
+        <groupbox>
+            <caption label="&caption.sort.option;" />
+            <checkbox id="sort-order-reverse" label="&order.reverse;" persist="checked" />
+            <checkbox id="remove-dup" label="&remove.duplicate;" persist="checked" />
+            <checkbox id="ignore-case" label="&ignore.case;" persist="checked" />
+            <checkbox id="numeric-sort" label="&numeric.sort;" persist="checked" />
+        </groupbox>
+        <label id="sort-origin"
+               style="font-weight: bold"
+               flex="1"
+               labelsel="&label.sel;"
+               labelall="&label.all;" />
+    </vbox>
+</dialog>

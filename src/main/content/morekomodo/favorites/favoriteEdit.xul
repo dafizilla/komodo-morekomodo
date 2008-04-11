@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://morekomodo/skin/favorites.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://morekomodo/locale/favorites.dtd" >
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        id="favoriteEdit"
+        onload="return gFavoriteEdit.onLoad();"
+        ondialogaccept="return gFavoriteEdit.onAccept();"
+        buttons="accept,cancel"
+        persist="width height screenX screenY"
+        title="&favorite.edit.dialog.title;">
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/favorites/favoriteInfo.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/favorites/favoriteEdit.js" />
+
+    <grid>
+        <columns>
+            <column/>
+            <column flex="1"/>
+        </columns>
+
+        <rows>
+            <row align="center">
+                <label value="&favorite.edit.path.label;" />
+		<textbox class="labeledit" id="current-path" readonly="true" />
+            </row>
+            <row align="center">
+                <label control="name" value="&favorite.edit.description.label;" />
+                <textbox flex="1" id="name" />
+            </row>
+        </rows>
+    </grid>
+</dialog>
+

@@ -1,0 +1,544 @@
+/*
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+#
+# The contents of this file are subject to the Mozilla Public License Version
+# 1.1 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS" basis,
+# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+# for the specific language governing rights and limitations under the
+# License.
+#
+# The Initial Developer of the Original Code is
+# Davide Ficano.
+# Portions created by the Initial Developer are Copyright (C) 2007
+# the Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#   Davide Ficano <davide.ficano@gmail.com>
+#
+# Alternatively, the contents of this file may be used under the terms of
+# either the GNU General Public License Version 2 or later (the "GPL"), or
+# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+#
+# ***** END LICENSE BLOCK *****
+*/
+var moreKomodo = {
+    _fileTimeInfo : null,
+    _prefs : new MoreKomodoPrefs(),
+
+    _bundle : Components.classes["@mozilla.org/intl/stringbundle;1"]
+                .getService(Components.interfaces.nsIStringBundleService)
+                .createBundle("chrome://morekomodo/locale/favorites.properties"),
+
+    onLoad : function() {
+        var obs = MoreKomodoCommon.getObserverService();
+        obs.addObserver(this, "morekomodo_pref_changed", false);
+        obs.addObserver(this, "current_view_changed", false);
+        obs.addObserver(this, "file_changed", false);
+        // This listener is notified from checkDiskFiles
+        obs.addObserver(this, "file_update_now", false);
+        window.controllers.appendController(this);
+
+        obs.notifyObservers(null, "morekomodo_pref_changed", "fileTime");
+        moreKomodoFindResults.init();
+    },
+
+    onUnLoad : function() {
+        var obs = MoreKomodoCommon.getObserverService();
+        obs.removeObserver(this, "morekomodo_pref_changed");
+        obs.removeObserver(this, "current_view_changed");
+        obs.removeObserver(this, "file_changed");
+        obs.removeObserver(this, "file_update_now");
+        window.controllers.removeController(this);
+    },
+
+    observe : function(subject, topic, data) {
+        try {
+        switch (topic) {
+            case "current_view_changed":
+                this._updateFileTimeStatusbarFromView(subject);
+                this._updateLockEdit(subject);
+                break;
+            case "file_changed":
+                this._updateFileTimeStatusbarFromUrl(data);
+                break;
+            case "morekomodo_pref_changed":
+                this.moreKomodoPrefsChanged(subject, data);
+                break;
+            case "file_update_now":
+                // data should contain url but is never set so we update only
+                // the current view, other views will be updated on current_view_changed
+                this._updateFileTimeStatusbarFromView(ko.views.manager.currentView);
+                break;
+        }
+        } catch (err) {
+            alert(topic + "--" + data + "\n" + err);
+        }
+    },
+
+    moreKomodoPrefsChanged : function(subject, data) {
+        if (data == "fileTime" || data == "all") {
+            this._fileTimeInfo = this._prefs.readFileTimeInfo();
+            var bar = document.getElementById("statusbar-morekomodo-filetime");
+            if (this._fileTimeInfo.isEnabled) {
+                bar.removeAttribute("collapsed");
+                this._updateFileTimeStatusbarFromView(ko.views.manager.currentView);
+            } else {
+                bar.setAttribute("collapsed", "true");
+            }
+        }
+    },
+
+    _updateFileTimeStatusbarFromView : function(view) {
+        var file = null;
+
+        if (!ko.views.manager.batchMode
+            && view
+            && view.getAttribute("type") == "editor") {
+            file = view.document.file;
+        }
+        this._updateFileTimeStatusbar(file);
+    },
+
+    _updateFileTimeStatusbarFromUrl : function(uri) {
+        var fileEx;
+
+        var views = ko.views.manager.topView.findViewsForURI(uri);
+        // Get cached file informations
+        if (views.length > 0 && views[0].document.file.isRemoteFile) {
+            fileEx = views[0].document.file;
+        } else {
+            fileEx = MoreKomodoCommon.makeIFileExFromURI(uri);
+        }
+        this._updateFileTimeStatusbar(fileEx);
+    },
+
+    _updateFileTimeStatusbar : function(fileEx) {
+        if (!this._fileTimeInfo.isEnabled) {
+            return;
+        }
+
+        var date = "";
+        if (fileEx) {
+            var timeSvc = Components.classes["@activestate.com/koTime;1"].
+                          getService(Components.interfaces.koITime);
+
+            var timeTuple = timeSvc.localtime(fileEx.lastModifiedTime, new Object());
+            var timeFormat = this._fileTimeInfo.timeFormat;
+            date = timeSvc.strftime(timeFormat, timeTuple.length, timeTuple);
+        }
+
+        var bar = document.getElementById("statusbar-morekomodo-filetime");
+        bar.setAttribute("label", date);
+    },
+
+    onRenameFile : function(event) {
+        var currView = ko.views.manager.currentView;
+        var viewDoc = currView.document;
+        var title = MoreKomodoCommon.getLocalizedMessage("rename.title");
+        var oldName = viewDoc.file.baseName;
+        var newName = ko.dialogs.prompt(oldName, null, oldName, title);
+
+        try {
+            if (newName && newName != oldName) {
+                var caretPosition = getCaretPosition(currView);
+                var newPath = MoreKomodoCommon.renameFile(viewDoc.displayPath, newName);
+                
+                // Reopen file at same tab position
+                MoreKomodoCommon.changeUriView(currView, newPath);
+                moveCaret(currView, caretPosition);
+            }
+        } catch (err) {
+            alert("Error while renaming " + err);
+        }
+    },
+
+    onDeleteFile : function() {
+        try {
+            var view = ko.views.manager.currentView;
+            var file = view.document.file;
+            var msg = MoreKomodoCommon
+                .getFormattedMessage("confirm.delete.file", [file.displayPath]);
+            if (confirm(msg)) {
+                MoreKomodoCommon.deleteFile(file.displayPath);
+                view.close();
+            }
+        } catch (err) {
+            alert(err);
+        }
+    },
+
+    onMakeBackup : function() {
+        try {
+            var view = ko.views.manager.currentView;
+            var file = view.document.file;
+            var currentPath = MoreKomodoCommon.makeLocalFile(file.path);
+            var msg = MoreKomodoCommon.getLocalizedMessage("select.backup.file.title");
+            var fp = MoreKomodoCommon.makeFilePicker(window,
+                        msg,
+                        Components.interfaces.nsIFilePicker.modeSave,
+                        currentPath.parent);
+            fp.defaultString = currentPath.leafName;
+            var res = fp.show();
+            var isOk = (res == Components.interfaces.nsIFilePicker.returnOK
+                        || res == Components.interfaces.nsIFilePicker.returnReplace);
+            if (isOk && fp.file) {
+                if (fp.file.exists()) {
+                    fp.file.remove(false);
+                }
+                currentPath.copyTo(fp.file.parent, fp.file.leafName);
+            }
+        } catch (err) {
+            alert("Unable to make backup: " + err);
+        }
+    },
+
+    onCopyFullPath : function(event) {
+        var view = ko.views.manager.currentView;
+        var file = view.document.displayPath;
+
+        MoreKomodoCommon.copyToClipboard(file);
+        view.setFocus();
+    },
+
+    onCopyDirectoryPath : function(event) {
+        var view = ko.views.manager.currentView;
+        var document = view.document;
+        var file = document.file;
+        var dirName = file.dirName;
+
+        if (file.isRemoteFile) {
+            dirName = file.scheme + "://" + file.server + dirName;
+        }
+
+        MoreKomodoCommon.copyToClipboard(dirName);
+        view.setFocus();
+    },
+
+    onCopyFileName : function(event) {
+        var view = ko.views.manager.currentView;
+        var file = view.document.baseName;
+
+        MoreKomodoCommon.copyToClipboard(file);
+        view.setFocus();
+    },
+
+    openFavorites : function() {
+        window.openDialog("chrome://morekomodo/content/favorites/favorites.xul",
+                          "_blank",
+                          "chrome,modal,resizable=yes,dependent=yes");
+    },
+
+    onOpenSortDialog : function() {
+        var param = {sortOptions : new SortOptions(),
+                     view : ko.views.manager.currentView,
+                     isOk : false};
+        window.openDialog("chrome://morekomodo/content/sortDialog.xul",
+                          "_blank",
+                          "chrome,modal,resizable=no,dependent=yes",
+                          param);
+        if (param.isOk) {
+            sortView(ko.views.manager.currentView, param.sortOptions);
+        }
+    },
+
+    initPopupMenuFavorites : function(showAll) {
+        var menu = document.getElementById("favorites-toolbarMenuPopup");
+
+        this.removeMenuItems(menu);
+        var prefs = new MoreKomodoPrefs();
+        var items = prefs.readFavorites();
+        if (items.length > 0) {
+            var maxItems = prefs.readMaxFavoriteMenuItems();
+            if (maxItems <= 0) {
+                maxItems = items.length;
+            }
+
+            if (typeof(showAll) == "undefined") {
+                showAll = false;
+            }
+
+            var itemCount;
+            var showExpandItem;
+
+            if (showAll) {
+                itemCount = items.length;
+                showExpandItem = false;
+            } else {
+                itemCount = Math.min(maxItems, items.length);
+                showExpandItem = true;
+            }
+            for (var i = 0; i < itemCount; i++) {
+                var favoriteInfo = items[i];
+                if (favoriteInfo.isValid()) {
+                    this.appendFavoriteItem(menu, favoriteInfo);
+                }
+            }
+            // No need to append menu when items are less than maxItems
+            if (items.length <= maxItems) {
+                showExpandItem = false;
+            }
+            if (showExpandItem) {
+                this.appendExpandFavoriteItem(menu);
+            }
+        } else {
+            this.appendEmptyFavoriteItem(menu);
+        }
+    },
+
+    removeMenuItems : function(menu) {
+        var children = menu.childNodes;
+
+        for (var i = children.length - 1; i >= 0; i--) {
+            menu.removeChild(children[i]);
+        }
+    },
+
+    appendExpandFavoriteItem : function(menu) {
+        var menusep = document.createElement("menuseparator");
+
+        menu.appendChild(menusep);
+
+        var item = document.createElement("menuitem");
+
+        var label = this._bundle.GetStringFromName("show.all.favorites");
+        item.setAttribute("label", label);
+        item.setAttribute("tooltiptext", label);
+        item.setAttribute("oncommand", "moreKomodo.onExpandFavorites(event)");
+
+        menu.appendChild(item);
+    },
+
+    onExpandFavorites : function(event) {
+        document.getElementById("button-favorites").open = true;
+        this.initPopupMenuFavorites(true);
+    },
+    
+    appendEmptyFavoriteItem : function(menu) {
+        var item = document.createElement("menuitem");
+
+        var emptyLabel = this._bundle.GetStringFromName("empty.favorite");
+        item.setAttribute("label", emptyLabel);
+        item.setAttribute("command", "cmd_morekomodo_favorites");
+        item.setAttribute("key", "key_cmd_morekomodo-favorites");
+
+        menu.appendChild(item);
+    },
+
+    appendFavoriteItem : function(menu, fo) {
+        var item = document.createElement("menuitem");
+
+        item.setAttribute("label", fo.label);
+        item.setAttribute("oncommand", "moreKomodo.onOpenFavoritesFromMenu(event);");
+        item.setAttribute("id", "morekomodo-path-" + fo.path);
+        item["favoriteInfo"] = fo;
+        item.setAttribute("class", "menuitem-iconic-wide");
+        item.setAttribute("image", fo.imageURI);
+        item.setAttribute("tooltiptext", fo.path);
+        // Paths too long are cropped
+        item.setAttribute("crop", "center");
+        menu.appendChild(item);
+    },
+
+    onConvertSelection : function(event, fn) {
+        var view = ko.views.manager.currentView;
+
+        if (view && view.getAttribute('type') == 'editor') {
+            applyConversionToSelection(view, fn, true);
+        }
+    },
+
+    onOpenFavoritesFromMenu : function(event) {
+        try {
+        var menuItem = event.target;
+        var fi = menuItem["favoriteInfo"];
+
+        fi.open(ko, this._bundle.GetStringFromName("select.file.title"));
+        } catch (err) {
+            alert(err);
+        }
+    },
+
+    goUpdateFileMenuItems : function() {
+        goUpdateCommand("cmd_makeBackup");
+        goUpdateCommand("cmd_morekomodo_copyappend");
+        goUpdateCommand("cmd_morekomodo_cutappend");
+        goUpdateCommand("cmd_sort");
+        goUpdateCommand("cmd_morekomodo_lockedit");
+    },
+
+    goUpdateClipboarcMenuItems : function() {
+        goUpdateCommand("cmd_morekomodo_pastehtml");
+    },
+
+    supportsCommand : function(cmd) {
+        switch (cmd) {
+            case "cmd_makeBackup":
+            case "cmd_morekomodo_pastehtml":
+            case "cmd_morekomodo_copyappend":
+            case "cmd_morekomodo_cutappend":
+            case "cmd_sort":
+            case "cmd_morekomodo_lockedit":
+                return true;
+        }
+        return false;
+    },
+    
+    isCommandEnabled : function(cmd) {
+        // at startup with no file open manager is null
+        var view = ko.views.manager && ko.views.manager.currentView;
+
+        switch (cmd) {
+            case "cmd_makeBackup":
+                if (view && view.document) {
+                    return !(view.document.isUntitled
+                            || view.getAttribute("type") != "editor"
+                            || view.document.file.isRemoteFile);
+                }
+                return false;
+            case "cmd_morekomodo_pastehtml":
+                return MoreKomodoCommon.hasClipboardHtml();
+            case "cmd_morekomodo_copyappend":
+                return view && view.getAttribute('type') == 'editor';
+            case "cmd_morekomodo_cutappend":
+                return view && view.getAttribute('type') == 'editor';
+            case "cmd_sort":
+                if (view && view.document) {
+                    return view.getAttribute("type") == "editor";
+                }
+                return false;
+            case "cmd_morekomodo_lockedit":
+                return view && view.getAttribute('type') == 'editor';
+        }
+        return false;
+    },
+    
+    doCommand : function(cmd) {
+        switch (cmd) {
+            case "cmd_makeBackup":
+                this.onMakeBackup();
+                break;
+            case "cmd_morekomodo_pastehtml":
+                this.onPasteHtml();
+                break;
+            case "cmd_morekomodo_copyappend":
+                this.onCopyAppend();
+                break;
+            case "cmd_morekomodo_cutappend":
+                this.onCutAppend();
+                break;
+            case "cmd_sort":
+                this.onOpenSortDialog();
+                break;
+            case "cmd_morekomodo_lockedit":
+                this.onToogleLockEdit();
+                break;
+        }
+    },
+    
+    onEvent : function(evt) {
+    },
+    
+    onPasteHtml : function() {
+        var view = ko.views.manager.currentView;
+
+        if (view && view.getAttribute('type') == 'editor') {
+            var htmlText = MoreKomodoCommon.getHtmlFromClipboard();
+            if (htmlText) {
+                view.scintilla.scimoz.replaceSel(htmlText);
+            }
+        }
+    },
+
+    onCopyAppend : function() {
+        var view = ko.views.manager.currentView;
+        var curr = "";
+
+        if (MoreKomodoCommon.hasDataMatchingFlavors(["text/unicode"])) {
+            curr = MoreKomodoCommon.pasteFromClipboard();
+        }
+        MoreKomodoCommon.copyToClipboard(curr + getSelection(view));
+    },
+    
+    onCutAppend : function() {
+        this.onCopyAppend();
+        ko.commands.doCommand("cmd_delete");
+    },
+
+    onShowInFileManager : function() {
+        var view = ko.views.manager.currentView;
+        var path = view.document.file.path;
+
+        Components.classes["@activestate.com/koSysUtils;1"]
+            .getService(Components.interfaces.koISysUtils)
+            .ShowFileInFileManager(path);
+    },
+
+    onMoveFile : function() {
+        try {
+            var currView = ko.views.manager.currentView;
+            var file = currView.document.file;
+            var currentPath = MoreKomodoCommon.makeLocalFile(file.path);
+            var msg = MoreKomodoCommon.getLocalizedMessage("select.move.file.title");
+            var fp = MoreKomodoCommon.makeFilePicker(window,
+                        msg,
+                        Components.interfaces.nsIFilePicker.modeSave,
+                        currentPath.parent);
+            fp.defaultString = currentPath.leafName;
+            var res = fp.show();
+            var isOk = (res == Components.interfaces.nsIFilePicker.returnOK
+                        || res == Components.interfaces.nsIFilePicker.returnReplace);
+            if (isOk && fp.file) {
+                if (fp.file.exists()) {
+                    fp.file.remove(false);
+                }
+                currentPath.copyTo(fp.file.parent, fp.file.leafName);
+
+                var caretPosition = getCaretPosition(currView);
+                MoreKomodoCommon.changeUriView(currView, fp.file.path);
+                moveCaret(currView, caretPosition);
+                MoreKomodoCommon.deleteFile(file.path);
+            }
+        } catch (err) {
+            alert("Unable to move file: " + err);
+        }
+    },
+
+    _updateLockEdit : function(view) {
+        var button = document.getElementById("cmd_morekomodo_lockedit");
+
+        if (view && view.getAttribute('type') == 'editor') {
+            if (view.scintilla.scimoz.readOnly) {
+                button.setAttribute("checked", "true");
+            } else {
+                button.removeAttribute("checked");
+            }
+        } else {
+            // Disabled button always shown as unlocked
+            button.removeAttribute("checked");
+        }
+    },
+
+    onToogleLockEdit : function() {
+        var view = ko.views.manager.currentView;
+        if (view && view.getAttribute('type') == 'editor') {
+            view.scintilla.scimoz.readOnly = !view.scintilla.scimoz.readOnly;
+            this._updateLockEdit(view);
+        }
+    }
+};
+
+window.addEventListener("load", function(event) { moreKomodo.onLoad(event); }, false);
+window.addEventListener("unload", function(event) { moreKomodo.onUnLoad(event); }, false);

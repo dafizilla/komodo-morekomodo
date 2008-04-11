@@ -1,0 +1,33 @@
+<!ENTITY rename.label "Rinomina...">
+<!ENTITY delete.label "Elimina...">
+<!ENTITY make.backup.label "Crea Backup...">
+<!ENTITY copy.file.name.label "Copia Nome File">
+<!ENTITY copy.full.path.label "Copia Percorso Completo">
+<!ENTITY copy.directory.path.label "Copia Nome Directory">
+
+<!ENTITY show.file.manager "Visualizza In File Manager">
+<!ENTITY menuitem-openfavorites.label "Apri Preferiti...">
+<!ENTITY menuitem-openfavorites.accesskey "p">
+<!ENTITY menuitem-favoritelist.label "Lista Preferiti">
+<!ENTITY toolbar.favorites.label "Preferiti">
+<!ENTITY toolbar.favorites.tooltip "Accedi Ai Preferiti">
+
+<!ENTITY menuitem-textconversion.label "Converti Testo Selezionato">
+<!ENTITY menuitem-textconversion-capitalize.label "Porta In Maiuscolo Le Iniziali Di Parole">
+<!ENTITY menuitem-textconversion-encodehtmlnumeric.label "Codifica Le Entit&#224; HTML Come Numerici">
+<!ENTITY menuitem-textconversion-encodehtml.label "Codifica Le Entit&#224; HTML">
+<!ENTITY menuitem-textconversion-decodehtml.label "Decodifica Le Entit&#224; HTML">
+<!ENTITY menuitem-textconversion-d2upath.label "Converte I Separatori Da DOS A Unix">
+<!ENTITY menuitem-textconversion-doubledossep.label "Raddoppia I Separatori DOS">
+<!ENTITY menuitem-textconversion-stripdos.label "Rimuove I Separatori DOS Doppi">
+
+<!ENTITY menuitem-sort.label "Ordina...">
+
+<!ENTITY menuitem-pastehtml.label "Incolla HTML">
+<!ENTITY menuitem-copyappend.label "Copia E Appendi">
+<!ENTITY menuitem-cutappend.label "Taglia E Appendi">
+
+<!ENTITY findresults.tooltiptext "Copia Risultati Ricerca">
+<!ENTITY findresults.copy.filenames "Copia Nomi File">
+<!ENTITY findresults.copy.contents "Copia Contenuti">
+<!ENTITY findresults.refresh.tooltip "Aggiorna">
