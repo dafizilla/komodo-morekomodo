@@ -276,3 +276,12 @@ MoreKomodoCommon.hasDataMatchingFlavors = function(flavors) {
                         .getService(Components.interfaces.nsIClipboard);
     return clipboard.hasDataMatchingFlavors(flavorArray, clipboard.kGlobalClipboard);
 }
+
+MoreKomodoCommon.removeMenuItems = function(menu) {
+    var children = menu.childNodes;
+
+    for (var i = children.length - 1; i >= 0; i--) {
+        menu.removeChild(children[i]);
+    }
+}
+

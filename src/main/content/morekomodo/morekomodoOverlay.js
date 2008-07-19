@@ -144,7 +144,7 @@ var moreKomodo = {
         bar.setAttribute("label", date);
     },
 
-    onRenameFile : function(event) {
+    onRenameFile : function() {
         var currView = ko.views.manager.currentView;
         var viewDoc = currView.document;
         var title = MoreKomodoCommon.getLocalizedMessage("rename.title");
@@ -159,6 +159,9 @@ var moreKomodo = {
                 // Reopen file at same tab position
                 MoreKomodoCommon.changeUriView(currView, newPath);
                 moveCaret(currView, caretPosition);
+                // update title and other stuff
+                MoreKomodoCommon.getObserverService()
+                    .notifyObservers(currView, 'current_view_changed', '');
             }
         } catch (err) {
             alert("Error while renaming " + err);
@@ -205,7 +208,7 @@ var moreKomodo = {
         }
     },
 
-    onCopyFullPath : function(event) {
+    onCopyFullPath : function() {
         var view = ko.views.manager.currentView;
         var file = view.document.displayPath;
 
@@ -213,7 +216,7 @@ var moreKomodo = {
         view.setFocus();
     },
 
-    onCopyDirectoryPath : function(event) {
+    onCopyDirectoryPath : function() {
         var view = ko.views.manager.currentView;
         var document = view.document;
         var file = document.file;
@@ -227,7 +230,7 @@ var moreKomodo = {
         view.setFocus();
     },
 
-    onCopyFileName : function(event) {
+    onCopyFileName : function() {
         var view = ko.views.manager.currentView;
         var file = view.document.baseName;
 
@@ -372,11 +375,18 @@ var moreKomodo = {
     },
 
     goUpdateFileMenuItems : function() {
-        goUpdateCommand("cmd_makeBackup");
+        goUpdateCommand("cmd_morekomodo_makeBackup");
         goUpdateCommand("cmd_morekomodo_copyappend");
         goUpdateCommand("cmd_morekomodo_cutappend");
-        goUpdateCommand("cmd_sort");
+        goUpdateCommand("cmd_morekomodo_sort");
         goUpdateCommand("cmd_morekomodo_lockedit");
+        goUpdateCommand("cmd_morekomodo_rename");
+        goUpdateCommand("cmd_morekomodo_delete");
+        goUpdateCommand("cmd_morekomodo_copyFullPath");
+        goUpdateCommand("cmd_morekomodo_copyFileName");
+        goUpdateCommand("cmd_morekomodo_copyDirectoryPath");
+        goUpdateCommand("cmd_morekomodo_move");
+        goUpdateCommand("cmd_morekomodo_showInFileManager");
     },
 
     goUpdateClipboarcMenuItems : function() {
@@ -385,12 +395,19 @@ var moreKomodo = {
 
     supportsCommand : function(cmd) {
         switch (cmd) {
-            case "cmd_makeBackup":
+            case "cmd_morekomodo_makeBackup":
             case "cmd_morekomodo_pastehtml":
             case "cmd_morekomodo_copyappend":
             case "cmd_morekomodo_cutappend":
-            case "cmd_sort":
+            case "cmd_morekomodo_sort":
             case "cmd_morekomodo_lockedit":
+            case "cmd_morekomodo_rename":
+            case "cmd_morekomodo_delete":
+            case "cmd_morekomodo_copyFullPath":
+            case "cmd_morekomodo_copyFileName":
+            case "cmd_morekomodo_copyDirectoryPath":
+            case "cmd_morekomodo_move":
+            case "cmd_morekomodo_showInFileManager":
                 return true;
         }
         return false;
@@ -401,7 +418,20 @@ var moreKomodo = {
         var view = ko.views.manager && ko.views.manager.currentView;
 
         switch (cmd) {
-            case "cmd_makeBackup":
+            case "cmd_morekomodo_rename":
+            case "cmd_morekomodo_delete":
+            case "cmd_morekomodo_copyFullPath":
+            case "cmd_morekomodo_copyFileName":
+            case "cmd_morekomodo_copyDirectoryPath":
+                if (view && view.document) {
+                    return !(view.document.isUntitled
+                            || view.getAttribute("type") != "editor");
+                }
+                return false;
+            case "cmd_morekomodo_move":
+            case "cmd_morekomodo_showInFileManager":
+            case "cmd_morekomodo_makeBackup":
+                // These commands aren't supported on remote
                 if (view && view.document) {
                     return !(view.document.isUntitled
                             || view.getAttribute("type") != "editor"
@@ -414,7 +444,7 @@ var moreKomodo = {
                 return view && view.getAttribute('type') == 'editor';
             case "cmd_morekomodo_cutappend":
                 return view && view.getAttribute('type') == 'editor';
-            case "cmd_sort":
+            case "cmd_morekomodo_sort":
                 if (view && view.document) {
                     return view.getAttribute("type") == "editor";
                 }
@@ -427,7 +457,28 @@ var moreKomodo = {
     
     doCommand : function(cmd) {
         switch (cmd) {
-            case "cmd_makeBackup":
+            case "cmd_morekomodo_rename":
+                this.onRenameFile();
+                break;
+            case "cmd_morekomodo_delete":
+                this.onDeleteFile();
+                break;
+            case "cmd_morekomodo_copyFullPath":
+                this.onCopyFullPath();
+                break;
+            case "cmd_morekomodo_copyFileName":
+                this.onCopyFileName();
+                break;
+            case "cmd_morekomodo_copyDirectoryPath":
+                this.onCopyDirectoryPath();
+                break;
+            case "cmd_morekomodo_move":
+                this.onMoveFile();
+                break;
+            case "cmd_morekomodo_showInFileManager":
+                this.onShowInFileManager();
+                break;
+            case "cmd_morekomodo_makeBackup":
                 this.onMakeBackup();
                 break;
             case "cmd_morekomodo_pastehtml":
@@ -439,7 +490,7 @@ var moreKomodo = {
             case "cmd_morekomodo_cutappend":
                 this.onCutAppend();
                 break;
-            case "cmd_sort":
+            case "cmd_morekomodo_sort":
                 this.onOpenSortDialog();
                 break;
             case "cmd_morekomodo_lockedit":
@@ -510,6 +561,9 @@ var moreKomodo = {
                 MoreKomodoCommon.changeUriView(currView, fp.file.path);
                 moveCaret(currView, caretPosition);
                 MoreKomodoCommon.deleteFile(file.path);
+                // update title and other stuff
+                MoreKomodoCommon.getObserverService()
+                    .notifyObservers(currView, 'current_view_changed', '');
             }
         } catch (err) {
             alert("Unable to move file: " + err);

@@ -43,3 +43,7 @@
 .button-morekomodo-lockedit[disabled="true"] {
   -moz-opacity: 0.5;
 }
+
+.button-findresults-find-by-selection {
+  list-style-image: url("chrome://morekomodo/skin/find_by_selection.png");
+}

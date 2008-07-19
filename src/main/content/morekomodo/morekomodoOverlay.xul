@@ -20,13 +20,6 @@
             src="chrome://morekomodo/content/morekomodoOverlay.js" />
 
     <commandset id="allcommands">
-        <command
-            id="cmd_morekomodo_capitalize"
-            key="key_cmd_morekomodo-capitalize"
-            oncommand="moreKomodo.onConvertSelection(event, capitalizeText)"/>
-        <command
-            id="cmd_morekomodo_statusbar_last_modified"
-            oncommand="alert('last_modified')"/>
         <commandset id="morekomodo_filecommand"
             oncommandupdate="moreKomodo.goUpdateFileMenuItems(this)"
             commandupdater="true"
@@ -35,59 +28,126 @@
             oncommandupdate="moreKomodo.goUpdateClipboarcMenuItems(this)"
             commandupdater="true"
             events="clipboard"/>
-        <command
-            id="cmd_morekomodo_favorites"
-            oncommand="moreKomodo.openFavorites(event);"/>
-        <command
-            id="cmd_makeBackup"
-            oncommand="goDoCommand('cmd_makeBackup')"/>
-        <command
-            id="cmd_morekomodo_pastehtml"
-            oncommand="goDoCommand('cmd_morekomodo_pastehtml')"/>
-        <command
-            id="cmd_morekomodo_copyappend"
-            oncommand="goDoCommand('cmd_morekomodo_copyappend')"/>
-        <command
-            id="cmd_morekomodo_cutappend"
-            oncommand="goDoCommand('cmd_morekomodo_cutappend')"/>
-        <command
-            id="cmd_sort"
-            oncommand="goDoCommand('cmd_sort')"/>
     </commandset>
 
     <broadcasterset id="broadcasterset_global">
-        <broadcaster id="cmd_morekomodo_lockedit"
-                    autoCheck="false"
-                    type="checkbox"
-                    label="&lockedit.label;"
-                    oncommand="moreKomodo.onToogleLockEdit()"
-                    />
+        <broadcaster
+                id="cmd_morekomodo_makeBackup"
+                key="key_cmd_morekomodo_makeBackup"
+                desc="&morekomodo.make.backup.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_makeBackup')"/>
+        
+             <!--modifiers="control,shift" keycode="VK_INSERT"-->
+             <!--modifiers="control,shift" key="C"-->
+        <broadcaster
+                id="cmd_morekomodo_copyappend"
+                key="key_cmd_morekomodo_copyappend"
+                desc="&morekomodo.copy.append.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_copyappend')"/>
+
+             <!--modifiers="control,shift" key="D"-->
+        <broadcaster
+                id="cmd_morekomodo_cutappend"
+                key="key_cmd_morekomodo_cutappend"
+                desc="&morekomodo.cut.append.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_cutappend')"/>
+
+             <!--modifiers="control" keycode="VK_F12"-->
+        <broadcaster
+                id="cmd_morekomodo_favorites"
+                key="key_cmd_morekomodo_favorites"
+                desc="&morekomodo.favorites.desc;"
+                oncommand="moreKomodo.openFavorites(event);"/>
+        <broadcaster
+                id="cmd_morekomodo_lockedit"
+                key="key_cmd_morekomodo_lockedit"
+                desc="&morekomodo.lock.edit.desc;"
+                oncommand="moreKomodo.onToogleLockEdit()"/>
+        <broadcaster
+                id="cmd_morekomodo_pastehtml"
+                key="key_cmd_morekomodo_pastehtml"
+                desc="&morekomodo.paste.html.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_pastehtml')"/>
+        <broadcaster
+                id="cmd_morekomodo_sort"
+                key="key_cmd_morekomodo_sort"
+                desc="&morekomodo.sort.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_sort')"/>
+
+        <!--keycode="VK_F5"-->
+        <broadcaster
+                id="cmd_morekomodo_cvt_capitalize"
+                key="key_cmd_morekomodo_cvt_capitalize"
+                desc="&morekomodo.capitalize.text.desc;"
+                oncommand="moreKomodo.onConvertSelection(event, capitalizeText)"/>
+        <broadcaster
+                id="cmd_morekomodo_cvt_htmlencode"
+                key="key_cmd_morekomodo_cvt_htmlencode"
+                desc="&morekomodo.html.encode.entities.desc;"
+                oncommand="moreKomodo.onConvertSelection(event, function(str) { return htmlEncode(str, false);})"/>
+        <broadcaster
+                id="cmd_morekomodo_cvt_htmlencodenumeric"
+                key="key_cmd_morekomodo_cvt_htmlencodenumeric"
+                desc="&morekomodo.html.encode.numeric.desc;"
+                oncommand="moreKomodo.onConvertSelection(event, function(str) { return htmlEncode(str, true);})"/>
+        <broadcaster
+                id="cmd_morekomodo_cvt_htmldecode"
+                key="key_cmd_morekomodo_cvt_htmldecode"
+                desc="&morekomodo.html.decode.desc;"
+                oncommand="moreKomodo.onConvertSelection(event, htmlDecode)"/>
+        <broadcaster
+                id="cmd_morekomodo_cvt_d2upath"
+                key="key_cmd_morekomodo_cvt_d2upath"
+                desc="&morekomodo.d2u.path.desc;"
+                oncommand="moreKomodo.onConvertSelection(event, dos2unixPathSepatators)"/>
+        <broadcaster
+                id="cmd_morekomodo_cvt_doubledossep"
+                key="key_cmd_morekomodo_cvt_doubledossep"
+                desc="&morekomodo.double.dos.sep.desc;"
+                oncommand="moreKomodo.onConvertSelection(event, doubleDosSeparators)"/>
+        <broadcaster
+                id="cmd_morekomodo_cvt_stripdos"
+                key="key_cmd_morekomodo_cvt_stripdos"
+                desc="&morekomodo.strip.dos.desc;"
+                oncommand="moreKomodo.onConvertSelection(event, stripDoubleDosSeparators)"/>
+
+        <!-- verify rename/delete/move/copy path/show in fail man with remote file -->
+        <broadcaster
+                id="cmd_morekomodo_rename"
+                key="key_cmd_morekomodo_rename"
+                desc="&morekomodo.rename.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_rename')"/>
+        <broadcaster
+                id="cmd_morekomodo_delete"
+                key="key_cmd_morekomodo_delete"
+                desc="&morekomodo.delete.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_delete')"/>
+        <broadcaster
+                id="cmd_morekomodo_move"
+                key="key_cmd_morekomodo_move"
+                desc="&morekomodo.move.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_move')"/>
+        <broadcaster
+                id="cmd_morekomodo_copyFullPath"
+                key="key_cmd_morekomodo_copyFullPath"
+                desc="&morekomodo.copy.full.path.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_copyFullPath')"/>
+        <broadcaster
+                id="cmd_morekomodo_copyFileName"
+                key="key_cmd_morekomodo_copyFileName"
+                desc="&morekomodo.copy.file.name.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_copyFileName')"/>
+        <broadcaster
+                id="cmd_morekomodo_copyDirectoryPath"
+                key="key_cmd_morekomodo_copyDirectoryPath"
+                desc="&morekomodo.copy.directory.path.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_copyDirectoryPath')"/>
+        <broadcaster
+                id="cmd_morekomodo_showInFileManager"
+                key="key_cmd_morekomodo_showInFileManager"
+                desc="&morekomodo.show.in.file.manager.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_showInFileManager')"/>
     </broadcasterset>
-
-    <keyset id="widekeyset">
-        <key id="key_cmd_morekomodo-capitalize"
-             keycode="VK_F5"
-             command="cmd_morekomodo_capitalize"/>
-
-        <key id="key_cmd_morekomodo-favorites"
-             modifiers="control"
-             keycode="VK_F12"
-             command="cmd_morekomodo_favorites"/>
-        
-        <key id="key_cmd_morekomodo-copyappend"
-             modifiers="control,shift"
-             keycode="VK_INSERT"
-             command="cmd_morekomodo_copyappend"/>
-        <key id="key_cmd_morekomodo-menuitem-copyappend"
-             modifiers="control,shift"
-             key="C"
-             command="cmd_morekomodo_copyappend"/>
-        
-        <key id="key_cmd_morekomodo-menuitem-cutappend"
-             modifiers="control,shift"
-             key="D"
-             command="cmd_morekomodo_cutappend"/>
-    </keyset>
 
   <toolboxrow id="main-toolboxrow">
     <toolbar id="standardToolbar">
@@ -119,7 +179,6 @@
     </toolbar>
   </toolboxrow>
 
-
     <menupopup id="popup_edit">
         <menuitem id="morekomodo-cutappend"
                     class="menuitem-iconic-wide"
@@ -131,12 +190,13 @@
                     class="menuitem-iconic-wide"
                     label="&menuitem-copyappend.label;"
                     command="cmd_morekomodo_copyappend"
-                    key="key_cmd_morekomodo-menuitem-copyappend"
+                    key="key_cmd_morekomodo_copyappend"
                     insertafter="pasteButton"/>
         <menuitem id="morekomodo-pastehtml"
                     class="menuitem-iconic-wide"
                     label="&menuitem-pastehtml.label;"
                     command="cmd_morekomodo_pastehtml"
+                    key="key_cmd_morekomodo_pastehtml"
                     insertafter="pasteButton"/>
     </menupopup>
 
@@ -151,7 +211,7 @@
                     class="menuitem-iconic-wide"
                     label="&menuitem-copyappend.label;"
                     command="cmd_morekomodo_copyappend"
-                    key="key_cmd_morekomodo-menuitem-copyappend"
+                    key="key_cmd_morekomodo_copyappend"
                     insertafter="editor-context-paste"/>
         <menuitem id="morekomodo-context-pastehtml"
                     class="menuitem-iconic-wide"
@@ -165,7 +225,7 @@
                     class="menuitem-iconic-wide"
                     label="&menuitem-openfavorites.label;"
                     command="cmd_morekomodo_favorites"
-                    key="key_cmd_morekomodo-favorites"
+                    key="key_cmd_morekomodo_favorites"
                     insertafter="menu_openTemplateFile"/>
     </menupopup>
 
@@ -173,7 +233,8 @@
         <menuitem id="morekomodo-sort"
                     class="menuitem-iconic-wide"
                     label="&menuitem-sort.label;"
-                    command="cmd_sort"
+                    command="cmd_morekomodo_sort"
+                    key="key_cmd_morekomodo_sort"
                     insertbefore="menu_closeProject"/>
         <menuseparator id="morekomodo-sort-menusep"
                        insertbefore="menu_closeProject"/>
@@ -181,7 +242,8 @@
         <menuitem id="morekomodo-menu-makebackup"
                     class="menuitem-iconic-wide"
                     label="&make.backup.label;"
-                    command="cmd_makeBackup"
+                    command="cmd_morekomodo_makeBackup"
+                    key="key_cmd_morekomodo_makeBackup"
                     insertbefore="menu_save"/>
 
         <!-- label taken from broadcaster -->
@@ -208,40 +270,46 @@
                 <menuitem id="morekomodo-capitalize"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-capitalize.label;"
-                            key="key_cmd_morekomodo-capitalize"
-                            command="cmd_morekomodo_capitalize"
+                            command="cmd_morekomodo_cvt_capitalize"
+                            key="key_cmd_morekomodo_cvt_capitalize"
                             />
                 <menuseparator />
                 <menuitem id="morekomodo-htmlencode"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-encodehtml.label;"
-                            oncommand="moreKomodo.onConvertSelection(event, function(str) { return htmlEncode(str, false);})"
+                            command="cmd_morekomodo_cvt_htmlencode"
+                            key="key_cmd_morekomodo_cvt_htmlencode"
                             />
                 <menuitem id="morekomodo-htmlencodenumeric"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-encodehtmlnumeric.label;"
-                            oncommand="moreKomodo.onConvertSelection(event, function(str) { return htmlEncode(str, true);})"
+                            command="cmd_morekomodo_cvt_htmlencodenumeric"
+                            key="key_cmd_morekomodo_cvt_htmlencodenumeric"
                             />
                 <menuitem id="morekomodo-htmldecode"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-decodehtml.label;"
-                            oncommand="moreKomodo.onConvertSelection(event, htmlDecode)"
+                            command="cmd_morekomodo_cvt_htmldecode"
+                            key="key_cmd_morekomodo_cvt_htmldecode"
                             />
                 <menuseparator />
                 <menuitem id="morekomodo-d2upath"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-d2upath.label;"
-                            oncommand="moreKomodo.onConvertSelection(event, dos2unixPathSepatators)"
+                            command="cmd_morekomodo_cvt_d2upath"
+                            key="key_cmd_morekomodo_cvt_d2upath"
                             />
                 <menuitem id="morekomodo-doubledossep"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-doubledossep.label;"
-                            oncommand="moreKomodo.onConvertSelection(event, doubleDosSeparators)"
+                            command="cmd_morekomodo_cvt_doubledossep"
+                            key="key_cmd_morekomodo_cvt_doubledossep"
                             />
                 <menuitem id="morekomodo-stripdos"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-stripdos.label;"
-                            oncommand="moreKomodo.onConvertSelection(event, stripDoubleDosSeparators)"
+                            command="cmd_morekomodo_cvt_stripdos"
+                            key="key_cmd_morekomodo_cvt_stripdos"
                             />
                 </menupopup>
             </menu>
@@ -251,46 +319,54 @@
         <menuitem id="morekomodo-rename"
                     class="menuitem-iconic-wide"
                     label="&rename.label;"
-                    oncommand="moreKomodo.onRenameFile(event)"
+                    command="cmd_morekomodo_rename"
+                    key="key_cmd_morekomodo_rename"
                     insertbefore="menu_save2"/>
         <menuitem id="morekomodo-delete"
                     class="menuitem-iconic-wide"
                     label="&delete.label;"
-                    oncommand="moreKomodo.onDeleteFile(event)"
+                    command="cmd_morekomodo_delete"
+                    key="key_cmd_morekomodo_delete"
                     insertbefore="menu_save2"/>
         <menuitem id="morekomodo-move"
                     class="menuitem-iconic-wide"
                     label="&move.label;"
-                    oncommand="moreKomodo.onMoveFile(event)"
+                    command="cmd_morekomodo_move"
+                    key="key_cmd_morekomodo_move"
                     insertbefore="menu_save2"/>
-        <menuitem id="morekomodo-makecopy"
+        <menuitem id="morekomodo-makebackup"
                     class="menuitem-iconic-wide"
                     label="&make.backup.label;"
-                    command="cmd_makeBackup"
+                    command="cmd_morekomodo_makeBackup"
+                    key="key_cmd_morekomodo_makeBackup"
                     insertbefore="menu_save2"/>
         <menuseparator insertbefore="menu_save2" />
 
         <menuitem id="morekomodo-copyFullPath"
                     class="menuitem-iconic-wide"
                     label="&copy.full.path.label;"
-                    oncommand="moreKomodo.onCopyFullPath(event)"
+                    command="cmd_morekomodo_copyFullPath"
+                    key="key_cmd_morekomodo_copyFullPath"
                     insertbefore="menu_save2"/>
         <menuitem id="morekomodo-copyFileName"
                     class="menuitem-iconic-wide"
                     label="&copy.file.name.label;"
-                    oncommand="moreKomodo.onCopyFileName(event)"
+                    command="cmd_morekomodo_copyFileName"
+                    key="key_cmd_morekomodo_copyFileName"
                     insertbefore="menu_save2"/>
         <menuitem id="morekomodo-copyDirectoryPath"
                     class="menuitem-iconic-wide"
                     label="&copy.directory.path.label;"
-                    oncommand="moreKomodo.onCopyDirectoryPath(event)"
+                    command="cmd_morekomodo_copyDirectoryPath"
+                    key="key_cmd_morekomodo_copyDirectoryPath"
                     insertbefore="menu_save2"/>
         <menuseparator insertbefore="menu_save2" />
 
         <menuitem id="morekomodo-showInFileManager"
                     class="menuitem-iconic-wide"
                     label="&show.file.manager;"
-                    oncommand="moreKomodo.onShowInFileManager(event)"
+                    command="cmd_morekomodo_showInFileManager"
+                    key="key_cmd_morekomodo_showInFileManager"
                     insertbefore="menu_save2"/>
     </menupopup>
 
@@ -309,13 +385,19 @@
                 insertbefore="findresults1-jumptoprev-button"
                 disabled="false"
                 oncommand="moreKomodoFindResults.onOpenFoundFiles(1)" />
-        <button
+        <toolbarbutton
                 id="findresults1-morekomodo-refresh"
-                class="button-findresults-refresh button-toolbar-a"
+                class="button-findresults-refresh"
                 tooltiptext="&findresults.refresh.tooltip;"
                 insertbefore="findresults1-jumptoprev-button"
                 disabled="true"
-                oncommand="moreKomodoFindResults.onRefreshFindResults(1)" />
+                oncommand="moreKomodoFindResults.onRefreshFindResults(1)"
+                type="menu-button">
+            <menupopup id="findresults1-refreshMenuPopup"
+                       onpopupshowing="return moreKomodoFindResults.initRefreshViewMenu(event, 1);"
+                       oncommand="event.stopPropagation();" />
+        </toolbarbutton>
+
         <toolbarbutton
             id="findresults1-morekomodo-toolbar-copy"
             tooltiptext="&findresults.tooltiptext;"
@@ -332,6 +414,21 @@
                     oncommand="moreKomodoFindResults.onCopyFindResults(1, false)"/>
             </menupopup>
         </toolbarbutton>
+        <button
+                id="findresults1-morekomodo-find-by-selection"
+                class="button-findresults-find-by-selection button-toolbar-a"
+                tooltiptext="&findresults.find.by.selection.tooltip;"
+                insertbefore="findresults1-jumptoprev-button"
+                oncommand="moreKomodoFindResults.onFindBySelection(1)" />
+
+        <box id="morekomodo-hidden-refresh-menu" collapsed="true" hidden="true">
+            <menupopup id="morekomodo-refresh-static-menupopup">
+                <menuseparator />
+                <menuitem id="mk-refresh-clear"
+                        label="&morekomodo.clear;"
+                        oncommand="moreKomodoFindResults.removeAllFindInfo(event);" />
+            </menupopup>
+        </box>
     </hbox>
 
     <hbox id="findresults2_tabpanel-toolbarbox">
@@ -342,13 +439,19 @@
                 insertbefore="findresults2-jumptoprev-button"
                 disabled="false"
                 oncommand="moreKomodoFindResults.onOpenFoundFiles(2)" />
-        <button
+        <toolbarbutton
                 id="findresults2-morekomodo-refresh"
-                class="button-findresults-refresh button-toolbar-a"
+                class="button-findresults-refresh"
                 tooltiptext="&findresults.refresh.tooltip;"
                 insertbefore="findresults2-jumptoprev-button"
                 disabled="true"
-                oncommand="moreKomodoFindResults.onRefreshFindResults(2)" />
+                oncommand="moreKomodoFindResults.onRefreshFindResults(2)"
+                type="menu-button">
+            <menupopup id="findresults2-refreshMenuPopup"
+                       onpopupshowing="return moreKomodoFindResults.initRefreshViewMenu(event, 2);"
+                       oncommand="event.stopPropagation();" />
+        </toolbarbutton>
+
         <toolbarbutton
             id="findresults2-morekomodo-toolbar-copy"
             tooltiptext="&findresults.tooltiptext;"
@@ -365,6 +468,12 @@
                     oncommand="moreKomodoFindResults.onCopyFindResults(2, false)"/>
             </menupopup>
         </toolbarbutton>
+        <button
+                id="findresults2-morekomodo-find-by-selection"
+                class="button-findresults-find-by-selection button-toolbar-a"
+                tooltiptext="&findresults.find.by.selection.tooltip;"
+                insertbefore="findresults2-jumptoprev-button"
+                oncommand="moreKomodoFindResults.onFindBySelection(2)" />
     </hbox>
 
     <hbox id="findresults720_tabpanel-toolbarbox">
@@ -385,6 +494,5 @@
             </menupopup>
         </toolbarbutton>
     </hbox>
-
 </overlay>
 

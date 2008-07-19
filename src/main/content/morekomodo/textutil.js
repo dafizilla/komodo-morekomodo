@@ -421,3 +421,11 @@ function flipArray(array) {
     
     return newArr;
 }
+
+function convertGlobMetaCharsToRegexpMetaChars(glob) {
+    var re = glob;
+    re = re.replace(/([.^$+(){}\[\]\\|])/g, "\\$1");
+    re = re.replace(/\?/g, "(.|[\r\n])");
+    re = re.replace(/\*/g, "(.|[\r\n])*");
+    return re;
+}

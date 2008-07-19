@@ -34,6 +34,32 @@
 <!ENTITY findresults.copy.contents "Copy Content">
 <!ENTITY findresults.refresh.tooltip "Refresh">
 <!ENTITY findresults.openfoundfiles.tooltip "Open Found Files">
+<!ENTITY findresults.find.by.selection.tooltip "Find Using Selected Text">
 
 <!ENTITY lockedit.label "Lock Edit">
 <!ENTITY toolbar.lockedit.tooltip "Lock Edit Buffer">
+
+<!ENTITY morekomodo.make.backup.desc "MoreKomodo: File - Backup">
+<!ENTITY morekomodo.copy.append.desc "MoreKomodo: Clipboard - Append (Preserve Current Content)">
+<!ENTITY morekomodo.cut.append.desc "MoreKomodo: Clipboard - Cut (Preserve Current Content)">
+<!ENTITY morekomodo.favorites.desc "MoreKomodo: Favorites - Show Dialog...">
+<!ENTITY morekomodo.lock.edit.desc "MoreKomodo: View - Lock Editing">
+<!ENTITY morekomodo.paste.html.desc "MoreKomodo: Clipboard - Paste HTML Source Code">
+<!ENTITY morekomodo.sort.desc "MoreKomodo: Sort - Show Dialog...">
+<!ENTITY morekomodo.capitalize.text.desc "MoreKomodo: Convert - Capitalize">
+<!ENTITY morekomodo.html.encode.entities.desc "MoreKomodo: Convert - HTML Encode Entities">
+<!ENTITY morekomodo.html.encode.numeric.desc "MoreKomodo: Convert - HTML Encode Entities as Numeric">
+<!ENTITY morekomodo.html.decode.desc "MoreKomodo: Convert - HTML Decode Entitites">
+<!ENTITY morekomodo.d2u.path.desc "MoreKomodo: Convert - DOS to Unix Separators">
+<!ENTITY morekomodo.double.dos.sep.desc "MoreKomodo: Convert - Double DOS Separator (for escaping)">
+<!ENTITY morekomodo.strip.dos.desc "MoreKomodo: Convert - Remove Double DOS Separator">
+
+<!ENTITY morekomodo.copy.directory.path.desc "MoreKomodo: Clipboard - Copy View Directory Path">
+<!ENTITY morekomodo.copy.file.name.desc "MoreKomodo: Clipboard - Copy View File Name">
+<!ENTITY morekomodo.copy.full.path.desc "MoreKomodo: Clipboard - Copy View Full Path">
+<!ENTITY morekomodo.move.desc "MoreKomodo: File - Move">
+<!ENTITY morekomodo.rename.desc "MoreKomodo: File - Rename">
+<!ENTITY morekomodo.show.in.file.manager.desc "MoreKomodo: File - Show in File Manager">
+<!ENTITY morekomodo.delete.desc "MoreKomodo: File - Delete">
+
+<!ENTITY morekomodo.clear "Clear">
