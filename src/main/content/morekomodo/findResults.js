@@ -45,7 +45,10 @@ var moreKomodoFindResults = {
                             false);
             }
         }
-        moreKomodoFindResults.arrFind = [];
+        this.arrFind = [];
+        this.findStartedFromUI = true;
+        // Contains the last options set into Find dialog
+        this.lastUsedFindOptions = {};
      },
     
     onCopyFindResults : function(tabIndex, copyFileNames) {
@@ -71,9 +74,20 @@ var moreKomodoFindResults = {
         MoreKomodoCommon.copyToClipboard(arr.join("\n"));
         ko.statusBar.AddMessage(msg, "moreKomodo", 3000, true)
     },
-    
+
     onRefreshFindResults : function(tabIndex) {
-        moreKomodoFindResults.onRunRefreshFind(0, tabIndex);
+        this.onRepeatFind(tabIndex, this.arrFind.length - 1);
+    },
+    
+    onRepeatFind : function(tabIndex, findIndex) {
+        this.findStartedFromUI = false;
+        var findInfo = this.removeIndex(this.arrFind, findIndex);
+        this.executeFind(tabIndex, findInfo.options, findInfo.context, findInfo.pattern);
+
+        // restore to last used settings so find dialog shows them correctly
+        var findSvc = Components.classes["@activestate.com/koFindService;1"].
+               getService(Components.interfaces.koIFindService);
+        this.copyOptions(this.lastUsedFindOptions, findSvc.options);
     },
     
     handleRefreshStatus : function(event) {
@@ -89,24 +103,56 @@ var moreKomodoFindResults = {
             }
             if (event.newValue == "" && event.prevValue != "") { // attribute is removed
                 refreshButton.setAttribute("disabled", "true");
-
-                var tabIndex = event.target.id.match("([0-9]+)");
-                if (tabIndex.length > 0) {
-                    var tab = FindResultsTab_GetManager(tabIndex[1]);
-                    var findInfo = {
-                            context: tab.context_,
-                            pattern : tab._pattern,
-                            label : moreKomodoFindResults.createLabelFromPattern(tab._pattern)
-                            };
-                    moreKomodoFindResults.pushItem(moreKomodoFindResults.arrFind,
-                                                   findInfo,
-                                                   5);
-                } else {
-                    ko.logging.getLogger("extensions.morekomodo")
-                        .warn("Unable to find tabIndex for id " + event.target.id);
-                }
+                moreKomodoFindResults.updateFindInfo(event.target);
             }
         }
+    },
+
+    updateFindInfo : function(target) {
+        var tabIndex = target.id.match("([0-9]+)");
+        var findSvc = Components.classes["@activestate.com/koFindService;1"].
+               getService(Components.interfaces.koIFindService);
+
+        if (moreKomodoFindResults.findStartedFromUI) {
+            moreKomodoFindResults.copyOptions(findSvc.options,
+                                              moreKomodoFindResults.lastUsedFindOptions);
+        }
+
+        if (tabIndex.length > 0) {
+            var tab = FindResultsTab_GetManager(tabIndex[1]);
+
+            var findInfo = {
+                    options : {},
+                    context: tab.context_,
+                    pattern : tab._pattern
+                    };
+            moreKomodoFindResults.copyOptions(findSvc.options, findInfo.options);
+            moreKomodoFindResults.pushItem(moreKomodoFindResults.arrFind,
+                                           findInfo,
+                                           new MoreKomodoPrefs().readMaxRefreshHistoryEntries());
+        } else {
+            ko.logging.getLogger("extensions.morekomodo")
+                .warn("Unable to find tabIndex for id " + target.id);
+        }
+        moreKomodoFindResults.findStartedFromUI = true;
+    },
+
+    copyOptions : function(from, to) {
+        to.patternType = from.patternType;
+        to.matchWord = from.matchWord;
+        to.caseSensitivity = from.caseSensitivity;
+        to.displayInFindResults2 = from.displayInFindResults2;
+        to.multiline = from.multiline;
+        to.cwd = from.cwd;
+        to.encodedFolders = from.encodedFolders;
+        to.searchInSubfolders = from.searchInSubfolders;
+        to.encodedIncludeFiletypes = from.encodedIncludeFiletypes;
+        to.encodedExcludeFiletypes = from.encodedExcludeFiletypes;
+
+        //attribute boolean searchBackward;
+        //attribute long preferredContextType;
+        //attribute boolean showReplaceAllResults;
+        //attribute boolean confirmReplacementsInFiles;
     },
     
     onOpenFoundFiles : function(tabIndex) {
@@ -182,52 +228,33 @@ var moreKomodoFindResults = {
             } else {
                 tab._pattern = sel;
             }
-            this.onRefreshFindResults(tabIndex);
+            this.executeFind(tabIndex, findSvc.options, tab.context_, tab._pattern);
         }
     },
     
     initRefreshViewMenu : function(event, tabIndex) {
         var menu = event.target;
         
-        try {
         MoreKomodoCommon.removeMenuItems(menu);
         // Insert from last (most recent used) to first element
         for (var i = this.arrFind.length - 1; i >= 0; i--) {
-            this.appendRefreshItem(menu, this.arrFind[i], i, tabIndex);
+            this.appendRefreshItem(menu, this.arrFind[i], tabIndex, i);
         }
         this.insertExtraMenuItems(menu);
-        } catch(ex) {
-          ko.logging.getLogger("extensions.morekomodo").warn(ex);
-        }
     },
     
-    appendRefreshItem : function(menu, findInfo, findIndex, tabIndex) {
+    appendRefreshItem : function(menu, findInfo, tabIndex, findIndex) {
         var item = document.createElement("menuitem");
+        var label = moreKomodoFindResults.createLabelFromPattern(findInfo);
 
-        item.setAttribute("label", findInfo.label);
-        item.setAttribute("tooltiptext", findInfo.label);
+        item.setAttribute("label", label);
+        item.setAttribute("tooltiptext", label);
         item.setAttribute("oncommand",
-                          "moreKomodoFindResults.onRunRefreshFind(%1, %2)"
-                            .replace("%1", findIndex)
-                            .replace("%2", tabIndex));
+                          "moreKomodoFindResults.onRepeatFind(%1, %2)"
+                            .replace("%1", tabIndex)
+                            .replace("%2", findIndex));
 
         menu.appendChild(item);
-    },
-    
-    createLabelFromPattern : function(pattern) {
-        var arr = pattern.split(/\r|\r\n|\n/g);
-        var label = arr[0];
-        var tooltip = label;
-
-        if (label.length > 20) {
-            label = label.substring(0, 20) + "...";
-        }
-        if (arr.length > 1) {
-            label += String.fromCharCode(182); // para entity
-        }
-        label = "\"" + label + "\"";
-        
-        return label;
     },
     
     insertExtraMenuItems : function(menu) {
@@ -242,20 +269,36 @@ var moreKomodoFindResults = {
         }
     },
 
-    removeAllFindInfo : function(event) {
-        this.arrFind.splice(1, this.arrFind.length - 1);
+    createLabelFromPattern : function(findInfo) {
+        var arr = findInfo.pattern.split(/\r|\r\n|\n/g);
+        var label = arr[0];
+        var tooltip = label;
+        const maxLen = 14;
+
+        if (label.length > maxLen) {
+            label = label.substring(0, maxLen) + "...";
+        }
+        // Add a paragraph character if pattern is 'multiple line'
+        if (arr.length > 1) {
+            label += String.fromCharCode(182);
+        }
+
+        var options = Components.classes["@activestate.com/koFindOptions;1"]
+                    .createInstance(Components.interfaces.koIFindOptions);
+        moreKomodoFindResults.copyOptions(findInfo.options, options);
+        
+        return options.searchDescFromPattern(label);
     },
     
-    onRunRefreshFind : function(findIndex, tabIndex) {
-        var findInfo = this.removeIndex(moreKomodoFindResults.arrFind, findIndex);
-        moreKomodoFindResults.executeFind(findInfo.context, findInfo.pattern, tabIndex);
+    removeAllFindInfo : function(event) {
+        // First element is left in array
+        this.arrFind.splice(1, this.arrFind.length - 1);
     },
     
     pushItem : function(arr, item, maxItems) {
         if (arr.length >= maxItems) {
             arr.splice(0, 1);
         }
-        ko.logging.getLogger("extensions.morekomodo").warn("pushItem " + item.context);
         arr.push(item);
     },
 
@@ -266,9 +309,11 @@ var moreKomodoFindResults = {
         return item;
     },
     
-    executeFind : function(context, pattern, tabIndex) {
+    executeFind : function(tabIndex, options, context, pattern) {
         var findSvc = Components.classes["@activestate.com/koFindService;1"].
                    getService(Components.interfaces.koIFindService);
+
+        moreKomodoFindResults.copyOptions(options, findSvc.options);
         // Ensure output goes on correct tab
         findSvc.options.displayInFindResults2 = tabIndex == 2;
         switch (context.type) {

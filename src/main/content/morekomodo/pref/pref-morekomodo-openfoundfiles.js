@@ -43,17 +43,21 @@ function OnPreferencePageOK(prefset) {
             minFileCount : oMinOpenFoundFileCount.value
     };
     prefs.writeOpenFoundFileInfo(openFoundFileInfo);
+    prefs.writeMaxRefreshHistoryEntries(oMaxRefreshHistoryEntries.value)
 
     return true;
 }
 
 function OnPreferencePageInitalize(prefset) {
     oMinOpenFoundFileCount = document.getElementById("minOpenFoundFileCount");
+    oMaxRefreshHistoryEntries = document.getElementById("maxRefreshHistoryEntries");
     openFoundFileInfo = prefs.readOpenFoundFileInfo();
+    maxRefreshHistoryEntries = prefs.readMaxRefreshHistoryEntries();
 }
 
 function OnPreferencePageLoading(prefset) {
     oMinOpenFoundFileCount.value = openFoundFileInfo.minFileCount;
+    oMaxRefreshHistoryEntries.value = maxRefreshHistoryEntries;
 }
 
 function openFoundFileOnLoad() {

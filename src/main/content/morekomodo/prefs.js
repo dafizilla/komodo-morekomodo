@@ -58,6 +58,9 @@ function MoreKomodoPrefs() {
     this._openFoundFileRes = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#openFoundFiles");
     this._minOpenFileCount = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#minOpenFileCount");
 
+    this._refreshHistoryRes = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#refreshHistory");
+    this._maxRefreshHistoryEntries = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#maxEntries");
+
     this._trueLiteral = this._rdf.GetLiteral("true");
     this._falseLiteral = this._rdf.GetLiteral("false");
 }
@@ -95,7 +98,7 @@ MoreKomodoPrefs.prototype = {
     readFavorites : function() {
         var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
         var ds = this._rdf.GetDataSourceBlocking(filePath);
-       
+
         var pathEnum = ds.GetTargets(this._favoriteRes, this._pathRes, true);
         var paths = [];
 
@@ -128,13 +131,13 @@ MoreKomodoPrefs.prototype = {
     writeFavorites : function(favoriteInfoArr) {
         var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
         var ds = this._rdf.GetDataSourceBlocking(filePath);
-        
+
         var pathEnum = ds.GetTargets(this._favoriteRes, this._pathRes, true);
-        
+
         // remove all previous favorites
         while (pathEnum.hasMoreElements()) {
             var pathNode = pathEnum.getNext();
-            
+
             try {
                 // old versions use nsIRDFLiteral so we now check
                 // if we can remove new structure
@@ -164,7 +167,7 @@ MoreKomodoPrefs.prototype = {
             }
             ds.Assert(this._favoriteRes, this._pathRes, infoRes, true);
         }
-    
+
         ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
         ds.Flush();
     },
@@ -177,7 +180,7 @@ MoreKomodoPrefs.prototype = {
                             this._favoriteRes, this._maxFavoriteMenuItemsRes,
                             -1);
     },
-    
+
     writeMaxFavoriteMenuItems : function(maxItems) {
         maxItems = new Number(maxItems);
         if (isNaN(maxItems) || maxItems < 0) {
@@ -189,7 +192,7 @@ MoreKomodoPrefs.prototype = {
         var ds = this._rdf.GetDataSourceBlocking(filePath);
 
         this._setProperty(ds, this._favoriteRes, this._maxFavoriteMenuItemsRes, maxItemsLiteral);
-        
+
         ds.Assert(this._rootRes, this._favoriteRes, this._maxFavoriteMenuItemsRes, true);
         ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
         ds.Flush();
@@ -204,7 +207,7 @@ MoreKomodoPrefs.prototype = {
         while (e.hasMoreElements()) {
             var predicateNode = e.getNext();
             var objEnum = ds.GetTargets(subjectRes, predicateNode, true);
-            
+
             while (objEnum.hasMoreElements()) {
                 var objectNode = objEnum.getNext();
                 ds.Unassert(subjectRes, predicateNode, objectNode);
@@ -215,11 +218,11 @@ MoreKomodoPrefs.prototype = {
     getDefaultTimeFormat : function() {
         return "%d/%m/%Y %H:%M.%S";
     },
-    
+
     getDefaultMinOpenFileCount : function() {
         return 3;
     },
-    
+
     readFileTimeInfo : function() {
         var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
         var ds = this._rdf.GetDataSourceBlocking(filePath);
@@ -232,7 +235,7 @@ MoreKomodoPrefs.prototype = {
                             this.getDefaultTimeFormat());
         return fileTimeInfo;
     },
-    
+
     writeFileTimeInfo : function(fileTimeInfo) {
         var timeFormat = fileTimeInfo.timeFormat;
         if (timeFormat == "") {
@@ -246,7 +249,7 @@ MoreKomodoPrefs.prototype = {
         this._setProperty(ds, this._fileTimeRes, this._enabledRes,
                           this._getLiteralBoolean(fileTimeInfo.isEnabled));
         this._setProperty(ds, this._fileTimeRes, this._timeFormatRes, timeFormatLiteral);
-        
+
         ds.Assert(this._rootRes, this._fileTimeRes, this._enabledRes, true);
         ds.Assert(this._rootRes, this._fileTimeRes, this._timeFormatRes, true);
         ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
@@ -263,7 +266,7 @@ MoreKomodoPrefs.prototype = {
                             this.getDefaultMinOpenFileCount());
         return openFoundFileInfo;
     },
-    
+
     writeOpenFoundFileInfo : function(openFoundFileInfo) {
         var minFileCount = new Number(openFoundFileInfo.minFileCount);
         if (isNaN(minFileCount) || minFileCount < 0) {
@@ -275,25 +278,56 @@ MoreKomodoPrefs.prototype = {
         var ds = this._rdf.GetDataSourceBlocking(filePath);
 
         this._setProperty(ds, this._openFoundFileRes, this._minOpenFileCount, minFileCountLiteral);
-        
+
         ds.Assert(this._rootRes, this._openFoundFileRes, this._minOpenFileCount, true);
+        ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
+        ds.Flush();
+    },
+
+    getDefaultMaxRefreshHistoryEntries : function() {
+        return 5;
+    },
+
+    readMaxRefreshHistoryEntries : function() {
+        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
+        var ds = this._rdf.GetDataSourceBlocking(filePath);
+
+        return this._readLiteral(ds,
+                            this._refreshHistoryRes,
+                            this._maxRefreshHistoryEntries,
+                            this.getDefaultMaxRefreshHistoryEntries());
+    },
+
+    writeMaxRefreshHistoryEntries : function(maxEntries) {
+        maxEntries = new Number(maxEntries);
+        if (isNaN(maxEntries) || maxEntries < 0) {
+            maxEntries = this.getDefaultMaxRefreshHistoryEntries();
+        }
+        var maxEntriesLiteral = this._rdf.GetLiteral(maxEntries);
+
+        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
+        var ds = this._rdf.GetDataSourceBlocking(filePath);
+
+        this._setProperty(ds, this._refreshHistoryRes, this._maxRefreshHistoryEntries, maxEntriesLiteral);
+
+        ds.Assert(this._rootRes, this._refreshHistoryRes, this._maxRefreshHistoryEntries, true);
         ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
         ds.Flush();
     },
 
     _readLiteral : function(ds, source, property, defaultValue) {
         var value = ds.GetTarget(source, property, true);
-        
+
         if (value == null) {
             return defaultValue;
         }
         return value.QueryInterface(Components.interfaces.nsIRDFLiteral).Value;
     },
-    
+
     _getLiteralBoolean : function(value) {
         return value ? this._trueLiteral : this._falseLiteral;
     },
-    
+
     _setProperty : function(ds, source, property, newValue) {
         var oldValue = ds.GetTarget(source, property, true);
         if (oldValue) {

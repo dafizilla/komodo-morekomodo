@@ -14,3 +14,6 @@
 <!ENTITY find.results.label "Find Results">
 <!ENTITY open.files.selection.dialog.label "Selection Dialog for Found Files to Open">
 <!ENTITY do.not.show.dialog "Show dialog only when file count is greater than">
+
+<!ENTITY refresh.history.max.entries "Maximum Refresh History Entries">
+<!ENTITY refresh.number.entries "Number of Entries">

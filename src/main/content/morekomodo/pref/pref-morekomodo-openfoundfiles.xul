@@ -22,7 +22,15 @@
         <label value="&do.not.show.dialog;" />
         <textbox id="minOpenFoundFileCount" size="4"/>
       </hbox>
+  </groupbox>
 
+  <groupbox orient="vertical">
+    <caption label="&refresh.history.max.entries;"/>
+ 
+      <hbox align="center">
+        <label value="&refresh.number.entries;" />
+        <textbox id="maxRefreshHistoryEntries" size="4"/>
+      </hbox>
   </groupbox>
 </window>
  

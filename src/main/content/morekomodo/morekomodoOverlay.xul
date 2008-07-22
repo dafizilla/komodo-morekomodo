@@ -387,12 +387,12 @@
                 oncommand="moreKomodoFindResults.onOpenFoundFiles(1)" />
         <toolbarbutton
                 id="findresults1-morekomodo-refresh"
-                class="button-findresults-refresh"
                 tooltiptext="&findresults.refresh.tooltip;"
+                type="menu-button"
+                class="button-findresults-refresh"
                 insertbefore="findresults1-jumptoprev-button"
                 disabled="true"
-                oncommand="moreKomodoFindResults.onRefreshFindResults(1)"
-                type="menu-button">
+                oncommand="moreKomodoFindResults.onRefreshFindResults(1)">
             <menupopup id="findresults1-refreshMenuPopup"
                        onpopupshowing="return moreKomodoFindResults.initRefreshViewMenu(event, 1);"
                        oncommand="event.stopPropagation();" />
@@ -425,7 +425,8 @@
             <menupopup id="morekomodo-refresh-static-menupopup">
                 <menuseparator />
                 <menuitem id="mk-refresh-clear"
-                        label="&morekomodo.clear;"
+                        label="&findresults.refresh.clear.history;"
+                        tooltiptext="&findresults.refresh.clear.history;"
                         oncommand="moreKomodoFindResults.removeAllFindInfo(event);" />
             </menupopup>
         </box>
@@ -441,12 +442,12 @@
                 oncommand="moreKomodoFindResults.onOpenFoundFiles(2)" />
         <toolbarbutton
                 id="findresults2-morekomodo-refresh"
-                class="button-findresults-refresh"
                 tooltiptext="&findresults.refresh.tooltip;"
+                type="menu-button"
+                class="button-findresults-refresh"
                 insertbefore="findresults2-jumptoprev-button"
                 disabled="true"
-                oncommand="moreKomodoFindResults.onRefreshFindResults(2)"
-                type="menu-button">
+                oncommand="moreKomodoFindResults.onRefreshFindResults(2)">
             <menupopup id="findresults2-refreshMenuPopup"
                        onpopupshowing="return moreKomodoFindResults.initRefreshViewMenu(event, 2);"
                        oncommand="event.stopPropagation();" />

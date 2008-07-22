@@ -32,9 +32,10 @@
 <!ENTITY findresults.tooltiptext "Copy Find Results">
 <!ENTITY findresults.copy.filenames "Copy File Names">
 <!ENTITY findresults.copy.contents "Copy Content">
-<!ENTITY findresults.refresh.tooltip "Refresh">
+<!ENTITY findresults.refresh.tooltip "Run Last Find Again">
 <!ENTITY findresults.openfoundfiles.tooltip "Open Found Files">
 <!ENTITY findresults.find.by.selection.tooltip "Find Using Selected Text">
+<!ENTITY findresults.refresh.clear.history "Clear History">
 
 <!ENTITY lockedit.label "Lock Edit">
 <!ENTITY toolbar.lockedit.tooltip "Lock Edit Buffer">
@@ -62,4 +63,3 @@
 <!ENTITY morekomodo.show.in.file.manager.desc "MoreKomodo: File - Show in File Manager">
 <!ENTITY morekomodo.delete.desc "MoreKomodo: File - Delete">
 
-<!ENTITY morekomodo.clear "Clear">
