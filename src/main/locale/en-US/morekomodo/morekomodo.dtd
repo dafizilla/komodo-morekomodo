@@ -63,3 +63,7 @@
 <!ENTITY morekomodo.show.in.file.manager.desc "MoreKomodo: File - Show in File Manager">
 <!ENTITY morekomodo.delete.desc "MoreKomodo: File - Delete">
 
+<!ENTITY morekomodo.refresh.pattern "Pattern:">
+<!ENTITY morekomodo.refresh.include "Include:">
+<!ENTITY morekomodo.refresh.exclude "Exclude:">
+<!ENTITY morekomodo.refresh.folders "Directories:">

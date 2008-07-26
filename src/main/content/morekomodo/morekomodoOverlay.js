@@ -259,8 +259,8 @@ var moreKomodo = {
 
     initPopupMenuFavorites : function(showAll) {
         var menu = document.getElementById("favorites-toolbarMenuPopup");
-
-        this.removeMenuItems(menu);
+        
+        MoreKomodoCommon.removeMenuItems(menu);
         var prefs = new MoreKomodoPrefs();
         var items = prefs.readFavorites();
         if (items.length > 0) {
@@ -301,14 +301,6 @@ var moreKomodo = {
         }
     },
 
-    removeMenuItems : function(menu) {
-        var children = menu.childNodes;
-
-        for (var i = children.length - 1; i >= 0; i--) {
-            menu.removeChild(children[i]);
-        }
-    },
-
     appendExpandFavoriteItem : function(menu) {
         var menusep = document.createElement("menuseparator");
 
@@ -328,7 +320,7 @@ var moreKomodo = {
         document.getElementById("button-favorites").open = true;
         this.initPopupMenuFavorites(true);
     },
-    
+
     appendEmptyFavoriteItem : function(menu) {
         var item = document.createElement("menuitem");
 

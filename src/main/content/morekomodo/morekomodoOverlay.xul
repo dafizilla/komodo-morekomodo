@@ -251,14 +251,16 @@
                     class="menuitem-iconic-wide"
                     observes="cmd_morekomodo_lockedit"
                     insertbefore="menu_save"/>
+        <!--
         <menu id="morekomodo-choosefavorite"
               class="menu-iconic-wide"
               label="&menuitem-favoritelist.label;"
               accesskey="&menuitem-openfavorites.accesskey;"
               insertbefore="menu_FileQuitSeparator">
             <menupopup id="morekomodo-popupchoosefavorite"
-                       onpopupshowing="if (event.target == this) { moreKomodo.initPopupMenuFavorites(event); }" />
+                       onpopupshowing="if (event.target == this) { moreKomodo.initPopupMenuFavorites(); }" />
         </menu>
+        -->
     </menupopup>
 
     <menupopup id="popup_sourcecode">
@@ -431,6 +433,32 @@
             </menupopup>
         </box>
     </hbox>
+
+    <popupset id="extensionPopupSet">
+        <tooltip id="morekomodo-refresh-tooltip"
+                onpopupshowing="return moreKomodoFindResults.onTooltipRefresh(document.tooltipNode);"
+                maxwidth="600px"
+                orient="vertical">
+            <hbox>
+                <description value="&morekomodo.refresh.pattern;" />
+                <label id="morekomodo-refresh-tooltip-pattern" value="" />
+            </hbox>
+            <vbox id="morekomodo-refresh-tooltip-find-in-file">
+                <hbox>
+                    <description value="&morekomodo.refresh.include;" />
+                    <label id="morekomodo-refresh-include" crop="center" />
+                </hbox>
+                <hbox>
+                    <description value="&morekomodo.refresh.exclude;" />
+                    <label id="morekomodo-refresh-exclude" crop="center" />
+                </hbox>
+                <hbox>
+                    <description value="&morekomodo.refresh.folders;" />
+                    <label id="morekomodo-refresh-folders" crop="center" />
+                </hbox>
+            </vbox>
+        </tooltip>
+    </popupset>
 
     <hbox id="findresults2_tabpanel-toolbarbox">
         <button

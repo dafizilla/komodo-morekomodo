@@ -54,6 +54,12 @@ var moreKomodoFindResults = {
                getService(Components.interfaces.koIFindService);
         this._koOptions = Components.classes["@activestate.com/koFindOptions;1"]
                     .createInstance(Components.interfaces.koIFindOptions);
+
+        this._tooltipOptions = [
+            { id: "morekomodo-refresh-include", property : "encodedIncludeFiletypes"},
+            { id: "morekomodo-refresh-exclude", property : "encodedExcludeFiletypes"},
+            { id: "morekomodo-refresh-folders", property : "encodedFolders"}
+            ];
      },
 
     onCopyFindResults : function(tabIndex, copyFileNames) {
@@ -263,14 +269,48 @@ var moreKomodoFindResults = {
         var item = document.createElement("menuitem");
         var label = this.createLabelFromPattern(findInfo);
 
+        item.setAttribute("id", findIndex);
         item.setAttribute("label", label);
-        item.setAttribute("tooltiptext", label);
+        item.setAttribute("tooltip", "morekomodo-refresh-tooltip");
         item.setAttribute("oncommand",
                           "moreKomodoFindResults.onRepeatFind(%1, %2)"
                             .replace("%1", tabIndex)
                             .replace("%2", findIndex));
 
         menu.appendChild(item);
+    },
+    
+    onTooltipRefresh : function (targetNode) {
+        var findInfo = this.arrFind[targetNode.id];
+        var isFindInFile;
+ 
+        switch (findInfo.context.type) {
+            case Components.interfaces.koIFindContext.FCT_IN_FILES:
+            case Components.interfaces.koIFindContext.FCT_IN_COLLECTION:
+                isFindInFile = true;
+                break;
+            default:
+                isFindInFile = false;
+                break;
+        }
+
+        if (isFindInFile) {
+            document.getElementById("morekomodo-refresh-tooltip-find-in-file")
+                .removeAttribute("hidden");
+            for (var i in this._tooltipOptions) {
+                var opts = this._tooltipOptions[i];
+                document
+                    .getElementById(opts.id)
+                    .setAttribute("value", findInfo.options[opts.property]);
+            }
+        } else {
+            document.getElementById("morekomodo-refresh-tooltip-find-in-file")
+                .setAttribute("hidden", true);
+        }
+
+        document.getElementById("morekomodo-refresh-tooltip-pattern")
+                .setAttribute("value", targetNode.getAttribute("label"));
+        return true;
     },
 
     insertExtraMenuItems : function(menu) {
@@ -327,6 +367,7 @@ var moreKomodoFindResults = {
         this.copyOptions(options, this._findSvc.options);
         // Ensure output goes on correct tab
         this._findSvc.options.displayInFindResults2 = tabIndex == 2;
+
         switch (context.type) {
             case Components.interfaces.koIFindContext.FCT_CURRENT_DOC:
             case Components.interfaces.koIFindContext.FCT_SELECTION:

@@ -47,3 +47,15 @@
 .button-findresults-find-by-selection {
   list-style-image: url("chrome://morekomodo/skin/find_by_selection.png");
 }
+
+#morekomodo-refresh-tooltip description {
+  font-weight: bold;
+}
+
+/**
+ * This is necessary because it the crop attribute is ignored when element is
+ * inside an hbox
+ */
+#morekomodo-refresh-tooltip label {
+  max-width: 600px;
+}
