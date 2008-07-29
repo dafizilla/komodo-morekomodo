@@ -56,11 +56,17 @@ var gFavoriteEdit = {
         this.oCurrentPath.value = favoriteInfo.path;
         this.oName.value = favoriteInfo.description;
 
+        // local favorites are editable
+        if (favoriteInfo.type == FAVORITE_FILE
+            || favoriteInfo.type == FAVORITE_DIR) {
+            this.oCurrentPath.removeAttribute("readonly");
+        }
         this.oName.select();
         this.oName.focus();
     },
 
     onAccept : function() {
+        this.param.favoriteInfo.path = this.oCurrentPath.value;
         this.param.favoriteInfo.description = this.oName.value;
         this.param.isOk = true;
         return true;

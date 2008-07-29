@@ -155,7 +155,10 @@ var gFavorites = {
         if (isOk && fp.file) {
             var isDescByName = this.oDescription.checked;
             var favoriteInfo = FavoriteInfo.createInfo(fp.file.path, isDescByName, null, false);
-            this.fileListTreeView.insertFavoriteInfo(favoriteInfo);
+            var index = this.fileListTreeView.insertFavoriteInfo(favoriteInfo);
+            if (index >= 0) {
+                alert(this.bundle.getString("path.already.present"));
+            }
             this.fileListTreeView.refresh();
         }
     },
@@ -171,7 +174,8 @@ var gFavorites = {
 
     onEdit : function() {
         try {
-        var selectedItem = this.fileListTreeView.selectedItems[0];
+        var selIdx = this.fileListTreeView.selectedIndexes[0];
+        var selectedItem = this.fileListTreeView.items[selIdx];
         var param = {favoriteInfo : MoreKomodoCommon.clone(selectedItem, true),
                      isOk : false};
 
@@ -180,7 +184,22 @@ var gFavorites = {
                           "chrome,modal,resizable=yes,dependent=yes",
                           param);
         if (param.isOk) {
-            selectedItem.description = param.favoriteInfo.description;
+            var newPath = param.favoriteInfo.path;
+            if (selectedItem.path == newPath) {
+                selectedItem.description = param.favoriteInfo.description;
+            } else {
+                var currIdx = this.fileListTreeView.indexOfPath(newPath);
+                if (currIdx >= 0) {
+                    alert(this.bundle.getString("path.already.present"));
+                    return;
+                }
+                var favoriteInfo = FavoriteInfo.createInfo(newPath, false);
+                favoriteInfo.description = param.favoriteInfo.description;
+                
+                // replace new element at current position
+                this.fileListTreeView.items[selIdx] = favoriteInfo;
+            }
+            this.fileListTreeView.refresh();
         }
         } catch (err){
             alert(err);

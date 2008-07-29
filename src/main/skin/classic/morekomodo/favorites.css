@@ -14,9 +14,7 @@
   list-style-image: url("chrome://morekomodo/skin/arrow_down_dis.png");
 }
 
-.labeledit,
-.labeledit > .textbox-internal-box,
-.labeledit > .textarea-internal-box {
+.labeledit[readonly="true"] {
   background: transparent !important;
   border: none;
   padding: 0px;
