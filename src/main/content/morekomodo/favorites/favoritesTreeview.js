@@ -43,6 +43,9 @@ function FavoritesTreeView() {
 
     this.treebox = null;
     this.lastSortDirection = 1; // 1 ascending, -1 descending
+
+    this.pathSvc = Components.classes["@activestate.com/koOsPath;1"]
+            .getService(Components.interfaces.koIOsPath);
 }
 
 FavoritesTreeView.prototype = {
@@ -94,21 +97,16 @@ FavoritesTreeView.prototype = {
      * @returns the index position if item is already present, -1 otherwise
      */
     insertFavoriteInfo : function(favoriteInfo) {
-        try {
-            var itemIndex = this.indexOfPath(favoriteInfo.path);
-            // don't add duplicates
-            if (itemIndex < 0) {
-                this.items.push(favoriteInfo);
-                // 1 means add (> 0)
-                if (this.treebox) {
-                    this.treebox.rowCountChanged(this.rowCount, 1);
-                }
+        var itemIndex = this.indexOfPath(favoriteInfo.path);
+        // don't add duplicates
+        if (itemIndex < 0) {
+            this.items.push(favoriteInfo);
+            // 1 means add (> 0)
+            if (this.treebox) {
+                this.treebox.rowCountChanged(this.rowCount, 1);
             }
-            return itemIndex;
-        } catch (err) {
-            alert(err);
         }
-        return true;
+        return itemIndex;
     },
 
     /**
@@ -116,7 +114,7 @@ FavoritesTreeView.prototype = {
      */
     indexOfPath : function(path) {
         for (var i = 0; i < this.items.length; i++) {
-            if (this.items[i].path == path) {
+            if (this.pathSvc.samepath(this.items[i].path, path)) {
                 return i;
             }
         }
