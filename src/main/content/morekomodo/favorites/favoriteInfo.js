@@ -156,9 +156,10 @@ FavoriteInfo.prototype = {
         this._updateLabel();
     },
 
-    open : function(ko, selectFileTitle) {
-        var viewMgr = ko.views.manager;
+    open : function(selectFileTitle) {
+        var viewMgr = ko.windowManager.getMainWindow().ko.views.manager;
         try {
+
             switch (this._type) {
                 case FAVORITE_FILE:
                     viewMgr.doFileOpen(this._path);

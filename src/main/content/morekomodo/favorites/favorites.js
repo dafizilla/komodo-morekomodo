@@ -37,7 +37,6 @@
 var gFavorites = {
     onLoad : function() {
         try {
-            this.ko = parent.opener.ko;
             this.bundle = document.getElementById("strings");
             this.prefs = new MoreKomodoPrefs();
             this.initControls();
@@ -72,7 +71,7 @@ var gFavorites = {
         var items = this.fileListTreeView.selectedItems;
 
         for (var i = 0; i < items.length; i++) {
-            items[i].open(this.ko, titleLabel);
+            items[i].open(titleLabel);
         }
         document.documentElement.cancelDialog();
     },
@@ -97,7 +96,7 @@ var gFavorites = {
     },
 
     addCurrentFile : function() {
-        var document = this.ko.views.manager.currentView.document;
+        var document = ko.windowManager.getMainWindow().ko.views.manager.currentView.document;
 
         if (document.isUntitled) {
             alert(this.bundle.getString("path.untitled.document"));
@@ -113,7 +112,7 @@ var gFavorites = {
     },
 
     addCurrentFolder : function() {
-        var document = this.ko.views.manager.currentView.document;
+        var document = ko.windowManager.getMainWindow().ko.views.manager.currentView.document;
         var favoriteInfo = null;
 
         if (document.isUntitled) {
@@ -133,7 +132,7 @@ var gFavorites = {
     },
 
     addAllFiles : function() {
-        var views = this.ko.views.manager.topView.getDocumentViews(true);
+        var views = ko.windowManager.getMainWindow().ko.views.manager.topView.getDocumentViews(true);
 
         var isDescByName = this.oDescription.checked;
         for (var i = 0; i < views.length; i++) {

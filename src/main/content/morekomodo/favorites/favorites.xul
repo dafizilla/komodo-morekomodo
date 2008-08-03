@@ -15,6 +15,12 @@
     buttonlabelcancel="&favorites.close;"
     persist="width height screenX screenY">
 
+    <!-- Komodo specific code -->
+    <script type="application/x-javascript"
+            src="chrome://komodo/content/library/logging.js" />
+    <script type="application/x-javascript"
+            src="chrome://komodo/content/library/windowManager.js" />
+
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/common.js" />
     <script type="application/x-javascript"
