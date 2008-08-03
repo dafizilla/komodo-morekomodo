@@ -58,8 +58,11 @@
                 key="key_cmd_morekomodo_favorites"
                 desc="&morekomodo.favorites.desc;"
                 oncommand="moreKomodo.openFavorites(event);"/>
+        
+        <!-- lockedit label is here on broadcaster -->
         <broadcaster
                 id="cmd_morekomodo_lockedit"
+                label="&lockedit.label;"
                 key="key_cmd_morekomodo_lockedit"
                 desc="&morekomodo.lock.edit.desc;"
                 oncommand="moreKomodo.onToogleLockEdit()"/>
