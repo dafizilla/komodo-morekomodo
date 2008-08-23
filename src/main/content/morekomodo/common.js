@@ -285,3 +285,7 @@ MoreKomodoCommon.removeMenuItems = function(menu) {
     }
 }
 
+MoreKomodoCommon.log = function(msg) {
+    ko.logging.getLogger("extensions.morekomodo").warn(msg);
+}
+
