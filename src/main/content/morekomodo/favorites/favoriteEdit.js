@@ -57,8 +57,8 @@ var gFavoriteEdit = {
         this.oName.value = favoriteInfo.description;
 
         // local favorites are editable
-        if (favoriteInfo.type == FAVORITE_FILE
-            || favoriteInfo.type == FAVORITE_DIR) {
+        if (favoriteInfo.type != FAVORITE_REMOTE_FILE
+            && favoriteInfo.type != FAVORITE_REMOTE_DIR) {
             this.oCurrentPath.removeAttribute("readonly");
         }
         this.oName.select();
