@@ -52,6 +52,8 @@ var moreKomodo = {
         window.controllers.appendController(this);
 
         obs.notifyObservers(null, "morekomodo_pref_changed", "fileTime");
+
+        this.addListeners();
         moreKomodoFindResults.init();
     },
 
@@ -62,6 +64,7 @@ var moreKomodo = {
         obs.removeObserver(this, "file_changed");
         obs.removeObserver(this, "file_update_now");
         window.controllers.removeController(this);
+        this.removeListeners();
     },
 
     observe : function(subject, topic, data) {
@@ -94,7 +97,10 @@ var moreKomodo = {
             var bar = document.getElementById("statusbar-morekomodo-filetime");
             if (this._fileTimeInfo.isEnabled) {
                 bar.removeAttribute("collapsed");
-                this._updateFileTimeStatusbarFromView(ko.views.manager.currentView);
+                // On ko5 the manager should be null
+                if (ko.views && ko.views.manager) {
+                    this._updateFileTimeStatusbarFromView(ko.views.manager.currentView);
+                }
             } else {
                 bar.setAttribute("collapsed", "true");
             }
@@ -583,7 +589,31 @@ var moreKomodo = {
             view.scintilla.scimoz.readOnly = !view.scintilla.scimoz.readOnly;
             this._updateLockEdit(view);
         }
+    },
+
+    addListeners : function() {
+        var self = this;
+
+        this.handle_current_view_changed_setup = function(event) {
+            self.onCurrentViewChanged(event);
+        };
+
+        window.addEventListener('current_view_changed',
+                                this.handle_current_view_changed_setup, false);
+    },
+
+    removeListeners : function() {
+        window.removeEventListener('current_view_changed',
+                                this.handle_current_view_changed_setup, false);
+    },
+
+    onCurrentViewChanged : function(event) {
+        var currView = event.originalTarget;
+
+        this._updateFileTimeStatusbarFromView(currView);
+        this._updateLockEdit(currView);
     }
+
 };
 
 window.addEventListener("load", function(event) { moreKomodo.onLoad(event); }, false);
