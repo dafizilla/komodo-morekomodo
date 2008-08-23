@@ -155,8 +155,7 @@ var moreKomodoFindResults = {
             this.pushItem(this.arrFind, findInfo,
                 new MoreKomodoPrefs().readMaxRefreshHistoryEntries());
         } else {
-            ko.logging.getLogger("extensions.morekomodo")
-                .warn("Unable to find tabIndex for id " + target.id);
+            MoreKomodoCommon.log("Unable to find tabIndex for id " + target.id);
         }
     },
 
@@ -379,8 +378,7 @@ var moreKomodoFindResults = {
                 Find_FindAllInFiles(window, context, pattern, null);
                 break;
             default:
-                ko.logging.getLogger("extensions.morekomodo")
-                    .warn("Refresh Non supported for type " + context.type);
+                MoreKomodoCommon.log("Refresh Non supported for type " + context.type);
         }
     }
 }
