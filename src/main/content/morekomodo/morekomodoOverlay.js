@@ -34,6 +34,8 @@
 #
 # ***** END LICENSE BLOCK *****
 */
+xtk.include("domutils");
+
 var moreKomodo = {
     _fileTimeInfo : null,
     _prefs : new MoreKomodoPrefs(),
@@ -165,9 +167,7 @@ var moreKomodo = {
                 // Reopen file at same tab position
                 MoreKomodoCommon.changeUriView(currView, newPath);
                 moveCaret(currView, caretPosition);
-                // update title and other stuff
-                MoreKomodoCommon.getObserverService()
-                    .notifyObservers(currView, 'current_view_changed', '');
+                this.updateView(currView);
             }
         } catch (err) {
             alert("Error while renaming " + err);
@@ -559,9 +559,7 @@ var moreKomodo = {
                 MoreKomodoCommon.changeUriView(currView, fp.file.path);
                 moveCaret(currView, caretPosition);
                 MoreKomodoCommon.deleteFile(file.path);
-                // update title and other stuff
-                MoreKomodoCommon.getObserverService()
-                    .notifyObservers(currView, 'current_view_changed', '');
+                this.updateView(currView);
             }
         } catch (err) {
             alert("Unable to move file: " + err);
@@ -612,8 +610,16 @@ var moreKomodo = {
 
         this._updateFileTimeStatusbarFromView(currView);
         this._updateLockEdit(currView);
-    }
+    },
 
+    // update title and other stuff
+    updateView : function(view) {
+        MoreKomodoCommon.getObserverService()
+            .notifyObservers(view, 'current_view_changed', '');
+        if (typeof(xtk.domutils.fireEvent) != "undefined") {
+            xtk.domutils.fireEvent(view, 'current_view_changed');
+        }
+    }
 };
 
 window.addEventListener("load", function(event) { moreKomodo.onLoad(event); }, false);

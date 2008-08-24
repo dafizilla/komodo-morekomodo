@@ -6,6 +6,9 @@
 <overlay id="morekomodoOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+    <!-- Komodo specific code -->
+    <script src="chrome://xtk/content/xtk.js" type="application/x-javascript;version=1.7"/>
+
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/common.js" />
     <script type="application/x-javascript"
@@ -417,6 +420,13 @@
                 <menuitem id="findresults1-morekomodo-copycontents"
                     label="&findresults.copy.contents;"
                     oncommand="moreKomodoFindResults.onCopyFindResults(1, false)"/>
+                <menuseparator />
+                <menuitem id="findresults1-morekomodo-copytoviewfilenames"
+                    label="&findresults.copy.to.view.filenames;"
+                    oncommand="moreKomodoFindResults.onCopyToViewFindResults(1, true)"/>
+                <menuitem id="findresults1-morekomodo-copytoviewcontents"
+                    label="&findresults.copy.to.view.contents;"
+                    oncommand="moreKomodoFindResults.onCopyToViewFindResults(1, false)"/>
             </menupopup>
         </toolbarbutton>
         <button
@@ -498,6 +508,13 @@
                 <menuitem id="findresults2-morekomodo-copycontents"
                     label="&findresults.copy.contents;"
                     oncommand="moreKomodoFindResults.onCopyFindResults(2, false)"/>
+                <menuseparator />
+                <menuitem id="findresults2-morekomodo-copytoviewfilenames"
+                    label="&findresults.copy.to.view.filenames;"
+                    oncommand="moreKomodoFindResults.onCopyToViewFindResults(2, true)"/>
+                <menuitem id="findresults2-morekomodo-copytoviewcontents"
+                    label="&findresults.copy.to.view.contents;"
+                    oncommand="moreKomodoFindResults.onCopyToViewFindResults(2, false)"/>
             </menupopup>
         </toolbarbutton>
         <button
