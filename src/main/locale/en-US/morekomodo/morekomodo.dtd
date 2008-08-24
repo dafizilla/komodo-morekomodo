@@ -30,8 +30,10 @@
 <!ENTITY menuitem-cutappend.label "Cut And Append">
 
 <!ENTITY findresults.tooltiptext "Copy Find Results">
-<!ENTITY findresults.copy.filenames "Copy File Names">
-<!ENTITY findresults.copy.contents "Copy Content">
+<!ENTITY findresults.copy.filenames "Copy File Names to Clipboard">
+<!ENTITY findresults.copy.contents "Copy Content to Clipboard">
+<!ENTITY findresults.copy.to.view.filenames "Copy File Names to New View">
+<!ENTITY findresults.copy.to.view.contents "Copy Content to New View">
 <!ENTITY findresults.refresh.tooltip "Run Last Find Again">
 <!ENTITY findresults.openfoundfiles.tooltip "Open Found Files">
 <!ENTITY findresults.find.by.selection.tooltip "Find Using Selected Text">

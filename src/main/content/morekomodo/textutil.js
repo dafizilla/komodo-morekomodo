@@ -429,3 +429,16 @@ function convertGlobMetaCharsToRegexpMetaChars(glob) {
     re = re.replace(/\*/g, "(.|[\r\n])*");
     return re;
 }
+
+function getNewlineFromScimoz(scimoz) {
+    switch (scimoz.eOLMode) {
+        case Components.interfaces.ISciMoz.SC_EOL_LF:
+            return '\n';
+        case Components.interfaces.ISciMoz.SC_EOL_CRLF:
+            return '\r\n';
+        case Components.interfaces.ISciMoz.SC_EOL_CR:
+            return '\r';
+        default:
+            return '\n';
+    }
+}

@@ -63,27 +63,23 @@ var moreKomodoFindResults = {
      },
 
     onCopyFindResults : function(tabIndex, copyFileNames) {
-        var tab = FindResultsTab_GetManager(tabIndex);
-        tabView = tab.view;
+        var arr = this.getLinesFromFindResults(tabIndex, copyFileNames);
 
-        var arr = [];
-        var msg;
-        if (copyFileNames) {
-            arr = this.getUniqFileNames(tabView, tabIndex);
-            msg = MoreKomodoCommon
-                .getFormattedMessage("findresults.copy.filenames", [arr.length]);
-        } else {
-            var treeColumn = { id: "findresults" + tabIndex + "-context"};
-            for (var i = 0; i < tabView.rowCount; i++) {
-                arr.push(tabView.getCellText(i, treeColumn));
+        if (arr.length) {
+            var msg;
+
+            if (copyFileNames) {
+                msg = MoreKomodoCommon
+                    .getFormattedMessage("findresults.copy.filenames", [arr.length]);
+            } else {
+                var msg = MoreKomodoCommon
+                    .getFormattedMessage("findresults.copy.contents", [arr.length]);
             }
-            var msg = MoreKomodoCommon
-                .getFormattedMessage("findresults.copy.contents", [arr.length]);
+    
+            // Is \n multi-platform compliant?
+            MoreKomodoCommon.copyToClipboard(arr.join("\n"));
+            ko.statusBar.AddMessage(msg, "moreKomodo", 3000, true)
         }
-
-        // Is \n multi-platform compliant?
-        MoreKomodoCommon.copyToClipboard(arr.join("\n"));
-        ko.statusBar.AddMessage(msg, "moreKomodo", 3000, true)
     },
 
     onRefreshFindResults : function(tabIndex) {
@@ -379,6 +375,34 @@ var moreKomodoFindResults = {
                 break;
             default:
                 MoreKomodoCommon.log("Refresh Non supported for type " + context.type);
+        }
+    },
+
+    getLinesFromFindResults : function(tabIndex, copyFileNames) {
+        var tab = FindResultsTab_GetManager(tabIndex);
+        tabView = tab.view;
+
+        var arr = [];
+        if (copyFileNames) {
+            arr = this.getUniqFileNames(tabView, tabIndex);
+        } else {
+            var treeColumn = { id: "findresults" + tabIndex + "-context"};
+            for (var i = 0; i < tabView.rowCount; i++) {
+                arr.push(tabView.getCellText(i, treeColumn));
+            }
+        }
+
+        return arr;
+    },
+    
+    onCopyToViewFindResults : function(tabIndex, copyFileNames) {
+        var arr = this.getLinesFromFindResults(tabIndex, copyFileNames);
+
+        if (arr.length) {
+            var view = ko.views.manager.doNewView();
+            var scimoz = view.scintilla.scimoz;
+            var currNL = getNewlineFromScimoz(scimoz);
+            scimoz.text = arr.join(currNL);
         }
     }
 }
