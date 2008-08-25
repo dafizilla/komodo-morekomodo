@@ -96,27 +96,29 @@ var gFavorites = {
     },
 
     addCurrentFile : function() {
-        var document = ko.windowManager.getMainWindow().ko.views.manager.currentView.document;
+        var mainWindow = ko.windowManager.getMainWindow();
+        var document = mainWindow.ko.views.manager.currentView.document;
 
         if (document.isUntitled) {
-            alert(this.bundle.getString("path.untitled.document"));
+            mainWindow.ko.dialogs.alert(this.bundle.getString("path.untitled.document"));
             return;
         }
         var isDescByName = this.oDescription.checked;
         var favoriteInfo = FavoriteInfo.createInfo(null, isDescByName, document.file, false);
         var index = this.fileListTreeView.insertFavoriteInfo(favoriteInfo);
         if (index >= 0) {
-            alert(this.bundle.getString("path.already.present"));
+            mainWindow.ko.dialogs.alert(this.bundle.getString("path.already.present"));
         }
         this.fileListTreeView.refresh();
     },
 
     addCurrentFolder : function() {
-        var document = ko.windowManager.getMainWindow().ko.views.manager.currentView.document;
+        var mainWindow = ko.windowManager.getMainWindow();
+        var document = mainWindow.ko.views.manager.currentView.document;
         var favoriteInfo = null;
 
         if (document.isUntitled) {
-            alert(this.bundle.getString("path.untitled.document"));
+            mainWindow.ko.dialogs.alert(this.bundle.getString("path.untitled.document"));
             return;
         }
 
@@ -125,7 +127,7 @@ var gFavorites = {
         if (favoriteInfo) {
             var index = this.fileListTreeView.insertFavoriteInfo(favoriteInfo);
             if (index >= 0) {
-                alert(this.bundle.getString("path.already.present"));
+                mainWindow.ko.dialogs.alert(this.bundle.getString("path.already.present"));
             }
             this.fileListTreeView.refresh();
         }
@@ -156,7 +158,8 @@ var gFavorites = {
             var favoriteInfo = FavoriteInfo.createInfo(fp.file.path, isDescByName, null, false);
             var index = this.fileListTreeView.insertFavoriteInfo(favoriteInfo);
             if (index >= 0) {
-                alert(this.bundle.getString("path.already.present"));
+                var mainWindow = ko.windowManager.getMainWindow();
+                mainWindow.ko.dialogs.alert(this.bundle.getString("path.already.present"));
             }
             this.fileListTreeView.refresh();
         }
@@ -164,8 +167,7 @@ var gFavorites = {
 
     remove : function() {
         var msg = this.bundle.getString("confirm.delete.from.favorite");
-        var confirmMsg = MoreKomodoCommon.getLocalizedMessage("confirm");
-        if (ko.windowManager.getMainWindow().ko.dialogs.yesNo(msg, "No", null, confirmMsg) == "Yes") {
+        if (ko.windowManager.getMainWindow().ko.dialogs.yesNo(msg, "No") == "Yes") {
             var treeView = this.fileListTreeView;
 
             treeView.deleteItems(treeView.selectedIndexes);
