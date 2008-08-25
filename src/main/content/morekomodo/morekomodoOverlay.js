@@ -178,9 +178,10 @@ var moreKomodo = {
         try {
             var view = ko.views.manager.currentView;
             var file = view.document.file;
-            var msg = MoreKomodoCommon
-                .getFormattedMessage("confirm.delete.file", [file.displayPath]);
-            if (confirm(msg)) {
+            var msg = MoreKomodoCommon.getLocalizedMessage("confirm.delete.file");
+            var confirmMsg = MoreKomodoCommon.getLocalizedMessage("confirm");
+
+            if (ko.dialogs.yesNo(msg, "No", file.displayPath, confirmMsg) == "Yes") {
                 MoreKomodoCommon.deleteFile(file.displayPath);
                 view.close();
             }

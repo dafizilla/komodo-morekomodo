@@ -163,7 +163,9 @@ var gFavorites = {
     },
 
     remove : function() {
-        if (confirm(this.bundle.getString("confirm.delete.from.favorite"))) {
+        var msg = this.bundle.getString("confirm.delete.from.favorite");
+        var confirmMsg = MoreKomodoCommon.getLocalizedMessage("confirm");
+        if (ko.windowManager.getMainWindow().ko.dialogs.yesNo(msg, "No", null, confirmMsg) == "Yes") {
             var treeView = this.fileListTreeView;
 
             treeView.deleteItems(treeView.selectedIndexes);
