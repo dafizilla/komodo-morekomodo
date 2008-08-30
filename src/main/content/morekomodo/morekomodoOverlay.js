@@ -163,11 +163,12 @@ var moreKomodo = {
             if (newName && newName != oldName) {
                 var caretPosition = getCaretPosition(currView);
                 var newPath = MoreKomodoCommon.renameFile(viewDoc.displayPath, newName);
-                
-                // Reopen file at same tab position
-                MoreKomodoCommon.changeUriView(currView, newPath);
-                moveCaret(currView, caretPosition);
-                this.updateView(currView);
+                if (newPath) {
+                    // Reopen file at same tab position
+                    MoreKomodoCommon.changeUriView(currView, newPath);
+                    moveCaret(currView, caretPosition);
+                    this.updateView(currView);
+                }
             }
         } catch (err) {
             alert("Error while renaming " + err);

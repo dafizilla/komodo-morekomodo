@@ -130,25 +130,44 @@ MoreKomodoCommon.changeUriView = function(view, uri) {
 }
 
 MoreKomodoCommon.renameFile = function(uri, newName) {
+    function canRename(isFile, newName) {
+        if (isFile) {
+            var msgConfirmRename = MoreKomodoCommon
+                    .getFormattedMessage("rename.confirm", [newName]);
+            return ko.dialogs.yesNo(msgConfirmRename, "No") == "Yes";
+        }
+        var errInvalidFile = MoreKomodoCommon
+            .getFormattedMessage("rename.err.invalid.file", [newName]);
+        ko.dialogs.alert(errInvalidFile);
+        return false;
+    }
+
     var koFileEx = MoreKomodoCommon.makeIFileExFromURI(uri);
     var oldPath = koFileEx.path;
-    var newPath;
-    
+    var newPath = null;
+
     if (koFileEx.isRemoteFile) {
         var rcSvc = Components
                     .classes["@activestate.com/koRemoteConnectionService;1"]
                     .getService(Components.interfaces.koIRemoteConnectionService);
         var conn = rcSvc.getConnectionUsingUri(uri);
         var parent = conn.getParentPath(oldPath);
-        conn.rename(oldPath, parent + "/" + newName);
-        // replace uri leaf with newName
-        newPath = uri.replace(/\/[^\/]*$/, "/" + newName);
-    } else {
+
+        var newFile = conn.list(newName, 1);
+        var exists = newFile != null;
+        if (!exists || canRename(newFile.isFile(), newName)) {
+            newPath = parent + "/" + newName;
+            conn.rename(oldPath, newPath);
+        }
+    } else if (koFileEx.isFile) {
         var oldLocalFile = MoreKomodoCommon.makeLocalFile(oldPath);
-        newPath = MoreKomodoCommon.makeLocalFile(oldLocalFile.parent, [newName]).path;
-        oldLocalFile.moveTo(null, newName);
+        var newLocalFile = MoreKomodoCommon.makeLocalFile(oldLocalFile.parent, [newName]);
+        if (!newLocalFile.exists() || canRename(newLocalFile.isFile(), newName)) {
+            newPath = newLocalFile.path;
+            oldLocalFile.moveTo(null, newName);
+        }
     }
-    
+
     return newPath;
 }
 
