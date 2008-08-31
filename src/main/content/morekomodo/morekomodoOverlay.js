@@ -324,8 +324,11 @@ var moreKomodo = {
     },
 
     onExpandFavorites : function(event) {
-        document.getElementById("button-favorites").open = true;
-        this.initPopupMenuFavorites(true);
+        var self = this;
+        window.setTimeout(function() {
+            document.getElementById("button-favorites").open = true;
+            self.initPopupMenuFavorites(true);
+            }, 100);
     },
 
     appendEmptyFavoriteItem : function(menu) {
