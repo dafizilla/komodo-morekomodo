@@ -205,10 +205,7 @@ var moreKomodo = {
             var isOk = (res == Components.interfaces.nsIFilePicker.returnOK
                         || res == Components.interfaces.nsIFilePicker.returnReplace);
             if (isOk && fp.file) {
-                if (fp.file.exists()) {
-                    fp.file.remove(false);
-                }
-                currentPath.copyTo(fp.file.parent, fp.file.leafName);
+                MoreKomodoCommon.backupFile(currentPath, fp.file);
             }
         } catch (err) {
             alert("Unable to make backup: " + err);

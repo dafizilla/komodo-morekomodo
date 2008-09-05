@@ -308,3 +308,13 @@ MoreKomodoCommon.log = function(msg) {
     ko.logging.getLogger("extensions.morekomodo").warn(msg);
 }
 
+MoreKomodoCommon.backupFile = function(fromFile, toFile) {
+    var lastModifiedTime = fromFile.lastModifiedTime;
+    
+    if (toFile.exists()) {
+        toFile.remove(false);
+    }
+    fromFile.copyTo(toFile.parent, toFile.leafName);
+    // preserve original file time
+    toFile.lastModifiedTime = lastModifiedTime;
+}
