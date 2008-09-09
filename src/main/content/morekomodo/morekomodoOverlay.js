@@ -367,7 +367,7 @@ var moreKomodo = {
         var menuItem = event.target;
         var fi = menuItem["favoriteInfo"];
 
-        fi.open(ko, this._bundle.GetStringFromName("select.file.title"));
+        fi.open(this._bundle.GetStringFromName("select.file.title"));
         } catch (err) {
             alert(err);
         }
