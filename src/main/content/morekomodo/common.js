@@ -282,18 +282,25 @@ MoreKomodoCommon.hasClipboardHtml = function() {
 }
 
 MoreKomodoCommon.hasDataMatchingFlavors = function(flavors) {
-    var flavorArray = Components.classes["@mozilla.org/supports-array;1"]
-            .createInstance(Components.interfaces.nsISupportsArray);
-
-    for (var i = 0; i < flavors.length; ++i) {
-        var kSuppString = Components.classes["@mozilla.org/supports-cstring;1"]
-                       .createInstance(Components.interfaces.nsISupportsCString);
-        kSuppString.data = flavors[i];
-        flavorArray.AppendElement(kSuppString);
-    }        
+    const kClipboardIID = Components.interfaces.nsIClipboard;
     var clipboard  = Components.classes["@mozilla.org/widget/clipboard;1"]
                         .getService(Components.interfaces.nsIClipboard);
-    return clipboard.hasDataMatchingFlavors(flavorArray, clipboard.kGlobalClipboard);
+
+    if (kClipboardIID.number == "{8b5314ba-db01-11d2-96ce-0060b0fb9956}") {
+        var flavorArray = Components.classes["@mozilla.org/supports-array;1"]
+            .createInstance(Components.interfaces.nsISupportsArray);
+
+        for (var i = 0; i < flavors.length; ++i) {
+            var kSuppString = Components.classes["@mozilla.org/supports-cstring;1"]
+                           .createInstance(Components.interfaces.nsISupportsCString);
+            kSuppString.data = flavors[i];
+            flavorArray.AppendElement(kSuppString);
+        }        
+        return clipboard.hasDataMatchingFlavors(flavorArray, clipboard.kGlobalClipboard);
+    } else {
+        return clipboard.hasDataMatchingFlavors(flavors, flavors.length,
+                                                kClipboardIID.kGlobalClipboard);
+    }
 }
 
 MoreKomodoCommon.removeMenuItems = function(menu) {
