@@ -119,14 +119,15 @@ MoreKomodoCommon.copyToClipboard = function(str) {
         .copyString(str);
 }
 
-MoreKomodoCommon.changeUriView = function(view, uri) {
+MoreKomodoCommon.createDocumentFromURI = function(uri) {
     var docSvc = Components
         .classes["@activestate.com/koDocumentService;1"]
         .getService(Components.interfaces.koIDocumentService);
     var newDoc = docSvc.createDocumentFromURI(uri);
     // Otherwise it's initially loaded as an empty document
     newDoc.load();
-    view.document = newDoc;
+    
+    return newDoc;
 }
 
 MoreKomodoCommon.renameFile = function(uri, newName) {
@@ -324,4 +325,17 @@ MoreKomodoCommon.backupFile = function(fromFile, toFile) {
     fromFile.copyTo(toFile.parent, toFile.leafName);
     // preserve original file time
     toFile.lastModifiedTime = lastModifiedTime;
+}
+
+MoreKomodoCommon.getMruUriIndex = function(prefName, uri) {
+    var list = ko.mru.getAll(prefName);
+
+    for (i = 0; i < list.length; i++) {
+        var mru = list[i];
+        if (mru == uri) {
+            // indexes are in reverse order
+            return list.length - 1 - i;
+        }
+    }
+    return -1;
 }
