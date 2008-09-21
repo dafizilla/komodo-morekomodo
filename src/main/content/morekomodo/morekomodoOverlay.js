@@ -47,6 +47,8 @@ var moreKomodo = {
     onLoad : function() {
         var obs = MoreKomodoCommon.getObserverService();
         obs.addObserver(this, "morekomodo_pref_changed", false);
+        obs.addObserver(this, "morekomodo_command", false);
+
         obs.addObserver(this, "current_view_changed", false);
         obs.addObserver(this, "file_changed", false);
         // This listener is notified from checkDiskFiles
@@ -62,6 +64,8 @@ var moreKomodo = {
     onUnLoad : function() {
         var obs = MoreKomodoCommon.getObserverService();
         obs.removeObserver(this, "morekomodo_pref_changed");
+        obs.removeObserver(this, "morekomodo_command");
+
         obs.removeObserver(this, "current_view_changed");
         obs.removeObserver(this, "file_changed");
         obs.removeObserver(this, "file_update_now");
@@ -87,9 +91,60 @@ var moreKomodo = {
                 // the current view, other views will be updated on current_view_changed
                 this._updateFileTimeStatusbarFromView(ko.views.manager.currentView);
                 break;
+            case "morekomodo_command":
+                this._updateViewsByCommand(subject.wrappedJSObject);
+                break;
         }
         } catch (err) {
             alert(topic + "--" + data + "\n" + err);
+        }
+    },
+
+    _updateViewsByCommand : function(commandInfo) {
+        switch (commandInfo.command) {
+            case "rename":
+            case "move":
+                // handle splitted view
+                var list = ko.views.manager.topView.findViewsForDocument(commandInfo.document);
+                for (i in list) {
+                    var view = list[i];
+                    var caretPosition = getCaretPosition(view);
+                    view.document = commandInfo.newDocument;
+                    moveCaret(view, caretPosition);
+                    this.updateView(view);
+                    // ensure colourise is applied
+                    ko.commands.doCommand('cmd_viewAsGuessedLanguage');
+                }
+
+                // update the mru list
+                var uriView = commandInfo.document.file.URI;
+                var index = MoreKomodoCommon.getMruUriIndex("mruFileList", uriView);
+                if (index >= 0) {
+                    ko.mru.del("mruFileList", index);
+                    ko.mru.addURL("mruFileList", commandInfo.newDocument.file.URI);
+                }
+                break;
+            case "delete":
+                var list = ko.views.manager.topView.findViewsForDocument(commandInfo.document);
+                var uriView = commandInfo.document.file.URI;
+                for (i in list) {
+                    list[i].closeUnconditionally();
+                }
+
+                // update the mru list
+                var index = MoreKomodoCommon.getMruUriIndex("mruFileList", uriView);
+                if (index >= 0) {
+                    ko.mru.del("mruFileList", index);
+                }
+                break;
+            case "lock":
+                var list = ko.views.manager.topView.findViewsForDocument(commandInfo.document);
+                for (i in list) {
+                    var view = list[i];
+                    view.scintilla.scimoz.readOnly = commandInfo.readOnly;
+                    this._updateLockEdit(view);
+                }
+                break;
         }
     },
 
@@ -161,13 +216,19 @@ var moreKomodo = {
 
         try {
             if (newName && newName != oldName) {
-                var caretPosition = getCaretPosition(currView);
                 var newPath = MoreKomodoCommon.renameFile(viewDoc.displayPath, newName);
                 if (newPath) {
                     // Reopen file at same tab position
-                    MoreKomodoCommon.changeUriView(currView, newPath);
-                    moveCaret(currView, caretPosition);
-                    this.updateView(currView);
+                    var newDoc = MoreKomodoCommon.createDocumentFromURI(newPath);
+                    // the observer will set the new document also for this view
+                    var data = {document : viewDoc,
+                                newDocument : newDoc,
+                                command : "rename"
+                                };
+                    data.wrappedJSObject = data;
+
+                    var obs = MoreKomodoCommon.getObserverService();
+                    obs.notifyObservers(data, "morekomodo_command", null);
                 }
             }
         } catch (err) {
@@ -183,7 +244,14 @@ var moreKomodo = {
 
             if (ko.dialogs.yesNo(msg, "No", file.displayPath) == "Yes") {
                 MoreKomodoCommon.deleteFile(file.displayPath);
-                view.close();
+                // the observer will close also calling view
+                var data = {document : view.document,
+                            command : "delete"
+                            };
+                data.wrappedJSObject = data;
+
+                var obs = MoreKomodoCommon.getObserverService();
+                obs.notifyObservers(data, "morekomodo_command", null);
             }
         } catch (err) {
             alert(err);
@@ -263,7 +331,7 @@ var moreKomodo = {
 
     initPopupMenuFavorites : function(showAll) {
         var menu = document.getElementById("favorites-toolbarMenuPopup");
-        
+
         MoreKomodoCommon.removeMenuItems(menu);
         var prefs = new MoreKomodoPrefs();
         var items = prefs.readFavorites();
@@ -411,7 +479,7 @@ var moreKomodo = {
         }
         return false;
     },
-    
+
     isCommandEnabled : function(cmd) {
         // at startup with no file open manager is null
         var view = ko.views.manager && ko.views.manager.currentView;
@@ -453,7 +521,7 @@ var moreKomodo = {
         }
         return false;
     },
-    
+
     doCommand : function(cmd) {
         switch (cmd) {
             case "cmd_morekomodo_rename":
@@ -497,10 +565,10 @@ var moreKomodo = {
                 break;
         }
     },
-    
+
     onEvent : function(evt) {
     },
-    
+
     onPasteHtml : function() {
         var view = ko.views.manager.currentView;
 
@@ -521,7 +589,7 @@ var moreKomodo = {
         }
         MoreKomodoCommon.copyToClipboard(curr + getSelection(view));
     },
-    
+
     onCutAppend : function() {
         this.onCopyAppend();
         ko.commands.doCommand("cmd_delete");
@@ -555,12 +623,19 @@ var moreKomodo = {
                     fp.file.remove(false);
                 }
                 currentPath.copyTo(fp.file.parent, fp.file.leafName);
-
-                var caretPosition = getCaretPosition(currView);
-                MoreKomodoCommon.changeUriView(currView, fp.file.path);
-                moveCaret(currView, caretPosition);
                 MoreKomodoCommon.deleteFile(file.path);
-                this.updateView(currView);
+
+                var viewDoc = currView.document;
+                // Reopen file at same tab position
+                var newDoc = MoreKomodoCommon.createDocumentFromURI(fp.file.path);
+                // the observer will set the new document also for this view
+                var data = {document : viewDoc,
+                            newDocument : newDoc,
+                            command : "move"
+                            };
+                data.wrappedJSObject = data;
+                var obs = MoreKomodoCommon.getObserverService();
+                obs.notifyObservers(data, "morekomodo_command", null);
             }
         } catch (err) {
             alert("Unable to move file: " + err);
@@ -585,8 +660,13 @@ var moreKomodo = {
     onToogleLockEdit : function() {
         var view = ko.views.manager.currentView;
         if (view && view.getAttribute('type') == 'editor') {
-            view.scintilla.scimoz.readOnly = !view.scintilla.scimoz.readOnly;
-            this._updateLockEdit(view);
+            var data = {document : view.document,
+                        readOnly : !view.scintilla.scimoz.readOnly,
+                        command : "lock"
+                        };
+            data.wrappedJSObject = data;
+            var obs = MoreKomodoCommon.getObserverService();
+            obs.notifyObservers(data, "morekomodo_command", null);
         }
     },
 
@@ -615,6 +695,7 @@ var moreKomodo = {
 
     // update title and other stuff
     updateView : function(view) {
+        //ko.uilayout.updateTitlebar(view);
         MoreKomodoCommon.getObserverService()
             .notifyObservers(view, 'current_view_changed', '');
         if (typeof(xtk.domutils.fireEvent) != "undefined") {
