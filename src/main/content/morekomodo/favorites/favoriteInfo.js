@@ -157,12 +157,13 @@ FavoriteInfo.prototype = {
     },
 
     open : function(selectFileTitle) {
-        var viewMgr = ko.windowManager.getMainWindow().ko.views.manager;
         try {
-
+            // Using ko.views.manager.doFileOpen the document isn't shared
+            // among multiple windows so the ko.open package is used
+            var koOpen = ko.windowManager.getMainWindow().ko.open;
             switch (this._type) {
                 case FAVORITE_FILE:
-                    viewMgr.doFileOpen(this._path);
+                    koOpen.URI(this._path);
                     break;
                 case FAVORITE_DIR:
                     var fp = MoreKomodoCommon.makeFilePicker(
@@ -177,7 +178,7 @@ FavoriteInfo.prototype = {
                         while (f.hasMoreElements()) {
                             var file = f.getNext()
                                 .QueryInterface(Components.interfaces.nsILocalFile);
-                            viewMgr.doFileOpen(file.path);
+                            koOpen.URI(file.path);
                         }
                     }
                     break;
@@ -185,7 +186,7 @@ FavoriteInfo.prototype = {
                     // handle error
                     break;
                 case FAVORITE_REMOTE_FILE:
-                    viewMgr.doFileOpen(this._path);
+                    koOpen.URI(this._path);
                     break;
                 case FAVORITE_REMOTE_DIR:
                     ko.filepicker.openRemoteFiles(this._path);
