@@ -1,9 +1,9 @@
 <!DOCTYPE extension [
-<!ENTITY extension.version "1.4.1">
+<!ENTITY extension.version "1.4.2">
 ]>
 
 <extension name="morekomodo">
-    <title-name>More Komodo</title-name>
+    <title-name>Dafizilla MoreKomodo</title-name>
     <uuid>morekomodo@dafizilla.sourceforge.net</uuid>
     <version>&extension.version;</version>
     <description>Add new features to Komodo. Favorites, file and clipboard operation, text conversion</description>
