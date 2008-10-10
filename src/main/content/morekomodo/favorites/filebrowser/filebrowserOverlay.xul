@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://morekomodo/skin/morekomodo.css" type="text/css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://morekomodo/locale/morekomodo.dtd" >
+
+<overlay id="morekomodoFilebrowserOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- Komodo specific code -->
+    <script src="chrome://komodo/content/dialogs/filebrowser/filebrowser.js" type="application/x-javascript;version=1.7"/>
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/favorites/favoriteInfo.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/prefs.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/favorites/filebrowser/filebrowserOverlay.js" />
+
+    <row id="serversList">
+        <!--
+        Don't exist a stringbundleset so we place the stringbundle inside row.
+        The stringbundle is hidden so the row space isn't divided
+        -->
+        <stringbundle id="favoriteStrings"
+                      src="chrome://morekomodo/locale/favorites.properties"
+                      hidden="true"/>
+
+        <toolbarbutton id="button-favorites"
+             tooltiptext="&toolbar.favorites.tooltip;"
+             type="menu"
+             persist="buttonstyle"
+             class="button-favorites"
+             buttonstyle="pictures"
+             >
+            <menupopup id="favorites-toolbarMenuPopup"
+                       onpopupshowing="moreKomodoFileBrowser.initPopupMenuFavorites();"
+                       oncommand="event.stopPropagation();"
+                       />
+        </toolbarbutton>
+    </row>
+</overlay>
