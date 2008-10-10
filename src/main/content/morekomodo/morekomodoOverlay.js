@@ -123,6 +123,7 @@ var moreKomodo = {
                     ko.mru.del("mruFileList", index);
                     ko.mru.addURL("mruFileList", commandInfo.newDocument.file.URI);
                 }
+                ko.views.manager.currentView.setFocus();
                 break;
             case "delete":
                 var list = ko.views.manager.topView.findViewsForDocument(commandInfo.document);
@@ -275,6 +276,7 @@ var moreKomodo = {
             if (isOk && fp.file) {
                 MoreKomodoCommon.backupFile(currentPath, fp.file);
             }
+            view.setFocus();
         } catch (err) {
             alert("Unable to make backup: " + err);
         }
