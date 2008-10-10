@@ -49,6 +49,10 @@ var gFavoriteEdit = {
         this.oName = document.getElementById("name");
         this.oCurrentPath = document.getElementById("current-path");
         this.initValues();
+
+        if (typeof this.param.title != "undefined") {
+            title = this.param.title;
+        }
     },
 
     initValues : function() {
@@ -66,9 +70,12 @@ var gFavoriteEdit = {
     },
 
     onAccept : function() {
-        this.param.favoriteInfo.path = this.oCurrentPath.value;
+        if (!this.oCurrentPath.hasAttribute("readonly")) {
+            this.param.favoriteInfo.path = this.oCurrentPath.value;
+        }
         this.param.favoriteInfo.description = this.oName.value;
         this.param.isOk = true;
+
         return true;
     }
 }
