@@ -43,9 +43,6 @@ function FavoritesTreeView() {
 
     this.treebox = null;
     this.lastSortDirection = 1; // 1 ascending, -1 descending
-
-    this.pathSvc = Components.classes["@activestate.com/koOsPath;1"]
-            .getService(Components.interfaces.koIOsPath);
 }
 
 FavoritesTreeView.prototype = {
@@ -113,12 +110,7 @@ FavoritesTreeView.prototype = {
      * Return the index of path, -1 if path isn't present
      */
     indexOfPath : function(path) {
-        for (var i = 0; i < this.items.length; i++) {
-            if (this.pathSvc.samepath(this.items[i].path, path)) {
-                return i;
-            }
-        }
-        return -1;
+        return FavoriteInfo.indexOfPath(this.items, path);
     },
 
     get selectedIndexes() {
@@ -140,7 +132,7 @@ FavoritesTreeView.prototype = {
     set maxMenuItems(value) {
         this._maxMenuItems = value;
     },
-    
+
     deleteItems : function(items) {
         if (items && items.length > 0) {
             for (var i = items.length - 1; i >= 0; i--) {

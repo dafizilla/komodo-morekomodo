@@ -210,7 +210,7 @@ FavoriteInfo.createInfo = function(path, descriptionFromPath, koFileEx, isDirect
     var favPath = null;
     var type;
     var favoriteInfo = null;
-    
+
     if (koFileEx) {
         if (isDirectory) {
             if (koFileEx.isRemoteFile) {
@@ -231,10 +231,27 @@ FavoriteInfo.createInfo = function(path, descriptionFromPath, koFileEx, isDirect
     } else {
         alert("Error: Both koFileEx and path are not set");
     }
-    
+
     if (favPath) {
         var description = descriptionFromPath ? favPath.replace(/^.*(\/|\\)/, "") : null;
         favoriteInfo = new FavoriteInfo(favPath, type, description);
     }
     return favoriteInfo;
+}
+
+FavoriteInfo.pathSvc = Components.classes["@activestate.com/koOsPath;1"]
+            .getService(Components.interfaces.koIOsPath);
+
+/**
+ * Return the index of path, -1 if path isn't present
+ * @favoriteInfoArr the array containing favoriteInfo objects
+ * @path the string path to search
+ */
+FavoriteInfo.indexOfPath = function(favoriteInfoArr, path) {
+    for (var i = 0; i < favoriteInfoArr.length; i++) {
+        if (FavoriteInfo.pathSvc.samepath(favoriteInfoArr[i].path, path)) {
+            return i;
+        }
+    }
+    return -1;
 }
