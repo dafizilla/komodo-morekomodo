@@ -75,7 +75,7 @@ var moreKomodoFindResults = {
                 var msg = MoreKomodoCommon
                     .getFormattedMessage("findresults.copy.contents", [arr.length]);
             }
-    
+
             // Is \n multi-platform compliant?
             MoreKomodoCommon.copyToClipboard(arr.join("\n"));
             ko.statusBar.AddMessage(msg, "moreKomodo", 3000, true)
@@ -102,7 +102,7 @@ var moreKomodoFindResults = {
             }
         }
     },
-    
+
     onFindStarted : function(event) {
         var idName = event.target.id.replace("-stopsearch-button", "-morekomodo-refresh");
         var refreshButton = document.getElementById(idName);
@@ -135,7 +135,7 @@ var moreKomodoFindResults = {
                 }, 400);
         }
     },
-    
+
     updateFindInfo : function(target) {
         var tabIndex = target.id.match("([0-9]+)");
 
@@ -274,11 +274,11 @@ var moreKomodoFindResults = {
 
         menu.appendChild(item);
     },
-    
+
     onTooltipRefresh : function (targetNode) {
         var findInfo = this.arrFind[targetNode.id];
         var isFindInFile;
- 
+
         switch (findInfo.context.type) {
             case Components.interfaces.koIFindContext.FCT_IN_FILES:
             case Components.interfaces.koIFindContext.FCT_IN_COLLECTION:
@@ -394,7 +394,7 @@ var moreKomodoFindResults = {
 
         return arr;
     },
-    
+
     onCopyToViewFindResults : function(tabIndex, copyFileNames) {
         var arr = this.getLinesFromFindResults(tabIndex, copyFileNames);
 

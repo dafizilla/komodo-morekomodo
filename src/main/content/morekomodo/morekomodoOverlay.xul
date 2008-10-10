@@ -39,7 +39,7 @@
                 key="key_cmd_morekomodo_makeBackup"
                 desc="&morekomodo.make.backup.desc;"
                 oncommand="goDoCommand('cmd_morekomodo_makeBackup')"/>
-        
+
              <!--modifiers="control,shift" keycode="VK_INSERT"-->
              <!--modifiers="control,shift" key="C"-->
         <broadcaster
@@ -61,7 +61,7 @@
                 key="key_cmd_morekomodo_favorites"
                 desc="&morekomodo.favorites.desc;"
                 oncommand="moreKomodo.openFavorites(event);"/>
-        
+
         <!-- lockedit label is here on broadcaster -->
         <broadcaster
                 id="cmd_morekomodo_lockedit"
@@ -384,7 +384,7 @@
                 insertafter="statusbar-line-col"
                 label=""/>
     </statusbar>
-    
+
     <hbox id="findresults1_tabpanel-toolbarbox">
         <button
                 id="findresults1-morekomodo-openfoundfiles"

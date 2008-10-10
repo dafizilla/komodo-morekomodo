@@ -152,11 +152,11 @@ function htmlDecodeCallback(str) {
 
 function htmlEncode(str, useNumeric) {
     var res = "";
-    
+
     for (var i = 0; i < str.length; i++) {
         var ch = str.charCodeAt(i);
         var entity = gHtmlCodes[ch];
-        
+
         if (entity) {
             if (useNumeric) {
                 res += "&#" + ch + ";";
@@ -169,7 +169,7 @@ function htmlEncode(str, useNumeric) {
             res += str[i];
         }
     }
-    
+
     return res;
 }
 
@@ -199,7 +199,7 @@ function applyConversionToSelection(view, fn, selectText) {
                         startPos : scimoz.getLineSelStartPosition(i),
                         endPos : scimoz.getLineSelEndPosition(i)
                 };
-                
+
                 lineInfo.str = fn(scimoz.getTextRange(lineInfo.startPos, lineInfo.endPos));
                 convertedLines.push(lineInfo);
             }
@@ -230,7 +230,7 @@ function applyConversionToSelection(view, fn, selectText) {
         } else {
             var str = fn(sel);
             scimoz.replaceSel(str);
-    
+
             // restore selection
             if (selectText) {
                 scimoz.selectionStart = prevStartPos;
@@ -278,7 +278,7 @@ function sortView(view, sortOptions) {
     if (firstLine == lastLine) {
         return;
     }
-    
+
     var lines = [];
     for (var i = firstLine; i <= lastLine; i++) {
         var startPos = scimoz.positionFromLine(i);
@@ -286,7 +286,7 @@ function sortView(view, sortOptions) {
 
         lines.push(scimoz.getTextRange(startPos, endPos));
     }
-    
+
     var s = getSortedBuffer(lines, sortOptions,
                             eolText[view.document.new_line_endings]);
 
@@ -309,11 +309,11 @@ function SortOptions() {
 function getSortedBuffer(arr, sortOptions, nl) {
     var ltValue = sortOptions.ascending ? -1 : 1;
     var gtValue = sortOptions.ascending ? 1 : -1;
-    
+
     function sortFn(a, b) {
         var sa = a;
         var sb = b;
-        
+
         if (sortOptions.ignoreCase) {
             sa = a.toLowerCase();
             sb = b.toLowerCase();
@@ -339,7 +339,7 @@ function getSortedBuffer(arr, sortOptions, nl) {
         var prevLine = null;
         for (var i = 0; i < arr.length; i++) {
             var lineData = arr[i];
-            
+
             if (prevLine != lineData) {
                 s += lineData + nl;
                 prevLine = lineData;
@@ -350,7 +350,7 @@ function getSortedBuffer(arr, sortOptions, nl) {
     } else {
         s = arr.join(nl);
     }
-    
+
     return s;
 }
 
@@ -373,7 +373,7 @@ function getCaretPosition(view) {
         caretPosition.startPos = scimoz.currentPos;
         caretPosition.endPos = caretPosition.startPos;
     }
-    
+
     return caretPosition;
 }
 
@@ -414,11 +414,11 @@ function getSelection(view) {
  */
 function flipArray(array) {
     var newArr = [];
-    
+
     for (i in array) {
         newArr[array[i]] = i;
     }
-    
+
     return newArr;
 }
 
