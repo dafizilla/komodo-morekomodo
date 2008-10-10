@@ -74,7 +74,7 @@ MoreKomodoCommon.getFormattedMessage = function(msg, ar) {
 MoreKomodoCommon.makeFilePicker = function(win, title, mode, displayDirectory) {
     const nsIFilePicker                 = Components.interfaces.nsIFilePicker;
     const CONTRACTID_FILE_PICKER        = "@mozilla.org/filepicker;1";
-    
+
     if (mode == null || mode == undefined) {
         mode = nsIFilePicker.modeOpen;
     }
@@ -84,7 +84,7 @@ MoreKomodoCommon.makeFilePicker = function(win, title, mode, displayDirectory) {
     if (displayDirectory) {
         fp.displayDirectory = displayDirectory;
     }
-    
+
     return fp;
 }
 
@@ -112,7 +112,7 @@ MoreKomodoCommon.makeFileURL = function(aFile) {
     return ioService.newFileURI(theFile);
 }
 
-    
+
 MoreKomodoCommon.copyToClipboard = function(str) {
     Components.classes["@mozilla.org/widget/clipboardhelper;1"]
         .getService(Components.interfaces.nsIClipboardHelper)
@@ -126,7 +126,7 @@ MoreKomodoCommon.createDocumentFromURI = function(uri) {
     var newDoc = docSvc.createDocumentFromURI(uri);
     // Otherwise it's initially loaded as an empty document
     newDoc.load();
-    
+
     return newDoc;
 }
 
@@ -208,7 +208,7 @@ MoreKomodoCommon.makeIFileExFromURI = function (uri) {
                     .classes["@activestate.com/koFileEx;1"]
                     .createInstance(Components.interfaces.koIFileEx);
     file.path = uri;
-    
+
     return file;
 }
 
@@ -217,7 +217,7 @@ MoreKomodoCommon.clone = function(obj, shallow) {
         return obj;
     }
     var cloned = {};
-    
+
     for(var i in obj) {
         if (shallow) {
             cloned[i] = obj[i];
@@ -236,12 +236,12 @@ MoreKomodoCommon.getHtmlFromClipboard = function() {
     pastedText = null;
     if (clipboard && xferable) {
         xferable.addDataFlavor("text/html");
-    
+
         clipboard.getData(xferable, clipboard.kGlobalClipboard);
 
         var str       = new Object();
         var strLength = new Object();
-    
+
         xferable.getTransferData("text/html", str, strLength);
         if (str) {
             str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
@@ -261,12 +261,12 @@ MoreKomodoCommon.pasteFromClipboard = function() {
     pastedText = null;
     if (clipboard && xferable) {
         xferable.addDataFlavor("text/unicode");
-    
+
         clipboard.getData(xferable, clipboard.kGlobalClipboard);
 
         var str       = new Object();
         var strLength = new Object();
-    
+
         xferable.getTransferData("text/unicode", str, strLength);
         if (str) {
             str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
@@ -318,7 +318,7 @@ MoreKomodoCommon.log = function(msg) {
 
 MoreKomodoCommon.backupFile = function(fromFile, toFile) {
     var lastModifiedTime = fromFile.lastModifiedTime;
-    
+
     if (toFile.exists()) {
         toFile.remove(false);
     }

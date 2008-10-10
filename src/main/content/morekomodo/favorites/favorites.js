@@ -198,7 +198,7 @@ var gFavorites = {
                 }
                 var favoriteInfo = FavoriteInfo.createInfo(newPath, false);
                 favoriteInfo.description = param.favoriteInfo.description;
-                
+
                 // replace new element at current position
                 this.fileListTreeView.items[selIdx] = favoriteInfo;
             }

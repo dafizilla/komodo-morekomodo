@@ -87,7 +87,7 @@
 		label="&addFolder.button.label;"/>
 	    </menupopup>
 	</button>
-    
+
         <button
                 id="editButton"
                 oncommand="gFavorites.onEdit();"
