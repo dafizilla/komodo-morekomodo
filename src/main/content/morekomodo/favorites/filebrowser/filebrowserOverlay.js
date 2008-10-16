@@ -81,7 +81,7 @@ var moreKomodoFileBrowser = {
         item.setAttribute("id", "favorites-add-current-folder");
         item.setAttribute("label", this.bundle.getString("add.current.folder.label"));
         item.setAttribute("oncommand", "moreKomodoFileBrowser.onAddCurrentFolder(event);");
-        item.setAttribute("accesskey", "add.current.folder.accesskey");
+        item.setAttribute("accesskey", this.bundle.getString("add.current.folder.accesskey"));
 
         menu.appendChild(item);
     },
