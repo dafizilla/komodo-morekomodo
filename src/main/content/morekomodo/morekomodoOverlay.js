@@ -58,7 +58,6 @@ var moreKomodo = {
         obs.notifyObservers(null, "morekomodo_pref_changed", "fileTime");
 
         this.addListeners();
-        moreKomodoFindResults.init();
     },
 
     onUnLoad : function() {

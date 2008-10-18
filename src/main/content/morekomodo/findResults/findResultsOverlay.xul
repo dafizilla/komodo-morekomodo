@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://morekomodo/locale/morekomodo.dtd" >
+<?xml-stylesheet href="chrome://morekomodo/skin/morekomodo.css" type="text/css"?>
+
+<overlay id="findresultsOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/prefs.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/textutil.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/findResults/findResults.js" />
+
+    <hbox id="findresults1-morekomodo-toolbarbox">
+        <button
+                id="findresults1-morekomodo-openfoundfiles"
+                class="button-findresults-openfoundfiles button-toolbar-a"
+                tooltiptext="&findresults.openfoundfiles.tooltip;"
+                disabled="false"
+                oncommand="moreKomodoFindResults.onOpenFoundFiles(1)" />
+
+        <toolbarbutton
+                id="findresults1-morekomodo-refresh"
+                tooltiptext="&findresults.refresh.tooltip;"
+                type="menu-button"
+                class="button-findresults-refresh"
+                disabled="true"
+                oncommand="moreKomodoFindResults.onRefreshFindResults(1)">
+            <menupopup id="findresults1-refreshMenuPopup"
+                       onpopupshowing="return moreKomodoFindResults.initRefreshViewMenu(event, 1);"
+                       oncommand="event.stopPropagation();" />
+        </toolbarbutton>
+
+        <toolbarbutton
+            id="findresults1-morekomodo-toolbar-copy"
+            tooltiptext="&findresults.tooltiptext;"
+            type="menu"
+            orient="horizontal"
+            class="button-findresults-copy">
+            <menupopup id="findresults1-morekomodo-menu-copy">
+                <menuitem id="findresults1-morekomodo-copyfilenames"
+                    label="&findresults.copy.filenames;"
+                    oncommand="moreKomodoFindResults.onCopyFindResults(1, true)"/>
+                <menuitem id="findresults1-morekomodo-copycontents"
+                    label="&findresults.copy.contents;"
+                    oncommand="moreKomodoFindResults.onCopyFindResults(1, false)"/>
+                <menuseparator />
+                <menuitem id="findresults1-morekomodo-copytoviewfilenames"
+                    label="&findresults.copy.to.view.filenames;"
+                    oncommand="moreKomodoFindResults.onCopyToViewFindResults(1, true)"/>
+                <menuitem id="findresults1-morekomodo-copytoviewcontents"
+                    label="&findresults.copy.to.view.contents;"
+                    oncommand="moreKomodoFindResults.onCopyToViewFindResults(1, false)"/>
+            </menupopup>
+        </toolbarbutton>
+        <button
+                id="findresults1-morekomodo-find-by-selection"
+                class="button-findresults-find-by-selection button-toolbar-a"
+                tooltiptext="&findresults.find.by.selection.tooltip;"
+                oncommand="moreKomodoFindResults.onFindBySelection(1)" />
+    </hbox>
+
+    <hbox id="findresults2-morekomodo-toolbarbox">
+        <button
+                id="findresults2-morekomodo-openfoundfiles"
+                class="button-findresults-openfoundfiles button-toolbar-a"
+                tooltiptext="&findresults.openfoundfiles.tooltip;"
+                disabled="false"
+                oncommand="moreKomodoFindResults.onOpenFoundFiles(2)" />
+        <toolbarbutton
+                id="findresults2-morekomodo-refresh"
+                tooltiptext="&findresults.refresh.tooltip;"
+                type="menu-button"
+                class="button-findresults-refresh"
+                disabled="true"
+                oncommand="moreKomodoFindResults.onRefreshFindResults(2)">
+            <menupopup id="findresults2-refreshMenuPopup"
+                       onpopupshowing="return moreKomodoFindResults.initRefreshViewMenu(event, 2);"
+                       oncommand="event.stopPropagation();" />
+        </toolbarbutton>
+    
+        <toolbarbutton
+            id="findresults2-morekomodo-toolbar-copy"
+            tooltiptext="&findresults.tooltiptext;"
+            type="menu"
+            orient="horizontal"
+            class="button-findresults-copy">
+            <menupopup id="findresults2-morekomodo-menu-copy">
+                <menuitem id="findresults2-morekomodo-copyfilenames"
+                    label="&findresults.copy.filenames;"
+                    oncommand="moreKomodoFindResults.onCopyFindResults(2, true)"/>
+                <menuitem id="findresults2-morekomodo-copycontents"
+                    label="&findresults.copy.contents;"
+                    oncommand="moreKomodoFindResults.onCopyFindResults(2, false)"/>
+                <menuseparator />
+                <menuitem id="findresults2-morekomodo-copytoviewfilenames"
+                    label="&findresults.copy.to.view.filenames;"
+                    oncommand="moreKomodoFindResults.onCopyToViewFindResults(2, true)"/>
+                <menuitem id="findresults2-morekomodo-copytoviewcontents"
+                    label="&findresults.copy.to.view.contents;"
+                    oncommand="moreKomodoFindResults.onCopyToViewFindResults(2, false)"/>
+            </menupopup>
+        </toolbarbutton>
+        <button
+                id="findresults2-morekomodo-find-by-selection"
+                class="button-findresults-find-by-selection button-toolbar-a"
+                tooltiptext="&findresults.find.by.selection.tooltip;"
+                oncommand="moreKomodoFindResults.onFindBySelection(2)" />
+    </hbox>
+
+    <hbox id="findresults720_tabpanel-toolbarbox">
+        <toolbarbutton
+            id="findresults720-morekomodo-toolbar-copy"
+            tooltiptext="&findresults.tooltiptext;"
+            type="menu"
+            orient="horizontal"
+            class="button-findresults-copy"
+            insertbefore="findresults720-jumptoprev-button">
+            <menupopup id="findresults720-morekomodo-menu-copy">
+                <menuitem id="findresults720-morekomodo-copyfilenames"
+                    label="&findresults.copy.filenames;"
+                    oncommand="moreKomodoFindResults.onCopyFindResults(720, true)"/>
+                <menuitem id="findresults720-morekomodo-copycontents"
+                    label="&findresults.copy.contents;"
+                    oncommand="moreKomodoFindResults.onCopyFindResults(720, false)"/>
+            </menupopup>
+        </toolbarbutton>
+    </hbox>
+
+    <box id="morekomodo-hidden-refresh-menu" collapsed="true" hidden="true">
+        <menupopup id="morekomodo-refresh-static-menupopup">
+            <menuseparator />
+            <menuitem id="mk-refresh-clear"
+                    label="&findresults.refresh.clear.history;"
+                    tooltiptext="&findresults.refresh.clear.history;"
+                    oncommand="moreKomodoFindResults.removeAllFindInfo(event);" />
+        </menupopup>
+    </box>
+
+    <popupset id="extensionPopupSet">
+        <tooltip id="morekomodo-refresh-tooltip"
+                onpopupshowing="return moreKomodoFindResults.onTooltipRefresh(document.tooltipNode);"
+                maxwidth="600px"
+                orient="vertical">
+            <hbox>
+                <description value="&morekomodo.refresh.pattern;" />
+                <label id="morekomodo-refresh-tooltip-pattern" value="" />
+            </hbox>
+            <vbox id="morekomodo-refresh-tooltip-find-in-file">
+                <hbox>
+                    <description value="&morekomodo.refresh.include;" />
+                    <label id="morekomodo-refresh-include" crop="center" />
+                </hbox>
+                <hbox>
+                    <description value="&morekomodo.refresh.exclude;" />
+                    <label id="morekomodo-refresh-exclude" crop="center" />
+                </hbox>
+                <hbox>
+                    <description value="&morekomodo.refresh.folders;" />
+                    <label id="morekomodo-refresh-folders" crop="center" />
+                </hbox>
+            </vbox>
+        </tooltip>
+    </popupset>
+</overlay>

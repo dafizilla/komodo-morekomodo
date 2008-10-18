@@ -208,7 +208,9 @@ var moreKomodoFindResults = {
             }
             if (response == "Yes") {
                 for (var i = 0; i < filesToOpen.length; i++) {
-                    ko.views.manager.doFileOpen(filesToOpen[i]);
+                    // Using ko.views.manager.doFileOpen the document isn't shared
+                    // among multiple windows so the ko.open package is used
+                    ko.open.URI(filesToOpen[i]);
                 }
             }
         }
@@ -406,3 +408,5 @@ var moreKomodoFindResults = {
         }
     }
 }
+
+window.addEventListener("load", function(event) { moreKomodoFindResults.init(event); }, false);

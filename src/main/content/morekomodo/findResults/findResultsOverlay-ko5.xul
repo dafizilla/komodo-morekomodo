@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://morekomodo/locale/morekomodo.dtd" >
+<?xml-stylesheet href="chrome://morekomodo/skin/morekomodo.css" type="text/css"?>
+<?xul-overlay href="chrome://morekomodo/content/findResults/findResultsOverlay.xul"?>
+
+<overlay id="findresultsOverlay-ko5"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- Komodo 5 -->
+    <hbox id="findtoolbar1-button-box">
+        <hbox id="findresults1-morekomodo-toolbarbox" insertbefore="findresults1-jumptoprev-button"/>
+    </hbox>
+
+    <hbox id="findtoolbar2-button-box">
+        <hbox id="findresults2-morekomodo-toolbarbox" insertbefore="findresults2-jumptoprev-button"/>
+    </hbox>
+
+</overlay>

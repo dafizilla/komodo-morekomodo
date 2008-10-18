@@ -1,5 +1,5 @@
 <!DOCTYPE extension [
-<!ENTITY extension.version "1.4.3">
+<!ENTITY extension.version "1.4.3.1">
 ]>
 
 <extension name="morekomodo">
@@ -43,6 +43,8 @@
         <overlay description="Preferences" uri="chrome://komodo/content/pref/pref.xul" value="chrome://morekomodo/content/pref/prefOverlay.xul" />
         <overlay description="Filebrowser" uri="chrome://komodo/content/dialogs/filebrowser/filebrowser.xul"
                     value="chrome://morekomodo/content/favorites/filebrowser/filebrowserOverlay.xul" />
+        <overlay description="FindResults-ko4" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/findResults/findResultsOverlay-ko4.xul appversion&lt;=4.4.1" />
+        <overlay description="FindResults-ko5" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/findResults/findResultsOverlay-ko5.xul appversion&gt;4.4.1" />
     </overlays>
 
     <compatibility>
