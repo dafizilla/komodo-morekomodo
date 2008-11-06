@@ -67,7 +67,7 @@ var moreKomodoFileBrowser = {
         item.setAttribute("oncommand", "moreKomodoFileBrowser.onGotoFavorite(event);");
         item.setAttribute("id", "morekomodo-path-" + fo.path);
         item["favoriteInfo"] = fo;
-        item.setAttribute("class", "menuitem-iconic-wide");
+        item.setAttribute("class", "menuitem-iconic");
         item.setAttribute("image", fo.imageURI);
         item.setAttribute("tooltiptext", fo.path);
         // Paths too long are cropped
