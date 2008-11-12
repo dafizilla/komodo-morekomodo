@@ -63,6 +63,8 @@ function MoreKomodoPrefs() {
 
     this._trueLiteral = this._rdf.GetLiteral("true");
     this._falseLiteral = this._rdf.GetLiteral("false");
+
+    this._findReplaceRes = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#findReplaceFavorite");
 }
 
 MoreKomodoPrefs.prototype = {
@@ -339,5 +341,109 @@ MoreKomodoPrefs.prototype = {
         } else if (newValue) {
             ds.Assert(source, property, newValue, true);
         }
-   }
+   },
+
+    /**
+     * Read the find replace favorites, returns FavoriteInfo array.
+     * @returns favoriteInfo array
+     */
+    readFindReplaceFavorites : function() {
+        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
+        var ds = this._rdf.GetDataSourceBlocking(filePath);
+
+        var pathEnum = ds.GetTargets(this._findReplaceRes, this._nameRes, true);
+        var paths = [];
+
+        var boolProperties = [
+            "optRegex",
+            "optCase",
+            "optWord",
+            "optMultiline",
+            "optReplace",
+            "optConfirmReplacementsInFiles",
+            "optShowReplaceAllResults",
+            "optSearchInSubdirs"];
+        
+        var stringProperties = [
+            "optCaseValue",
+            "searchIn",
+            "name",
+            "searchPattern",
+            "replacePattern",
+            "multilineSearchPattern",
+            "multilineReplacePattern",
+            "dirs",
+            "includes",
+            "excludes"];
+
+        while (pathEnum.hasMoreElements()) {
+            var pathNode = pathEnum.getNext();
+            var fi = {};
+
+            try {
+                var pathProp = pathNode
+                    .QueryInterface(Components.interfaces.nsIRDFResource);
+                for (i in boolProperties) {
+                    var property = boolProperties[i];
+                    var res = this._rdf.GetResource(
+                        "http://dafizilla.sourceforge.net/rdf#" + property);
+                     var value = this._readLiteral(ds, pathProp, res);
+                     fi[property] = value == "true";
+                }
+
+                for (i in stringProperties) {
+                    var property = stringProperties[i];
+                    var res = this._rdf.GetResource(
+                        "http://dafizilla.sourceforge.net/rdf#" + property);
+                     var value = this._readLiteral(ds, pathProp, res);
+                     fi[property] = value;
+                }
+            } catch (err) {
+            }
+            paths.push(fi);
+        }
+        return paths;
+    },
+
+    /**
+     * Write find replace favorites.
+     * @param favoriteInfoArr array
+     */
+    writeFindReplaceFavorites : function(favoriteInfoArr) {
+        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
+        var ds = this._rdf.GetDataSourceBlocking(filePath);
+
+        var pathEnum = ds.GetTargets(this._findReplaceRes, this._nameRes, true);
+
+        // remove all previous favorites
+        while (pathEnum.hasMoreElements()) {
+            var pathNode = pathEnum.getNext();
+
+            try {
+                // old versions use nsIRDFLiteral so we now check
+                // if we can remove new structure
+                pathNode.QueryInterface(Components.interfaces.nsIRDFResource);
+                this.removeBySubject(ds, pathNode);
+            } catch (err) {
+            }
+            ds.Unassert(this._findReplaceRes, this._nameRes, pathNode);
+        }
+
+        ds.Assert(this._rootRes, this._favoriteRes, this._nameRes, true);
+
+        for (var i = 0;  i < favoriteInfoArr.length; i++) {
+            var favoriteInfo = favoriteInfoArr[i];
+            var infoRes = this._rdf.GetAnonymousResource();
+
+            for (prop in favoriteInfo) {
+                var res = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#" + prop);
+                ds.Assert(infoRes, res, this._rdf.GetLiteral(favoriteInfo[prop]), true);
+            }
+
+            ds.Assert(this._findReplaceRes, this._nameRes, infoRes, true);
+        }
+
+        ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
+        ds.Flush();
+    },
 };

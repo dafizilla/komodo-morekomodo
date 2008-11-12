@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://morekomodo/locale/favorites.dtd" >
+<?xml-stylesheet href="chrome://morekomodo/skin/morekomodo.css" type="text/css"?>
+
+<overlay id="findFavoritesOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- Komodo specific code -->
+    <script src="chrome://komodo/content/library/logging.js" type="application/x-javascript;version=1.7"/>
+    <script src="chrome://komodo/content/library/dialogs.js" type="application/x-javascript;version=1.7"/>
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/prefs.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/favorites/find/findOverlay.js" />
+
+    <stringbundleset>
+        <stringbundle id="strings"
+                      src="chrome://morekomodo/locale/favorites.properties"/>
+    </stringbundleset>
+
+    <vbox id="find-buttons">
+        <button id="findreplace-btn"
+                label="&findreplace.favorite.label;"
+                accesskey="&findreplace.favorite.accesskey;"
+                type="menu">
+            <menupopup>
+                <menu id="favorite-list-menu" label="&findreplace.favorite.label;">
+                    <menupopup id="favorite-list-menupopup"
+                       onpopupshowing="findReplaceFavorites.initPopupMenuFavorites();"
+                       oncommand="event.stopPropagation();" />
+                </menu>
+                <menuseparator />
+                <menuitem id="add-favorite-menuitem"
+                    label="&findreplace.add.to.favorites;"
+                    accesskey="&findreplace.add.to.favorites.accesskey;"
+                    oncommand="findReplaceFavorites.onAddToFavorites()" />
+                <menuitem id="delete-favorite-menuitem"
+                    label="&findreplace.delete.favorites;"
+                    accesskey="&findreplace.delete.accesskey;"
+                    oncommand="findReplaceFavorites.onDeleteFavorites()" />
+            </menupopup>
+        </button>
+    </vbox>
+</overlay>

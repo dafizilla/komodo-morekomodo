@@ -31,7 +31,16 @@
 <!ENTITY description.from.path.label "Use Name For Description">
 <!ENTITY description.from.path.accesskey "N">
 
-
 <!ENTITY favorite.edit.dialog.title "Edit Favorite">
 <!ENTITY favorite.edit.path.label "Path">
 <!ENTITY favorite.edit.description.label "Description">
+
+<!ENTITY findreplace.favorite.label "Favorites">
+<!ENTITY findreplace.favorite.accesskey "v">
+
+<!ENTITY findreplace.add.to.favorites "Add to Favorites...">
+<!ENTITY findreplace.add.to.favorites.accesskey "A">
+
+<!ENTITY findreplace.delete.favorites "Delete Favorites...">
+<!ENTITY findreplace.delete.accesskey "D">
+
