@@ -155,12 +155,12 @@ var findReplaceFavorites = {
 
         this.searchPattern.focus();
         this.setWidgetValue(this.searchPattern, findInfo.searchPattern, true);
-        this.setWidgetValue(this.replacePattern, findInfo.replacePattern);
-        this.setWidgetValue(this.multilineSearchPattern, findInfo.multilineSearchPattern);
-        this.setWidgetValue(this.multilineReplacePattern, findInfo.multilineReplacePattern);
-        this.setWidgetValue(this.dirs, findInfo.dirs);
-        this.setWidgetValue(this.includes, findInfo.includes);
-        this.setWidgetValue(this.excludes, findInfo.excludes);
+        this.setWidgetValue(this.replacePattern, findInfo.replacePattern, true);
+        this.setWidgetValue(this.multilineSearchPattern, findInfo.multilineSearchPattern, true);
+        this.setWidgetValue(this.multilineReplacePattern, findInfo.multilineReplacePattern, true);
+        this.setWidgetValue(this.dirs, findInfo.dirs, true);
+        this.setWidgetValue(this.includes, findInfo.includes, true);
+        this.setWidgetValue(this.excludes, findInfo.excludes, true);
 
         } catch(e) {
           alert(e);
