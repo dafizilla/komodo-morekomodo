@@ -110,7 +110,7 @@
                 oncommand="gFavorites.fileListTreeView.moveSelectedItem(false);"/>
         </hbox>
         <hbox align="center">
-            <label value="Max menu items"/>
+            <label value="&max.menu.items;"/>
             <textbox id="maxMenuItems" size="3" oninput="gFavorites.onMaxItemKeyPress(event)"/>
         </hbox>
     </vbox>
