@@ -1,5 +1,5 @@
 <!DOCTYPE extension [
-<!ENTITY extension.version "1.5a">
+<!ENTITY extension.version "1.5.1">
 ]>
 
 <extension name="morekomodo">
