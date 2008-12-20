@@ -65,6 +65,14 @@
 <!ENTITY morekomodo.show.in.file.manager.desc "MoreKomodo: File - Show in File Manager">
 <!ENTITY morekomodo.delete.desc "MoreKomodo: File - Delete">
 
+<!ENTITY morekomodo.findresults.openfoundfiles.desc "MoreKomodo: Find Results - Open Found Files...">
+<!ENTITY morekomodo.findresults.refreshFindResults.desc "MoreKomodo: Find Results - Run Last Find Again">
+<!ENTITY morekomodo.findresults.copyContents.desc "MoreKomodo: Find Results - Copy File Names to Clipboard">
+<!ENTITY morekomodo.findresults.copyFileNames.desc "MoreKomodo: Find Results - Copy Content to Clipboard">
+<!ENTITY morekomodo.findresults.copyToViewFileNames.desc "MoreKomodo: Find Results - Copy File Names to New View">
+<!ENTITY morekomodo.findresults.copyToViewContents.desc "MoreKomodo: Find Results - Copy Content to New View">
+<!ENTITY morekomodo.findresults.findBySelection.desc "MoreKomodo: Find Results - Find Using Selected Text">
+
 <!ENTITY morekomodo.refresh.pattern "Pattern:">
 <!ENTITY morekomodo.refresh.include "Include:">
 <!ENTITY morekomodo.refresh.exclude "Exclude:">

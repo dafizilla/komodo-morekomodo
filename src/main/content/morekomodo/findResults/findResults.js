@@ -60,6 +60,8 @@ var moreKomodoFindResults = {
             { id: "morekomodo-refresh-exclude", property : "encodedExcludeFiletypes"},
             { id: "morekomodo-refresh-folders", property : "encodedFolders"}
             ];
+
+        window.controllers.appendController(this);
      },
 
     onCopyFindResults : function(tabIndex, copyFileNames) {
@@ -109,7 +111,7 @@ var moreKomodoFindResults = {
 
         if (refreshButton) {
             refreshButton.setAttribute("disabled", "true");
-            moreKomodoFindResults.updateFindInfo(event.target);
+            moreKomodoFindResults.updateFindInfo(event.target.id);
 
             if (this.findStartedFromUI) {
                 this.copyOptions(this._findSvc.options, this.lastUsedFindOptions);
@@ -136,8 +138,8 @@ var moreKomodoFindResults = {
         }
     },
 
-    updateFindInfo : function(target) {
-        var tabIndex = target.id.match("([0-9]+)");
+    updateFindInfo : function(id) {
+        var tabIndex = id.match("([0-9]+)");
 
         if (tabIndex.length > 0) {
             var tab = FindResultsTab_GetManager(tabIndex[1]);
@@ -151,7 +153,7 @@ var moreKomodoFindResults = {
             this.pushItem(this.arrFind, findInfo,
                 new MoreKomodoPrefs().readMaxRefreshHistoryEntries());
         } else {
-            MoreKomodoCommon.log("Unable to find tabIndex for id " + target.id);
+            MoreKomodoCommon.log("Unable to find tabIndex for id " + id);
         }
     },
 
@@ -401,11 +403,96 @@ var moreKomodoFindResults = {
         var arr = this.getLinesFromFindResults(tabIndex, copyFileNames);
 
         if (arr.length) {
-            var view = ko.views.manager.doNewView();
-            var scimoz = view.scintilla.scimoz;
-            var currNL = getNewlineFromScimoz(scimoz);
-            scimoz.text = arr.join(currNL);
+            var copyFunc = function(view) {
+                var scimoz = view.scintilla.scimoz;
+                scimoz.text = arr.join(getNewlineFromScimoz(scimoz));
+            };
+            // Since Komodo 5.0.3 doNewView is deprecated
+            // http://www.openkomodo.com/blogs/toddw/komodo-5-0-3-api-changes
+            if (typeof(ko.views.manager.doNewViewAsync) == "undefined") {
+                copyFunc(ko.views.manager.doNewView());
+            } else {
+                ko.views.manager.doNewViewAsync(null, null, copyFunc);
+            }
         }
+    },
+
+    supportsCommand : function(cmd) {
+        switch (cmd) {
+            case "cmd_morekomodo_openFoundFiles":
+            case "cmd_morekomodo_refreshFindResults":
+            case "cmd_morekomodo_copyFileNames":
+            case "cmd_morekomodo_copyContents":
+            case "cmd_morekomodo_copyToViewFileNames":
+            case "cmd_morekomodo_copyToViewContents":
+            case "cmd_morekomodo_findBySelection":
+                return true;
+        }
+        return false;
+    },
+
+    isCommandEnabled : function(cmd) {
+        // at startup with no file open manager is null
+        var view = ko.views.manager && ko.views.manager.currentView;
+
+        switch (cmd) {
+            case "cmd_morekomodo_openFoundFiles":
+            case "cmd_morekomodo_refreshFindResults":
+            case "cmd_morekomodo_copyFileNames":
+            case "cmd_morekomodo_copyContents":
+            case "cmd_morekomodo_copyToViewFileNames":
+            case "cmd_morekomodo_copyToViewContents":
+            case "cmd_morekomodo_findBySelection":
+                return true;
+        }
+        return false;
+    },
+
+    doCommand : function(cmd) {
+        var tabIndex = this.selectedTabManagerIndex;
+        
+        if (tabIndex < 0) {
+            return;
+        }
+        switch (cmd) {
+            case "cmd_morekomodo_openFoundFiles":
+                this.onOpenFoundFiles(tabIndex);
+                break;
+            case "cmd_morekomodo_refreshFindResults":
+                this.onRefreshFindResults(tabIndex);
+                break;
+            case "cmd_morekomodo_copyFileNames":
+                this.onCopyFindResults(tabIndex, true);
+                break;
+            case "cmd_morekomodo_copyContents":
+                this.onCopyFindResults(tabIndex, false);
+                break;
+            case "cmd_morekomodo_copyToViewFileNames":
+                this.onCopyToViewFindResults(tabIndex, true);
+                break;
+            case "cmd_morekomodo_copyToViewContents":
+                this.onCopyToViewFindResults(tabIndex, false);
+                break;
+            case "cmd_morekomodo_findBySelection":
+                this.onFindBySelection(tabIndex);
+                break;
+        }
+    },
+
+    onEvent : function(evt) {
+    },
+
+    get selectedTabManagerIndex() {
+        for (var i = 1; i <= 2; i++) {
+            var tab = document.getElementById("findresults" + i +"_tab");
+            if (tab
+                && !tab.hasAttribute("collapsed")
+                && !tab.hasAttribute("hidden")
+                && tab.selected) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
 
