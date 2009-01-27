@@ -32,6 +32,13 @@
         <textbox id="maxRefreshHistoryEntries" size="4"/>
       </hbox>
   </groupbox>
+
+  <groupbox orient="vertical">
+    <caption label="&find.dialog.label;"/>
+
+    <checkbox id="restoreLastFindInFile"
+              label="&restore.last.used.findinfile.label;"/>
+  </groupbox>
 </window>
 
 

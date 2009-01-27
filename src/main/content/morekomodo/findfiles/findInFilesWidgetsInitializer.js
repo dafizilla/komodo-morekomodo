@@ -14,7 +14,7 @@
 #
 # The Initial Developer of the Original Code is
 # Davide Ficano.
-# Portions created by the Initial Developer are Copyright (C) 2007
+# Portions created by the Initial Developer are Copyright (C) 2009
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
@@ -34,36 +34,44 @@
 #
 # ***** END LICENSE BLOCK *****
 */
-var prefs = new MoreKomodoPrefs();
-var oMinOpenFoundFileCount;
-var openFoundFileInfo;
-var oRestoreLastFindInFile;
+var findInFilesWidgetsInitializer = {
+    findContextMap : {
+        "curr-project" : document.getElementById("search-in-curr-project"),
+        "files" : document.getElementsByAttribute("value", "files").item(0),
+        "collection" : document.getElementById("search-in-collection")},
 
-function OnPreferencePageOK(prefset) {
-    var openFoundFileInfo = {
-            minFileCount : oMinOpenFoundFileCount.value
-    };
-    prefs.writeOpenFoundFileInfo(openFoundFileInfo);
-    prefs.writeMaxRefreshHistoryEntries(oMaxRefreshHistoryEntries.value)
-    prefs.useLastFindContext = oRestoreLastFindInFile.checked;
+    onLoad : function(event) {
+        this.prefs = new MoreKomodoPrefs();
+        this.initControls();
+    },
 
-    return true;
+    onUnload : function(event) {
+        if ((this.searchIn.value in this.findContextMap)
+            && this.prefs.useLastFindContext) {
+            this.prefs.lastFindContext = this.searchIn.value;
+        }
+    },
+    
+    initControls: function() {
+        this.searchIn = document.getElementById('search-in-menu');
+        
+        this.setLastFindInFiles();
+    },
+
+    setLastFindInFiles : function() {
+        if ((this.searchIn.value in this.findContextMap)
+            && this.prefs.useLastFindContext) {
+            var lastFindContext = this.prefs.lastFindContext;
+            var context = this.findContextMap[lastFindContext];
+
+            if (typeof (context) != "undefined"
+                && context && !context.hasAttribute("hidden")) {
+                this.searchIn.value = lastFindContext;
+                this.searchIn.doCommand();
+            }
+        }
+    }
 }
 
-function OnPreferencePageInitalize(prefset) {
-    oMinOpenFoundFileCount = document.getElementById("minOpenFoundFileCount");
-    oMaxRefreshHistoryEntries = document.getElementById("maxRefreshHistoryEntries");
-    openFoundFileInfo = prefs.readOpenFoundFileInfo();
-    maxRefreshHistoryEntries = prefs.readMaxRefreshHistoryEntries();
-    oRestoreLastFindInFile = document.getElementById("restoreLastFindInFile");
-}
-
-function OnPreferencePageLoading(prefset) {
-    oMinOpenFoundFileCount.value = openFoundFileInfo.minFileCount;
-    oMaxRefreshHistoryEntries.value = maxRefreshHistoryEntries;
-    oRestoreLastFindInFile.checked = prefs.useLastFindContext;
-}
-
-function openFoundFileOnLoad() {
-    parent.hPrefWindow.onpageload();
-}
+window.addEventListener("load", function(event) { findInFilesWidgetsInitializer.onLoad(event); }, false);
+window.addEventListener("unload", function(event) { findInFilesWidgetsInitializer.onUnload(event); }, false);

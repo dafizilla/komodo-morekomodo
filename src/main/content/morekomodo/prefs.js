@@ -34,12 +34,12 @@
 #
 # ***** END LICENSE BLOCK *****
 */
-const MOREKOMODO_PREF_CONFIG_PATH = "dafizilla.morokomodo.configPath";
 
 function MoreKomodoPrefs() {
-    this._prefBranch = Components.classes['@mozilla.org/preferences-service;1']
-                      .getService()
-                      .QueryInterface(Components.interfaces.nsIPrefBranch);
+    this._prefBranch = Components.classes["@mozilla.org/preferences-service;1"]
+        .getService(Components.interfaces.nsIPrefService)
+        .getBranch("dafizilla.morokomodo.");
+    this._prefBranch.QueryInterface(Components.interfaces.nsIPrefBranch2);
 
     this._rdf = Components.classes["@mozilla.org/rdf/rdf-service;1"]
                         .getService(Components.interfaces.nsIRDFService);
@@ -82,13 +82,30 @@ MoreKomodoPrefs.prototype = {
         this._prefBranch.setCharPref(prefName, prefValue);
     },
 
+    getBool : function(prefName, defValue) {
+        var prefValue = false;
+        try {
+            prefValue = this._prefBranch.getBoolPref(prefName);
+        } catch (ex) {
+            if (defValue != undefined) {
+                prefValue = defValue;
+            }
+        }
+
+        return prefValue;
+    },
+
+    setBool : function(prefName, prefValue) {
+        this._prefBranch.setBoolPref(prefName, prefValue);
+    },
+
     get configPath() {
-        var configPath = this.getString(MOREKOMODO_PREF_CONFIG_PATH, null);
+        var configPath = this.getString("configPath", null);
         if (configPath == null) {
             var f = MoreKomodoCommon.getProfileDir();
             f.append("morekomodo.rdf");
             configPath = f.path;
-            this.setString(MOREKOMODO_PREF_CONFIG_PATH, configPath);
+            this.setString("configPath", configPath);
         }
         return configPath;
     },
@@ -446,4 +463,20 @@ MoreKomodoPrefs.prototype = {
         ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
         ds.Flush();
     },
+
+    get useLastFindContext() {
+        return this.getBool("useLastFindContext", true);
+    },
+
+    set useLastFindContext(value) {
+        this.setBool("useLastFindContext", value);
+    },
+
+    get lastFindContext() {
+        return this.getString("lastFindContext", "");
+    },
+
+    set lastFindContext(value) {
+        this.setString("lastFindContext", value);
+    }
 };

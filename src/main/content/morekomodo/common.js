@@ -316,6 +316,12 @@ MoreKomodoCommon.log = function(msg) {
     ko.logging.getLogger("extensions.morekomodo").warn(msg);
 }
 
+MoreKomodoCommon.debug = function(message) {
+    Components.classes["@mozilla.org/consoleservice;1"]
+        .getService(Components.interfaces.nsIConsoleService)
+            .logStringMessage(message);
+}
+
 MoreKomodoCommon.backupFile = function(fromFile, toFile) {
     var lastModifiedTime = fromFile.lastModifiedTime;
 
