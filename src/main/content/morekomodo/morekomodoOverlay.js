@@ -702,6 +702,18 @@ var moreKomodo = {
         if (typeof(xtk.domutils.fireEvent) != "undefined") {
             xtk.domutils.fireEvent(view, 'current_view_changed');
         }
+    },
+
+    clearTerminalView : function () {
+        var terminalView = document.getElementById("runoutput-scintilla");
+    
+        if (terminalView && terminalView.terminalHandler != null) {
+            var prevReadOnly = terminalView.scimoz.readOnly;
+            terminalView.scimoz.readOnly = 0;
+            terminalView.clear();
+            terminalView.scimoz.readOnly = prevReadOnly;
+        }
+        ko.views.manager.currentView.setFocus();
     }
 };
 

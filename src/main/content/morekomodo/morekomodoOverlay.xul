@@ -383,5 +383,16 @@
                 label=""/>
     </statusbar>
 
+    <hbox id="runoutput-button-box">
+        <toolbarbutton id="button-morekomodo-runoutput-clear"
+             persist="buttonstyle"
+             class="button-morekomodo-runoutput-clear"
+             buttonstyle="pictures"
+             tooltiptext="&morekomodo.runoutput.clear.tooltip;"
+             oncommand="moreKomodo.clearTerminalView()"
+             >
+        </toolbarbutton>
+    </hbox>
+
 </overlay>
 

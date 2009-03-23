@@ -59,3 +59,7 @@
 #morekomodo-refresh-tooltip label {
   max-width: 600px;
 }
+
+.button-morekomodo-runoutput-clear {
+  list-style-image: url("chrome://morekomodo/skin/clear.png");
+}
