@@ -241,6 +241,10 @@ var moreKomodoFindResults = {
         }
         var sel = view.selection;
 
+        if (sel.length == 0) {
+            var scimoz = ko.views.manager.currentView.scimoz;
+            sel = ko.interpolate.getWordUnderCursor(scimoz);
+        }
         if (sel.length) {
             var tab = FindResultsTab_GetManager(tabIndex);
             var options = this.arrFind[this.arrFind.length - 1].options;
