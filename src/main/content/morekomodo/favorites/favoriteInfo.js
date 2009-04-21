@@ -123,7 +123,7 @@ FavoriteInfo.prototype = {
         }
 
         var isLocal = true;
-        intType = parseInt(type);
+        var intType = parseInt(type);
         // handle remote file
         switch (intType) {
             case FAVORITE_REMOTE_FILE:
