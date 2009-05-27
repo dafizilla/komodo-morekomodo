@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://morekomodo/skin/unicodeTable.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://morekomodo/locale/unicodeTable.dtd" >
+
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    id="unicodeTable-dialog"
+    minwidth="400"
+    minheight="300"
+    windowtype="morekomodo_unicodetable"
+    onload="return gUnicodeTable.onLoad();"
+    title="&unicode.table.title;"
+    persist="width height screenX screenY">
+
+    <!-- Komodo specific code -->
+    <script type="application/x-javascript"
+            src="chrome://komodo/content/library/logging.js" />
+    <script type="application/x-javascript"
+            src="chrome://komodo/content/library/windowManager.js" />
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/util/sprintf.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/util/textutil.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/unicodeTable/unicodeTableTreeview.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/unicodeTable/unicodeTable.js" />
+
+    <keyset id="unicodeTableKeys">
+        <key keycode="VK_ESCAPE" modifiers="" oncommand="window.close();"/>
+    </keyset>
+    
+    <vbox flex="1" style="padding: 5px 10px 5px 10px;">
+    <menulist oncommand="gUnicodeTable.onSelectUnicodeSet(this.value)">
+        <menupopup>
+            <menuitem value="0x0000..0x007F" label="0000..007F Basic Latin"/>
+            <menuitem value="0x00A0..0x00FF" label="00A0..00FF Latin-1 Supplement"/>
+            <menuitem value="0x0100..0x017F" label="0100..017F Latin Extended-A"/>
+            <menuitem value="0x0180..0x024F" label="0180..024F Latin Extended-B"/>
+            <menuitem value="0x0250..0x02AF" label="0250..02AF IPA Extensions"/>
+            <menuitem value="0x02B0..0x02FF" label="02B0..02FF Spacing Modifier Letters"/>
+            <menuitem value="0x0300..0x036F" label="0300..036F Combining Diacritical Marks"/>
+            <menuitem value="0x0370..0x03FF" label="0370..03FF Greek and Coptic"/>
+            <menuitem value="0x0400..0x04FF" label="0400..04FF Cyrillic"/>
+            <menuitem value="0x0500..0x052F" label="0500..052F Cyrillic Supplementary"/>
+            <menuitem value="0x0530..0x058F" label="0530..058F Armenian"/>
+            <menuitem value="0x0590..0x05FF" label="0590..05FF Hebrew"/>
+            <menuitem value="0x0600..0x06FF" label="0600..06FF Arabic"/>
+            <menuitem value="0x0700..0x074F" label="0700..074F Syriac"/>
+            <menuitem value="0x0780..0x07BF" label="0780..07BF Thaana"/>
+            <menuitem value="0x0900..0x097F" label="0900..097F Devanagari"/>
+            <menuitem value="0x0980..0x09FF" label="0980..09FF Bengali"/>
+            <menuitem value="0x0A00..0x0A7F" label="0A00..0A7F Gurmukhi"/>
+            <menuitem value="0x0A80..0x0AFF" label="0A80..0AFF Gujarati"/>
+            <menuitem value="0x0B00..0x0B7F" label="0B00..0B7F Oriya"/>
+            <menuitem value="0x0B80..0x0BFF" label="0B80..0BFF Tamil"/>
+            <menuitem value="0x0C00..0x0C7F" label="0C00..0C7F Telugu"/>
+            <menuitem value="0x0C80..0x0CFF" label="0C80..0CFF Kannada"/>
+            <menuitem value="0x0D00..0x0D7F" label="0D00..0D7F Malayalam"/>
+            <menuitem value="0x0D80..0x0DFF" label="0D80..0DFF Sinhala"/>
+            <menuitem value="0x0E00..0x0E7F" label="0E00..0E7F Thai"/>
+            <menuitem value="0x0E80..0x0EFF" label="0E80..0EFF Lao"/>
+            <menuitem value="0x0F00..0x0FFF" label="0F00..0FFF Tibetan"/>
+            <menuitem value="0x1000..0x109F" label="1000..109F Myanmar"/>
+            <menuitem value="0x10A0..0x10FF" label="10A0..10FF Georgian"/>
+            <menuitem value="0x1100..0x11FF" label="1100..11FF Hangul Jamo"/>
+            <menuitem value="0x1200..0x137F" label="1200..137F Ethiopic"/>
+            <menuitem value="0x13A0..0x13FF" label="13A0..13FF Cherokee"/>
+            <menuitem value="0x1400..0x167F" label="1400..167F Unified Canadian Aboriginal Syllabics"/>
+            <menuitem value="0x1680..0x169F" label="1680..169F Ogham"/>
+            <menuitem value="0x16A0..0x16FF" label="16A0..16FF Runic"/>
+            <menuitem value="0x1700..0x171F" label="1700..171F Tagalog"/>
+            <menuitem value="0x1720..0x173F" label="1720..173F Hanunoo"/>
+            <menuitem value="0x1740..0x175F" label="1740..175F Buhid"/>
+            <menuitem value="0x1760..0x177F" label="1760..177F Tagbanwa"/>
+            <menuitem value="0x1780..0x17FF" label="1780..17FF Khmer"/>
+            <menuitem value="0x1800..0x18AF" label="1800..18AF Mongolian"/>
+            <menuitem value="0x1900..0x194F" label="1900..194F Limbu"/>
+            <menuitem value="0x1950..0x197F" label="1950..197F Tai Le"/>
+            <menuitem value="0x19E0..0x19FF" label="19E0..19FF Khmer Symbols"/>
+            <menuitem value="0x1D00..0x1D7F" label="1D00..1D7F Phonetic Extensions"/>
+            <menuitem value="0x1E00..0x1EFF" label="1E00..1EFF Latin Extended Additional"/>
+            <menuitem value="0x1F00..0x1FFF" label="1F00..1FFF Greek Extended"/>
+            <menuitem value="0x2000..0x206F" label="2000..206F General Punctuation"/>
+            <menuitem value="0x2070..0x209F" label="2070..209F Superscripts and Subscripts"/>
+            <menuitem value="0x20A0..0x20CF" label="20A0..20CF Currency Symbols"/>
+            <menuitem value="0x20D0..0x20FF" label="20D0..20FF Combining Diacritical Marks for Symbols"/>
+            <menuitem value="0x2100..0x214F" label="2100..214F Letterlike Symbols"/>
+            <menuitem value="0x2150..0x218F" label="2150..218F Number Forms"/>
+            <menuitem value="0x2190..0x21FF" label="2190..21FF Arrows"/>
+            <menuitem value="0x2200..0x22FF" label="2200..22FF Mathematical Operators"/>
+            <menuitem value="0x2300..0x23FF" label="2300..23FF Miscellaneous Technical"/>
+            <menuitem value="0x2400..0x243F" label="2400..243F Control Pictures"/>
+            <menuitem value="0x2440..0x245F" label="2440..245F Optical Character Recognition"/>
+            <menuitem value="0x2460..0x24FF" label="2460..24FF Enclosed Alphanumerics"/>
+            <menuitem value="0x2500..0x257F" label="2500..257F Box Drawing"/>
+            <menuitem value="0x2580..0x259F" label="2580..259F Block Elements"/>
+            <menuitem value="0x25A0..0x25FF" label="25A0..25FF Geometric Shapes"/>
+            <menuitem value="0x2600..0x26FF" label="2600..26FF Miscellaneous Symbols"/>
+            <menuitem value="0x2700..0x27BF" label="2700..27BF Dingbats"/>
+            <menuitem value="0x27C0..0x27EF" label="27C0..27EF Miscellaneous Mathematical Symbols-A"/>
+            <menuitem value="0x27F0..0x27FF" label="27F0..27FF Supplemental Arrows-A"/>
+            <menuitem value="0x2800..0x28FF" label="2800..28FF Braille Patterns"/>
+            <menuitem value="0x2900..0x297F" label="2900..297F Supplemental Arrows-B"/>
+            <menuitem value="0x2980..0x29FF" label="2980..29FF Miscellaneous Mathematical Symbols-B"/>
+            <menuitem value="0x2A00..0x2AFF" label="2A00..2AFF Supplemental Mathematical Operators"/>
+            <menuitem value="0x2B00..0x2BFF" label="2B00..2BFF Miscellaneous Symbols and Arrows"/>
+            <menuitem value="0x2E80..0x2EFF" label="2E80..2EFF CJK Radicals Supplement"/>
+            <menuitem value="0x2F00..0x2FDF" label="2F00..2FDF Kangxi Radicals"/>
+            <menuitem value="0x2FF0..0x2FFF" label="2FF0..2FFF Ideographic Description Characters"/>
+            <menuitem value="0x3000..0x303F" label="3000..303F CJK Symbols and Punctuation"/>
+            <menuitem value="0x3040..0x309F" label="3040..309F Hiragana"/>
+            <menuitem value="0x30A0..0x30FF" label="30A0..30FF Katakana"/>
+            <menuitem value="0x3100..0x312F" label="3100..312F Bopomofo"/>
+            <menuitem value="0x3130..0x318F" label="3130..318F Hangul Compatibility Jamo"/>
+            <menuitem value="0x3190..0x319F" label="3190..319F Kanbun"/>
+            <menuitem value="0x31A0..0x31BF" label="31A0..31BF Bopomofo Extended"/>
+            <menuitem value="0x31F0..0x31FF" label="31F0..31FF Katakana Phonetic Extensions"/>
+            <menuitem value="0x3200..0x32FF" label="3200..32FF Enclosed CJK Letters and Months"/>
+            <menuitem value="0x3300..0x33FF" label="3300..33FF CJK Compatibility"/>
+            <menuitem value="0x3400..0x4DBF" label="3400..4DBF CJK Unified Ideographs Extension A"/>
+            <menuitem value="0x4DC0..0x4DFF" label="4DC0..4DFF Yijing Hexagram Symbols"/>
+            <menuitem value="0x4E00..0x9FFF" label="4E00..9FFF CJK Unified Ideographs"/>
+            <menuitem value="0xA000..0xA48F" label="A000..A48F Yi Syllables"/>
+            <menuitem value="0xA490..0xA4CF" label="A490..A4CF Yi Radicals"/>
+            <menuitem value="0xAC00..0xD7AF" label="AC00..D7AF Hangul Syllables"/>
+            <menuitem value="0xD800..0xDB7F" label="D800..DB7F High Surrogates"/>
+            <menuitem value="0xDB80..0xDBFF" label="DB80..DBFF High Private Use Surrogates"/>
+            <menuitem value="0xDC00..0xDFFF" label="DC00..DFFF Low Surrogates"/>
+            <menuitem value="0xE000..0xF8FF" label="E000..F8FF Private Use Area"/>
+            <menuitem value="0xF900..0xFAFF" label="F900..FAFF CJK Compatibility Ideographs"/>
+            <menuitem value="0xFB00..0xFB4F" label="FB00..FB4F Alphabetic Presentation Forms"/>
+            <menuitem value="0xFB50..0xFDFF" label="FB50..FDFF Arabic Presentation Forms-A"/>
+            <menuitem value="0xFE00..0xFE0F" label="FE00..FE0F Variation Selectors"/>
+            <menuitem value="0xFE20..0xFE2F" label="FE20..FE2F Combining Half Marks"/>
+            <menuitem value="0xFE30..0xFE4F" label="FE30..FE4F CJK Compatibility Forms"/>
+            <menuitem value="0xFE50..0xFE6F" label="FE50..FE6F Small Form Variants"/>
+            <menuitem value="0xFE70..0xFEFF" label="FE70..FEFF Arabic Presentation Forms-B"/>
+            <menuitem value="0xFF00..0xFFEF" label="FF00..FFEF Halfwidth and Fullwidth Forms"/>
+            <menuitem value="0xFFF0..0xFFFF" label="FFF0..FFFF Specials"/>
+        </menupopup>
+    </menulist>
+
+    <hbox flex="1">
+        <tree id="unicodetable-tree"
+            flex="1"
+            onkeypress="gUnicodeTable.onTreeKeyPress(event);"
+            style="font-family: monospace">
+          <treecols>
+        <treecol id="char-treecol"
+              label="&unicode.table.char.label;"
+              minwidth="70px"
+              persist="width hidden"/>
+        <splitter class="tree-splitter"/>
+        <treecol id="dec-treecol"
+              label="&unicode.table.dec.label;"
+              minwidth="70px"
+              persist="width hidden"/>
+        <splitter class="tree-splitter"/>
+        <treecol id="hex-treecol"
+              label="&unicode.table.hex.label;"
+              minwidth="70px"
+              persist="width hidden"/>
+        <splitter class="tree-splitter"/>
+        <treecol id="oct-treecol"
+              label="&unicode.table.oct.label;"
+              minwidth="70px"
+              persist="width hidden"/>
+        <splitter class="tree-splitter"/>
+        <treecol id="ctrl-char-treecol"
+              label="&unicode.table.ctrl.char.label;"
+              flex="1"
+              persist="width hidden"/>
+          </treecols>
+          <treechildren class="unicodeTableChildren"
+                ondblclick="gUnicodeTable.onDblClick(event);"/>
+        </tree>
+    </hbox>
+    <hbox align="right">
+        <button id="insert-char" label="&unicode.table.insert.char.label;" oncommand="gUnicodeTable.insertChar();" />
+    </hbox>
+    </vbox>
+</window>

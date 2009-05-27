@@ -17,7 +17,7 @@
     ondialogcancel="return gSortDialog.onCancel();">
 
     <script type="application/x-javascript"
-            src="chrome://morekomodo/content/textutil.js" />
+            src="chrome://morekomodo/content/util/textutil.js" />
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/sortDialog.js" />
 

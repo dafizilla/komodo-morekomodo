@@ -14,7 +14,7 @@
 #
 # The Initial Developer of the Original Code is
 # Davide Ficano.
-# Portions created by the Initial Developer are Copyright (C) 2007
+# Portions created by the Initial Developer are Copyright (C) 2009
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
@@ -34,53 +34,54 @@
 #
 # ***** END LICENSE BLOCK *****
 */
-var prefs = new MoreKomodoPrefs();
-var oShowStatusbar;
-var oTimeFormat;
-var fileTimeInfo;
-var oDefaultTimeFormat;
-var oShowUnicode;
+var gUnicodeTable = {
+    onLoad : function() {
+        try {
+            this.initControls();
+        } catch (err) {
+            alert(err);
+        }
+        sizeToContent();
+    },
 
-function onCheckShowStatusbar() {
-    var disabled = !oShowStatusbar.checked;
-    oTimeFormat.disabled = disabled;
-    oDefaultTimeFormat.disabled = disabled;
-}
+    initControls : function() {
+        this.oUnicodeTableTree = document.getElementById("unicodetable-tree");
 
-function onDefaultTimeFormatCommand() {
-    oTimeFormat.value = prefs.getDefaultTimeFormat();
-}
+        this.initValues();
+    },
 
-function OnPreferencePageOK(prefset) {
-    var fileTimeInfo = {
-            isEnabled : oShowStatusbar.checked,
-            timeFormat : oTimeFormat.value
-    };
-    prefs.showUnicodeStatusbar = oShowUnicode.checked;
-    prefs.writeFileTimeInfo(fileTimeInfo);
+    initValues : function() {
+        this.unicodeTableTreeView = new UnicodeTableTreeView();
+        this.oUnicodeTableTree.view = this.unicodeTableTreeView;
+        this.unicodeTableTreeView.refresh();
 
-    var obs = MoreKomodoCommon.getObserverService();
-    obs.notifyObservers(null, "morekomodo_pref_changed", "statusbar");
-    return true;
-}
+        this.oUnicodeTableTree.focus();
+    },
 
-function OnPreferencePageInitalize(prefset) {
-    oShowStatusbar = document.getElementById("showStatusbar");
-    oShowStatusbar.addEventListener("CheckboxStateChange", onCheckShowStatusbar, false);
+    onTreeKeyPress : function(event) {
+        if (event.keyCode == KeyEvent.DOM_VK_RETURN) {
+            this.insertChar();
+        }
+    },
 
-    oShowUnicode = document.getElementById("showUnicode");
+    onDblClick : function(event) {
+        this.insertChar();
+    },
+    
+    onSelectUnicodeSet : function(setRange) {
+        var r = setRange.split("..");
+        this.unicodeTableTreeView.setRange(parseInt(r[0]), parseInt(r[1]));
+    },
 
-    oTimeFormat = document.getElementById("timeFormat");
-    oDefaultTimeFormat = document.getElementById("defaultTimeFormat");
-    fileTimeInfo = prefs.readFileTimeInfo();
-}
+    insertChar : function() {
+        var item = this.unicodeTableTreeView.selectedItem;
 
-function OnPreferencePageLoading(prefset) {
-    oShowStatusbar.checked = fileTimeInfo.isEnabled;
-    oTimeFormat.value = fileTimeInfo.timeFormat;
-    oShowUnicode.checked = prefs.showUnicodeStatusbar;
-}
-
-function fileTimeOnLoad() {
-    parent.hPrefWindow.onpageload();
-}
+        if (item) {
+            var mainWindow = ko.windowManager.getMainWindow();
+            var view = mainWindow.ko.views.manager.currentView;
+            if (view && view.getAttribute('type') == 'editor') {
+                view.scintilla.scimoz.replaceSel(item.charCode);
+            }
+        }
+    }
+};

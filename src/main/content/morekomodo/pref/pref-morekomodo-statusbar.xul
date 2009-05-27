@@ -33,6 +33,14 @@
               disabled="true"/>
     </groupbox>
   </groupbox>
+
+  <groupbox orient="vertical">
+    <caption label="&charcode.label;"/>
+
+    <checkbox id="showUnicode"
+              label="&show.statusbar.label;"/>
+
+  </groupbox>
 </window>
 
 

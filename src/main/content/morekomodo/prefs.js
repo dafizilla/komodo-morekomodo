@@ -65,6 +65,8 @@ function MoreKomodoPrefs() {
     this._falseLiteral = this._rdf.GetLiteral("false");
 
     this._findReplaceRes = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#findReplaceFavorite");
+
+    this._unicodeStatusbar = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#unicodeStatusbar");
 }
 
 MoreKomodoPrefs.prototype = {
@@ -255,6 +257,22 @@ MoreKomodoPrefs.prototype = {
         return fileTimeInfo;
     },
 
+    get showUnicodeStatusbar() {
+        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
+        var ds = this._rdf.GetDataSourceBlocking(filePath);
+
+        return "true" == this._readLiteral(ds,
+                            this._unicodeStatusbar, this._enabledRes, "true");
+    },
+    
+    set showUnicodeStatusbar(value) {
+        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
+        var ds = this._rdf.GetDataSourceBlocking(filePath);
+
+        this._setProperty(ds, this._unicodeStatusbar, this._enabledRes,
+                          this._getLiteralBoolean(value));
+    },
+    
     writeFileTimeInfo : function(fileTimeInfo) {
         var timeFormat = fileTimeInfo.timeFormat;
         if (timeFormat == "") {

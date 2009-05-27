@@ -79,3 +79,7 @@
 <!ENTITY morekomodo.refresh.folders "Directories:">
 
 <!ENTITY morekomodo.runoutput.clear.tooltip "Clear output">
+
+<!ENTITY menuitem-unicodetable.label "Unicode Table...">
+<!ENTITY menuitem-unicodetable.accesskey "U">
+<!ENTITY morekomodo.unicodetable.desc "MoreKomodo: View - Unicode Table">

@@ -10,9 +10,9 @@
 
     <groupbox>
         <caption label="&morekomodo.label;"/>
-	<description style="margin-top: 10px;">
-        &morekomodo.description;
-	</description>
+        <description style="margin-top: 10px;">
+            &morekomodo.description;
+        </description>
 
         <separator class="thin"/>
         <label value="&homepage.label;"

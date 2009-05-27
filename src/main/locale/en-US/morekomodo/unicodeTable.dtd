@@ -1,0 +1,8 @@
+<!ENTITY unicode.table.title "Unicode Table">
+<!ENTITY unicode.table.close "Close">
+<!ENTITY unicode.table.dec.label "Dec">
+<!ENTITY unicode.table.hex.label "Hex">
+<!ENTITY unicode.table.oct.label "Oct">
+<!ENTITY unicode.table.char.label "Char">
+<!ENTITY unicode.table.ctrl.char.label "CTRL Char">
+<!ENTITY unicode.table.insert.char.label "Insert Char">

@@ -15,12 +15,12 @@
                               label="&morekomodo.label;"/>
                 </treerow>
 
-                <treechildren id="uiMoreKomodoLastModificationStatusbar">
-                    <treeitem container="false" id="editLastModificationStatusbar">
+                <treechildren id="uiMoreKomodoStatusbar">
+                    <treeitem container="false" id="moreKomodoStatusbar">
                         <treerow>
                             <treecell class="treecell-indent"
                                       url="chrome://morekomodo/content/pref/pref-morekomodo-statusbar.xul"
-                                      label="&filetime.label;"/>
+                                      label="&statusbar.label;"/>
                         </treerow>
                     </treeitem>
 

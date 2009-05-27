@@ -16,7 +16,9 @@
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/prefs.js" />
     <script type="application/x-javascript"
-            src="chrome://morekomodo/content/textutil.js" />
+            src="chrome://morekomodo/content/util/sprintf.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/util/textutil.js" />
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/morekomodoOverlay.js" />
 
@@ -151,6 +153,11 @@
                 key="key_cmd_morekomodo_showInFileManager"
                 desc="&morekomodo.show.in.file.manager.desc;"
                 oncommand="goDoCommand('cmd_morekomodo_showInFileManager')"/>
+        <broadcaster
+                id="cmd_morekomodo_unicodetable"
+                key="key_cmd_morekomodo_unicodetable"
+                desc="&morekomodo.unicodetable.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_unicodetable')"/>
     </broadcasterset>
 
   <toolboxrow id="main-toolboxrow">
@@ -381,6 +388,10 @@
                 id="statusbar-morekomodo-filetime"
                 insertafter="statusbar-line-col"
                 label=""/>
+        <statusbarpanel
+                id="statusbar-morekomodo-charcode"
+                insertafter="statusbar-selection"
+                label=""/>
     </statusbar>
 
     <hbox id="runoutput-button-box">
@@ -393,6 +404,16 @@
              >
         </toolbarbutton>
     </hbox>
+
+    <menupopup id="popup_view">
+        <menuitem id="morekomodo-unicodetable"
+                    class="menuitem-iconic-wide"
+                    label="&menuitem-unicodetable.label;"
+                    accesskey="&menuitem-unicodetable.accesskey;"
+                    command="cmd_morekomodo_unicodetable"
+                    key="key_cmd_morekomodo_unicodetable"
+                    insertbefore="menu_viewAsLanguage"/>
+    </menupopup>
 
 </overlay>
 

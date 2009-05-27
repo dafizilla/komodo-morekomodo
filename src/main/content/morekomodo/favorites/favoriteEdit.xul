@@ -29,7 +29,7 @@
         <rows>
             <row align="center">
                 <label control="current-path" value="&favorite.edit.path.label;" />
-		<textbox class="labeledit" id="current-path" readonly="true" />
+                <textbox class="labeledit" id="current-path" readonly="true" />
             </row>
             <row align="center">
                 <label control="name" value="&favorite.edit.description.label;" />

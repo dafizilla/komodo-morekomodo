@@ -53,9 +53,10 @@ var moreKomodo = {
         obs.addObserver(this, "file_changed", false);
         // This listener is notified from checkDiskFiles
         obs.addObserver(this, "file_update_now", false);
+        obs.addObserver(this, "current_view_linecol_changed", false);
         window.controllers.appendController(this);
 
-        obs.notifyObservers(null, "morekomodo_pref_changed", "fileTime");
+        obs.notifyObservers(null, "morekomodo_pref_changed", "statusbar");
 
         this.addListeners();
     },
@@ -68,6 +69,8 @@ var moreKomodo = {
         obs.removeObserver(this, "current_view_changed");
         obs.removeObserver(this, "file_changed");
         obs.removeObserver(this, "file_update_now");
+        obs.removeObserver(this, "current_view_linecol_changed");
+
         window.controllers.removeController(this);
         this.removeListeners();
     },
@@ -92,6 +95,9 @@ var moreKomodo = {
                 break;
             case "morekomodo_command":
                 this._updateViewsByCommand(subject.wrappedJSObject);
+                break;
+            case "current_view_linecol_changed":
+                this.onViewLineColChanged();
                 break;
         }
         } catch (err) {
@@ -149,7 +155,7 @@ var moreKomodo = {
     },
 
     moreKomodoPrefsChanged : function(subject, data) {
-        if (data == "fileTime" || data == "all") {
+        if (data == "statusbar" || data == "all") {
             this._fileTimeInfo = this._prefs.readFileTimeInfo();
             var bar = document.getElementById("statusbar-morekomodo-filetime");
             if (this._fileTimeInfo.isEnabled) {
@@ -161,6 +167,13 @@ var moreKomodo = {
             } else {
                 bar.setAttribute("collapsed", "true");
             }
+
+            var bar = document.getElementById("statusbar-morekomodo-charcode");
+            if (this._prefs.showUnicodeStatusbar) {
+                bar.removeAttribute("collapsed");
+            } else {
+                bar.setAttribute("collapsed", "true");
+            }
         }
     },
 
@@ -169,7 +182,8 @@ var moreKomodo = {
 
         if (!ko.views.manager.batchMode
             && view
-            && view.getAttribute("type") == "editor") {
+            && view.getAttribute("type") == "editor"
+            && view.document) {
             file = view.document.file;
         }
         this._updateFileTimeStatusbar(file);
@@ -476,6 +490,7 @@ var moreKomodo = {
             case "cmd_morekomodo_copyDirectoryPath":
             case "cmd_morekomodo_move":
             case "cmd_morekomodo_showInFileManager":
+            case "cmd_morekomodo_unicodetable":
                 return true;
         }
         return false;
@@ -518,7 +533,9 @@ var moreKomodo = {
                 }
                 return false;
             case "cmd_morekomodo_lockedit":
-                return view && view.getAttribute('type') == 'editor';
+                return view && view.getAttribute('type') == 'editor' && view.document;
+            case "cmd_morekomodo_unicodetable":
+                return true;
         }
         return false;
     },
@@ -563,6 +580,9 @@ var moreKomodo = {
                 break;
             case "cmd_morekomodo_lockedit":
                 this.onToogleLockEdit();
+                break;
+            case "cmd_morekomodo_unicodetable":
+                this.onOpenUnicodeDialog();
                 break;
         }
     },
@@ -646,7 +666,9 @@ var moreKomodo = {
     _updateLockEdit : function(view) {
         var button = document.getElementById("cmd_morekomodo_lockedit");
 
-        if (view && view.getAttribute('type') == 'editor') {
+        if (view
+            && view.getAttribute('type') == 'editor'
+            && view.document) {
             if (view.scintilla.scimoz.readOnly) {
                 button.setAttribute("checked", "true");
             } else {
@@ -678,16 +700,39 @@ var moreKomodo = {
             self.onCurrentViewChanged(event);
         };
 
+        this.handle_current_view_closed_setup = function(event) {
+            self.onCurrentViewClosed(event);
+        };
+
+        this.handle_current_view_linecol_changed_setup = function(event) {
+            self.onViewLineColChanged(event);
+        };
+
         window.addEventListener('current_view_changed',
                                 this.handle_current_view_changed_setup, false);
+        window.addEventListener('view_closed',
+                                this.handle_current_view_closed_setup, false);
+        window.addEventListener('current_view_linecol_changed',
+                                this.handle_current_view_linecol_changed_setup, false);
     },
 
     removeListeners : function() {
         window.removeEventListener('current_view_changed',
                                 this.handle_current_view_changed_setup, false);
+        window.removeEventListener('view_closed',
+                                this.handle_current_view_closed_setup, false);
+        window.removeEventListener('current_view_linecol_changed',
+                                this.handle_current_view_linecol_changed_setup, false);
     },
 
     onCurrentViewChanged : function(event) {
+        var currView = event.originalTarget;
+
+        this._updateFileTimeStatusbarFromView(currView);
+        this._updateLockEdit(currView);
+    },
+
+    onCurrentViewClosed : function(event) {
         var currView = event.originalTarget;
 
         this._updateFileTimeStatusbarFromView(currView);
@@ -714,6 +759,35 @@ var moreKomodo = {
             terminalView.scimoz.readOnly = prevReadOnly;
         }
         ko.views.manager.currentView.setFocus();
+    },
+    
+    onOpenUnicodeDialog : function() {
+        ko.windowManager.openOrFocusDialog("chrome://morekomodo/content/unicodeTable/unicodeTable.xul",
+                          "morekomodo_unicodetable",
+                          "chrome,close=yes,resizable=yes");
+    },
+    
+    onViewLineColChanged : function() {
+        var widgetCharCode = document.getElementById("statusbar-morekomodo-charcode");
+        if (widgetCharCode.hasAttribute("collapsed")) {
+            return;
+        }
+        var view = ko.views.manager.currentView;
+        var msg = "";
+
+        if (view && (view.scimoz.selectionStart != view.scimoz.selectionEnd)) {
+            if (view.scimoz.currentPos == view.scimoz.selectionStart) {
+                // the cursor is at beginning of selection
+                ch = view.scimoz.getWCharAt(view.scimoz.selectionStart).charCodeAt(0);
+            } else {
+                // the cursor is at end of selection 
+                ch = view.scimoz.getWCharAt(view.scimoz.selectionEnd - 1).charCodeAt(0);
+            }
+            var code = sprintf("%04X", ch);
+            msg = MoreKomodoCommon.getFormattedMessage("charcode.label", [code]);
+        }
+
+        widgetCharCode.setAttribute("label", msg);
     }
 };
 

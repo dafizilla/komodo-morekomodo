@@ -3,6 +3,8 @@
 
 <!ENTITY show.statusbar.label "Show Statusbar">
 
+<!ENTITY statusbar.label "Statusbar">
+
 <!ENTITY filetime.label "File Last Modified Time">
 <!ENTITY timeformat.label "Time Format">
 <!ENTITY default.timeformat.label "Restore Default Format">
@@ -20,3 +22,5 @@
 
 <!ENTITY find.dialog.label "Find Dialog">
 <!ENTITY restore.last.used.findinfile.label "Restore last used 'Find In File'">
+
+<!ENTITY charcode.label "Unicode for selected character">

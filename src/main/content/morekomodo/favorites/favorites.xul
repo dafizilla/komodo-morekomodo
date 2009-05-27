@@ -57,36 +57,36 @@
                 oncommand="gFavorites.openSelected();"
                 accesskey="&openfile.accesskey;"
                 label="&openfile.button.label;"/>
-	<button label="&add.menu.label;" accesskey="&add.menu.accesskey;" type="menu">
-	    <menupopup>
-	    <menuitem
-		id="addCurrentFile"
-		oncommand="gFavorites.addCurrentFile();"
-		accesskey="&addCurrentFile.accesskey;"
-		label="&addCurrentFile.button.label;"/>
-	    <menuitem
-		id="addFiles"
-		oncommand="gFavorites.addFiles();"
-		accesskey="&addfiles.accesskey;"
-		label="&addfiles.button.label;"/>
-	    <menuitem
-		id="addAllFiles"
-		oncommand="gFavorites.addAllFiles();"
-		accesskey="&addAllFiles.accesskey;"
-		label="&addAllFiles.button.label;"/>
-	    <menuseparator id="add-file-menuseparator" />
-	    <menuitem
-		id="addCurrentFolder"
-		oncommand="gFavorites.addCurrentFolder();"
-		accesskey="&addCurrentFolder.accesskey;"
-		label="&addCurrentFolder.button.label;"/>
-	    <menuitem
-		id="addFolder"
-		oncommand="gFavorites.addFolder();"
-		accesskey="&addFolder.accesskey;"
-		label="&addFolder.button.label;"/>
-	    </menupopup>
-	</button>
+        <button label="&add.menu.label;" accesskey="&add.menu.accesskey;" type="menu">
+            <menupopup>
+                <menuitem
+                    id="addCurrentFile"
+                    oncommand="gFavorites.addCurrentFile();"
+                    accesskey="&addCurrentFile.accesskey;"
+                    label="&addCurrentFile.button.label;"/>
+                <menuitem
+                    id="addFiles"
+                    oncommand="gFavorites.addFiles();"
+                    accesskey="&addfiles.accesskey;"
+                    label="&addfiles.button.label;"/>
+                <menuitem
+                    id="addAllFiles"
+                    oncommand="gFavorites.addAllFiles();"
+                    accesskey="&addAllFiles.accesskey;"
+                    label="&addAllFiles.button.label;"/>
+                <menuseparator id="add-file-menuseparator" />
+                <menuitem
+                    id="addCurrentFolder"
+                    oncommand="gFavorites.addCurrentFolder();"
+                    accesskey="&addCurrentFolder.accesskey;"
+                    label="&addCurrentFolder.button.label;"/>
+                <menuitem
+                    id="addFolder"
+                    oncommand="gFavorites.addFolder();"
+                    accesskey="&addFolder.accesskey;"
+                    label="&addFolder.button.label;"/>
+                </menupopup>
+        </button>
 
         <button
                 id="editButton"
