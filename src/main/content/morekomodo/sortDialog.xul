@@ -28,11 +28,7 @@
             <checkbox id="remove-dup" label="&remove.duplicate;" persist="checked" />
             <checkbox id="ignore-case" label="&ignore.case;" persist="checked" />
             <checkbox id="numeric-sort" label="&numeric.sort;" persist="checked" />
+            <checkbox id="sort-selection" label="&label.sel;" disabled="true"/>
         </groupbox>
-        <label id="sort-origin"
-               style="font-weight: bold"
-               flex="1"
-               labelsel="&label.sel;"
-               labelall="&label.all;" />
     </vbox>
 </dialog>

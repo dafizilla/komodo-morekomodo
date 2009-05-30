@@ -49,19 +49,16 @@ var gSortDialog = {
         this.oRemoveDup = document.getElementById("remove-dup");
         this.oIgnoreCase = document.getElementById("ignore-case");
         this.oNumericSort = document.getElementById("numeric-sort");
+        this.oSortSelection = document.getElementById("sort-selection");
 
         this.initValues();
     },
 
     initValues : function() {
-        var labelSortOrigin = document.getElementById("sort-origin");
-        var labelValue;
-        if (this.param.view.selection.length == 0) {
-            labelValue = "labelall";
-        } else {
-            labelValue = "labelsel";
+        if (this.param.sortOptions.sortOnlySelection) {
+            this.oSortSelection.checked = this.param.sortOptions.sortOnlySelection;
+            this.oSortSelection.removeAttribute("disabled");
         }
-        labelSortOrigin.value = labelSortOrigin.getAttribute(labelValue);
     },
 
     onAccept : function() {
@@ -71,6 +68,7 @@ var gSortDialog = {
         sortOptions.removeDuplicate = this.oRemoveDup.checked;
         sortOptions.ignoreCase = this.oIgnoreCase.checked;
         sortOptions.numeric = this.oNumericSort.checked;
+        sortOptions.sortOnlySelection = this.oSortSelection.checked;
     },
 
     onCancel : function() {

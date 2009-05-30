@@ -332,15 +332,19 @@ var moreKomodo = {
     },
 
     onOpenSortDialog : function() {
-        var param = {sortOptions : new SortOptions(),
-                     view : ko.views.manager.currentView,
-                     isOk : false};
+        var param = {isOk : false};
+
+        var view = ko.views.manager.currentView;
+        var scimoz = view.scintilla.scimoz;
+        param.sortOptions = new SortOptions();
+        param.sortOptions.sortOnlySelection
+            = scimoz.selectionStart != scimoz.selectionEnd;
         window.openDialog("chrome://morekomodo/content/sortDialog.xul",
                           "_blank",
                           "chrome,modal,resizable=no,dependent=yes",
                           param);
         if (param.isOk) {
-            sortView(ko.views.manager.currentView, param.sortOptions);
+            sortView(view, param.sortOptions);
         }
     },
 

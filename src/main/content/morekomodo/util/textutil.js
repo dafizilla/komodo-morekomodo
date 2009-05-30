@@ -254,8 +254,7 @@ function stripDoubleDosSeparators(str) {
 
 function sortView(view, sortOptions) {
     var scimoz = view.scintilla.scimoz;
-    var sel = view.selection;
-    var useSelection = sel.length != 0;
+    var useSelection = sortOptions.sortOnlySelection;
 
     var firstLine, lastLine;
     if (useSelection) {
@@ -304,6 +303,7 @@ function SortOptions() {
     this.ignoreCase = true;
     this.ascending = true;
     this.numeric = false;
+    this.sortOnlySelection = false;
 }
 
 function getSortedBuffer(arr, sortOptions, nl) {
