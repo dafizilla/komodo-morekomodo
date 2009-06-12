@@ -415,7 +415,7 @@ function getSelection(view) {
 function flipArray(array) {
     var newArr = [];
 
-    for (i in array) {
+    for (var i in array) {
         newArr[array[i]] = i;
     }
 

@@ -418,7 +418,7 @@ MoreKomodoPrefs.prototype = {
             try {
                 var pathProp = pathNode
                     .QueryInterface(Components.interfaces.nsIRDFResource);
-                for (i in boolProperties) {
+                for (var i in boolProperties) {
                     var property = boolProperties[i];
                     var res = this._rdf.GetResource(
                         "http://dafizilla.sourceforge.net/rdf#" + property);
@@ -426,7 +426,7 @@ MoreKomodoPrefs.prototype = {
                      fi[property] = value == "true";
                 }
 
-                for (i in stringProperties) {
+                for (var i in stringProperties) {
                     var property = stringProperties[i];
                     var res = this._rdf.GetResource(
                         "http://dafizilla.sourceforge.net/rdf#" + property);
@@ -470,7 +470,7 @@ MoreKomodoPrefs.prototype = {
             var favoriteInfo = favoriteInfoArr[i];
             var infoRes = this._rdf.GetAnonymousResource();
 
-            for (prop in favoriteInfo) {
+            for (var prop in favoriteInfo) {
                 var res = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#" + prop);
                 ds.Assert(infoRes, res, this._rdf.GetLiteral(favoriteInfo[prop]), true);
             }

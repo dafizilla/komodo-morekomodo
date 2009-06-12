@@ -21,7 +21,7 @@
 }
 
 .button-findresults-refresh[disabled="true"] {
-  -moz-opacity: 0.5;
+  opacity: 0.5;
 }
 
 .button-findresults-openfoundfiles {
@@ -29,7 +29,7 @@
 }
 
 .button-findresults-openfoundfiles[disabled="true"] {
-  -moz-opacity: 0.5;
+  opacity: 0.5;
 }
 
 .button-morekomodo-lockedit[checked] {
@@ -41,7 +41,7 @@
 }
 
 .button-morekomodo-lockedit[disabled="true"] {
-  -moz-opacity: 0.5;
+  opacity: 0.5;
 }
 
 .button-findresults-find-by-selection {

@@ -160,6 +160,8 @@ MoreKomodoCommon.renameFile = function(uri, newName) {
             newPath = parent + "/" + newName;
             conn.rename(oldPath, newPath);
         }
+        newPath = koFileEx.scheme + "://" + koFileEx.server
+                    + "/" + koFileEx.dirName + "/" + newName;
     } else if (koFileEx.isFile) {
         var oldLocalFile = MoreKomodoCommon.makeLocalFile(oldPath);
         var newLocalFile = MoreKomodoCommon.makeLocalFile(oldLocalFile.parent, [newName]);
@@ -336,7 +338,7 @@ MoreKomodoCommon.backupFile = function(fromFile, toFile) {
 MoreKomodoCommon.getMruUriIndex = function(prefName, uri) {
     var list = ko.mru.getAll(prefName);
 
-    for (i = 0; i < list.length; i++) {
+    for (var i = 0; i < list.length; i++) {
         var mru = list[i];
         if (mru == uri) {
             // indexes are in reverse order

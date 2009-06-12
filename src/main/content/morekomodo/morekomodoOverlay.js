@@ -111,14 +111,23 @@ var moreKomodo = {
             case "move":
                 // handle splitted view
                 var list = ko.views.manager.topView.findViewsForDocument(commandInfo.document);
-                for (i in list) {
+                for (var i in list) {
                     var view = list[i];
-                    var caretPosition = getCaretPosition(view);
-                    view.document = commandInfo.newDocument;
-                    moveCaret(view, caretPosition);
-                    this.updateView(view);
-                    // ensure colourise is applied
-                    ko.commands.doCommand('cmd_viewAsGuessedLanguage');
+                    if (view.getAttribute("type") == "editor") {
+                        var caretPosition = getCaretPosition(view);
+                        view.document = commandInfo.newDocument;
+                        
+                        moveCaret(view, caretPosition);
+                        this.updateView(view);
+
+                        // /opt/devel/mozilla/komodo/openkomodo/src/chrome/komodo/content/bindings/views-browser.xml
+                        // /opt/devel/mozilla/komodo/openkomodo/src/chrome/komodo/content/bindings/views-editor.p.xml
+                        if (view.preview) {
+                            view.preview.open(view.document.file.URI, false);
+                        }
+                        // ensure colourise is applied
+                        ko.commands.doCommand('cmd_viewAsGuessedLanguage');
+                    }
                 }
 
                 // update the mru list
@@ -133,7 +142,7 @@ var moreKomodo = {
             case "delete":
                 var list = ko.views.manager.topView.findViewsForDocument(commandInfo.document);
                 var uriView = commandInfo.document.file.URI;
-                for (i in list) {
+                for (var i in list) {
                     list[i].closeUnconditionally();
                 }
 
@@ -145,7 +154,7 @@ var moreKomodo = {
                 break;
             case "lock":
                 var list = ko.views.manager.topView.findViewsForDocument(commandInfo.document);
-                for (i in list) {
+                for (var i in list) {
                     var view = list[i];
                     view.scintilla.scimoz.readOnly = commandInfo.readOnly;
                     this._updateLockEdit(view);
