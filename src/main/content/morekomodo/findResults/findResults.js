@@ -44,6 +44,11 @@ var moreKomodoFindResults = {
                             moreKomodoFindResults.handleRefreshStatus,
                             false);
             }
+
+            // Allow to select items to copy
+            var treeWidget = document.getElementById("findresults" + i);
+            treeWidget.setAttribute("seltype", "multiple");
+            treeWidget.setAttribute("context", "moreKomodofindResultsContext" + i);
         }
         this.arrFind = [];
         this.findStartedFromUI = true;
@@ -52,37 +57,9 @@ var moreKomodoFindResults = {
 
         this._findSvc = Components.classes["@activestate.com/koFindService;1"].
                getService(Components.interfaces.koIFindService);
-        this._koOptions = Components.classes["@activestate.com/koFindOptions;1"]
-                    .createInstance(Components.interfaces.koIFindOptions);
-
-        this._tooltipOptions = [
-            { id: "morekomodo-refresh-include", property : "encodedIncludeFiletypes"},
-            { id: "morekomodo-refresh-exclude", property : "encodedExcludeFiletypes"},
-            { id: "morekomodo-refresh-folders", property : "encodedFolders"}
-            ];
 
         window.controllers.appendController(this);
      },
-
-    onCopyFindResults : function(tabIndex, copyFileNames) {
-        var arr = this.getLinesFromFindResults(tabIndex, copyFileNames);
-
-        if (arr.length) {
-            var msg;
-
-            if (copyFileNames) {
-                msg = MoreKomodoCommon
-                    .getFormattedMessage("findresults.copy.filenames", [arr.length]);
-            } else {
-                var msg = MoreKomodoCommon
-                    .getFormattedMessage("findresults.copy.contents", [arr.length]);
-            }
-
-            // Is \n multi-platform compliant?
-            MoreKomodoCommon.copyToClipboard(arr.join("\n"));
-            ko.statusBar.AddMessage(msg, "moreKomodo", 3000, true)
-        }
-    },
 
     onRefreshFindResults : function(tabIndex) {
         this.onRepeatFind(tabIndex, this.arrFind.length - 1);
@@ -177,8 +154,9 @@ var moreKomodoFindResults = {
 
     onOpenFoundFiles : function(tabIndex) {
         var tab = FindResultsTab_GetManager(tabIndex);
+        var columnId = "findresults" + tabIndex + "-filename";
 
-        var files = this.getUniqFileNames(tab.view, tabIndex);
+        var files = moreKomodoFindResultsUtil.getContentResults(tab.view, [columnId], true);
         var filesToOpen = null;
         var locMsg = MoreKomodoCommon.getLocalizedMessage;
         var locFmtMsg = MoreKomodoCommon.getFormattedMessage;
@@ -218,21 +196,6 @@ var moreKomodoFindResults = {
         }
     },
 
-    getUniqFileNames : function(tabView, tabIndex) {
-        var arr = [];
-        var uniqArr = [];
-        var treeColumn = { id: "findresults" + tabIndex + "-filename"};
-
-        for (var i = 0; i < tabView.rowCount; i++) {
-            uniqArr[tabView.getCellText(i, treeColumn)] = 1;
-        }
-        for (var name in uniqArr) {
-            arr.push(name);
-        }
-
-        return arr;
-    },
-
     onFindBySelection : function(tabIndex) {
         var view = ko.views.manager.currentView;
 
@@ -270,8 +233,10 @@ var moreKomodoFindResults = {
 
     appendRefreshItem : function(menu, findInfo, tabIndex, findIndex) {
         var item = document.createElement("menuitem");
-        var label = this.createLabelFromPattern(findInfo);
+        var label = document.getElementById("morekomodo-refresh-tooltip")
+                        .createLabelFromPattern(findInfo);
 
+        item["findInfo"] = this.arrFind[findIndex];
         item.setAttribute("id", findIndex);
         item.setAttribute("label", label);
         item.setAttribute("tooltip", "morekomodo-refresh-tooltip");
@@ -281,39 +246,6 @@ var moreKomodoFindResults = {
                             .replace("%2", findIndex));
 
         menu.appendChild(item);
-    },
-
-    onTooltipRefresh : function (targetNode) {
-        var findInfo = this.arrFind[targetNode.id];
-        var isFindInFile;
-
-        switch (findInfo.context.type) {
-            case Components.interfaces.koIFindContext.FCT_IN_FILES:
-            case Components.interfaces.koIFindContext.FCT_IN_COLLECTION:
-                isFindInFile = true;
-                break;
-            default:
-                isFindInFile = false;
-                break;
-        }
-
-        if (isFindInFile) {
-            document.getElementById("morekomodo-refresh-tooltip-find-in-file")
-                .removeAttribute("hidden");
-            for (var i in this._tooltipOptions) {
-                var opts = this._tooltipOptions[i];
-                document
-                    .getElementById(opts.id)
-                    .setAttribute("value", findInfo.options[opts.property]);
-            }
-        } else {
-            document.getElementById("morekomodo-refresh-tooltip-find-in-file")
-                .setAttribute("hidden", true);
-        }
-
-        document.getElementById("morekomodo-refresh-tooltip-pattern")
-                .setAttribute("value", targetNode.getAttribute("label"));
-        return true;
     },
 
     insertExtraMenuItems : function(menu) {
@@ -326,25 +258,6 @@ var moreKomodoFindResults = {
             menu.appendChild(newItem);
             menuitem = menuitem.nextSibling;
         }
-    },
-
-    createLabelFromPattern : function(findInfo) {
-        var arr = findInfo.pattern.split(/\r|\r\n|\n/g);
-        var label = arr[0];
-        var tooltip = label;
-        const maxLen = 14;
-
-        if (label.length > maxLen) {
-            label = label.substring(0, maxLen) + "...";
-        }
-        // Add a paragraph character if pattern is 'multiple line'
-        if (arr.length > 1) {
-            label += String.fromCharCode(182);
-        }
-
-        this.copyOptions(findInfo.options, this._koOptions);
-
-        return this._koOptions.searchDescFromPattern(label);
     },
 
     removeAllFindInfo : function(event) {
@@ -383,50 +296,27 @@ var moreKomodoFindResults = {
                 break;
             default:
                 MoreKomodoCommon.log("Refresh Non supported for type " + context.type);
+                break;
         }
     },
 
-    getLinesFromFindResults : function(tabIndex, copyFileNames) {
-        var tab = FindResultsTab_GetManager(tabIndex);
-        tabView = tab.view;
+    onCopyToViewFindResults : function(tabIndex, copyFileNames, useSelectedItems) {
+        var view = FindResultsTab_GetManager(tabIndex).view;
+        var type = copyFileNames
+                        ? moreKomodoFindResultsUtil.FILE_PATH
+                        : moreKomodoFindResultsUtil.CONTENT;
 
-        var arr = [];
-        if (copyFileNames) {
-            arr = this.getUniqFileNames(tabView, tabIndex);
-        } else {
-            var treeColumn = { id: "findresults" + tabIndex + "-context"};
-            for (var i = 0; i < tabView.rowCount; i++) {
-                arr.push(tabView.getCellText(i, treeColumn));
-            }
-        }
-
-        return arr;
-    },
-
-    onCopyToViewFindResults : function(tabIndex, copyFileNames) {
-        var arr = this.getLinesFromFindResults(tabIndex, copyFileNames);
-
-        if (arr.length) {
-            var copyFunc = function(view) {
-                var scimoz = view.scintilla.scimoz;
-                scimoz.text = arr.join(getNewlineFromScimoz(scimoz));
-            };
-            // Since Komodo 5.0.3 doNewView is deprecated
-            // http://www.openkomodo.com/blogs/toddw/komodo-5-0-3-api-changes
-            if (typeof(ko.views.manager.doNewViewAsync) == "undefined") {
-                copyFunc(ko.views.manager.doNewView());
-            } else {
-                ko.views.manager.doNewViewAsync(null, null, copyFunc);
-            }
-        }
+        moreKomodoFindResultsUtil.copyResultsToView(
+                    view,
+                    [this.getColumnIdFromType(tabIndex, type)],
+                    copyFileNames,
+                    useSelectedItems);
     },
 
     supportsCommand : function(cmd) {
         switch (cmd) {
             case "cmd_morekomodo_openFoundFiles":
             case "cmd_morekomodo_refreshFindResults":
-            case "cmd_morekomodo_copyFileNames":
-            case "cmd_morekomodo_copyContents":
             case "cmd_morekomodo_copyToViewFileNames":
             case "cmd_morekomodo_copyToViewContents":
             case "cmd_morekomodo_findBySelection":
@@ -442,8 +332,6 @@ var moreKomodoFindResults = {
         switch (cmd) {
             case "cmd_morekomodo_openFoundFiles":
             case "cmd_morekomodo_refreshFindResults":
-            case "cmd_morekomodo_copyFileNames":
-            case "cmd_morekomodo_copyContents":
             case "cmd_morekomodo_copyToViewFileNames":
             case "cmd_morekomodo_copyToViewContents":
             case "cmd_morekomodo_findBySelection":
@@ -454,7 +342,7 @@ var moreKomodoFindResults = {
 
     doCommand : function(cmd) {
         var tabIndex = this.selectedTabManagerIndex;
-        
+
         if (tabIndex < 0) {
             return;
         }
@@ -464,12 +352,6 @@ var moreKomodoFindResults = {
                 break;
             case "cmd_morekomodo_refreshFindResults":
                 this.onRefreshFindResults(tabIndex);
-                break;
-            case "cmd_morekomodo_copyFileNames":
-                this.onCopyFindResults(tabIndex, true);
-                break;
-            case "cmd_morekomodo_copyContents":
-                this.onCopyFindResults(tabIndex, false);
                 break;
             case "cmd_morekomodo_copyToViewFileNames":
                 this.onCopyToViewFindResults(tabIndex, true);
@@ -497,6 +379,43 @@ var moreKomodoFindResults = {
             }
         }
         return -1;
+    },
+
+    getColumnIdFromType : function(tabIndex, resultType) {
+        switch (resultType) {
+            case moreKomodoFindResultsUtil.LINE_NUMBER:
+                return "findresults" + tabIndex + "-linenum";
+                break;
+            case moreKomodoFindResultsUtil.FILE_PATH:
+                return "findresults" + tabIndex + "-filename";
+                break;
+            case moreKomodoFindResultsUtil.CONTENT:
+                return "findresults" + tabIndex + "-context";
+                break;
+        }
+        return "findresults" + tabIndex + "-context";
+    },
+
+    onCopyToViewCustomFindResults : function(tabIndex, useSelectedItems) {
+        var format = moreKomodoFindResultsUtil.openCustomFormatDialog();
+
+        if (format) {
+            var copyFileNames = format.length == 1
+                && format[0] == moreKomodoFindResultsUtil.FILE_PATH;
+            var arrIds = [];
+
+            for (var i = 0; i < format.length; i++) {
+                arrIds.push(this.getColumnIdFromType(tabIndex, parseInt(format[i])));
+            }
+
+            var view = FindResultsTab_GetManager(tabIndex).view;
+
+            moreKomodoFindResultsUtil.copyResultsToView(
+                        view,
+                        arrIds,
+                        copyFileNames,
+                        useSelectedItems);
+        }
     }
 }
 

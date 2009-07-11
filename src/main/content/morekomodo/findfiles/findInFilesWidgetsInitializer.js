@@ -52,10 +52,10 @@ var findInFilesWidgetsInitializer = {
             this.prefs.lastFindContext = this.searchIn.value;
         }
     },
-    
+
     initControls: function() {
         this.searchIn = document.getElementById('search-in-menu');
-        
+
         this.setLastFindInFiles();
     },
 

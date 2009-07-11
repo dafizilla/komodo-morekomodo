@@ -41,7 +41,7 @@ var gUnicodeTable = {
         } catch (err) {
             alert(err);
         }
-        sizeToContent();
+        window.sizeToContent();
     },
 
     initControls : function() {
@@ -67,7 +67,7 @@ var gUnicodeTable = {
     onDblClick : function(event) {
         this.insertChar();
     },
-    
+
     onSelectUnicodeSet : function(setRange) {
         var r = setRange.split("..");
         this.unicodeTableTreeView.setRange(parseInt(r[0]), parseInt(r[1]));

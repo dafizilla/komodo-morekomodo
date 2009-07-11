@@ -30,14 +30,16 @@
 <!ENTITY menuitem-cutappend.label "Cut And Append">
 
 <!ENTITY findresults.tooltiptext "Copy Find Results">
-<!ENTITY findresults.copy.filenames "Copy File Names to Clipboard">
-<!ENTITY findresults.copy.contents "Copy Content to Clipboard">
-<!ENTITY findresults.copy.to.view.filenames "Copy File Names to New View">
-<!ENTITY findresults.copy.to.view.contents "Copy Content to New View">
+<!ENTITY findresults.copy.to.view.filenames "Copy File Names to View">
+<!ENTITY findresults.copy.to.view.contents "Copy Content to View">
+<!ENTITY findresults.use.custom.format "Use Custom Format...">
 <!ENTITY findresults.refresh.tooltip "Run Last Find Again">
 <!ENTITY findresults.openfoundfiles.tooltip "Open Found Files">
 <!ENTITY findresults.find.by.selection.tooltip "Find Using Selected Text">
 <!ENTITY findresults.refresh.clear.history "Clear History">
+
+<!ENTITY findresults.copy.selected.filenames "Copy Selected File Names to View">
+<!ENTITY findresults.copy.selected.contents "Copy Selected Contents to View">
 
 <!ENTITY lockedit.label "Lock Edit">
 <!ENTITY toolbar.lockedit.tooltip "Lock Edit Buffer">
@@ -67,11 +69,12 @@
 
 <!ENTITY morekomodo.findresults.openfoundfiles.desc "MoreKomodo: Find Results - Open Found Files...">
 <!ENTITY morekomodo.findresults.refreshFindResults.desc "MoreKomodo: Find Results - Run Last Find Again">
-<!ENTITY morekomodo.findresults.copyContents.desc "MoreKomodo: Find Results - Copy File Names to Clipboard">
-<!ENTITY morekomodo.findresults.copyFileNames.desc "MoreKomodo: Find Results - Copy Content to Clipboard">
-<!ENTITY morekomodo.findresults.copyToViewFileNames.desc "MoreKomodo: Find Results - Copy File Names to New View">
-<!ENTITY morekomodo.findresults.copyToViewContents.desc "MoreKomodo: Find Results - Copy Content to New View">
+<!ENTITY morekomodo.findresults.copyToViewFileNames.desc "MoreKomodo: Find Results - Copy File Names to View">
+<!ENTITY morekomodo.findresults.copyToViewContents.desc "MoreKomodo: Find Results - Copy Content to View">
 <!ENTITY morekomodo.findresults.findBySelection.desc "MoreKomodo: Find Results - Find Using Selected Text">
+
+<!ENTITY morekomodo.runoutputresults.copyToViewFileNames.desc "MoreKomodo: Run Output Results - Copy File Names to View">
+<!ENTITY morekomodo.runoutputresults.copyToViewContents.desc "MoreKomodo: Run Output Results - Copy Content to View">
 
 <!ENTITY morekomodo.refresh.pattern "Pattern:">
 <!ENTITY morekomodo.refresh.include "Include:">
@@ -83,3 +86,5 @@
 <!ENTITY menuitem-unicodetable.label "Unicode Table...">
 <!ENTITY menuitem-unicodetable.accesskey "U">
 <!ENTITY morekomodo.unicodetable.desc "MoreKomodo: View - Unicode Table">
+
+<!ENTITY morekomodo.runoutput.results.tooltiptext "Copy Output Results">

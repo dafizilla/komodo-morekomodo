@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://morekomodo/locale/morekomodo.dtd" >
+<?xml-stylesheet href="chrome://morekomodo/skin/morekomodo.css" type="text/css"?>
+
+<overlay id="runOutputOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/prefs.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/util/textutil.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/findResults/util.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/runOutputResults/runOutputResults.js" />
+
+    <broadcasterset id="broadcasterset_global">
+        <broadcaster
+                id="cmd_morekomodo_copyRunOutputToViewFileNames"
+                key="key_cmd_morekomodo_copyRunOutputToViewFileNames"
+                desc="&morekomodo.runoutputresults.copyToViewFileNames.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_copyRunOutputToViewFileNames')"/>
+        <broadcaster
+                id="cmd_morekomodo_copyRunOutputToViewContents"
+                key="key_cmd_morekomodo_copyRunOutputToViewContents"
+                desc="&morekomodo.runoutputresults.copyToViewContents.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_copyRunOutputToViewContents')"/>
+    </broadcasterset>
+
+    <hbox id="runoutput-button-box">
+        <toolbarbutton
+            id="runoutput-morekomodo-toolbar-copy"
+            tooltiptext="&morekomodo.runoutput.results.tooltiptext;"
+            type="menu"
+            orient="horizontal"
+            insertbefore="runoutput-list-button"
+            class="button-findresults-copy">
+            <menupopup id="runoutput-morekomodo-menu-copy">
+                <menuitem id="runoutput-morekomodo-copytoviewfilenames"
+                    label="&findresults.copy.to.view.filenames;"
+                    key="key_cmd_morekomodo_copyRunOutputToViewFileNames"
+                    command="cmd_morekomodo_copyRunOutputToViewFileNames"/>
+                <menuitem id="runoutput-morekomodo-copytoviewcontents"
+                    label="&findresults.copy.to.view.contents;"
+                    key="key_cmd_morekomodo_copyRunOutputToViewContents"
+                    command="cmd_morekomodo_copyRunOutputToViewContents"/>
+                <menuitem id="runoutput-morekomodo-copytoviewcustom"
+                    label="&findresults.use.custom.format;"
+                    oncommand="moreKomodoRunOutputResults.onCopyToViewCustomFindResults(false);"/>
+            </menupopup>
+        </toolbarbutton>
+    </hbox>
+
+    <popupset id="extensionPopupSet">
+        <popup id="moreKomodoRunOutputResultsContext">
+            <menuitem id="runoutput-morekomodo-context-menu-copytoviewfilenames"
+                label="&findresults.copy.selected.filenames;"
+                oncommand="moreKomodoRunOutputResults.onCopyToViewRunOutputResults(true, true)"/>
+            <menuitem id="runoutput-morekomodo-context-menu-copytoviewcontents"
+                label="&findresults.copy.selected.contents;"
+                oncommand="moreKomodoRunOutputResults.onCopyToViewRunOutputResults(false, true)"/>
+            <menuitem id="runoutput-morekomodo-context-menu-copytoviewcustom"
+                label="&findresults.use.custom.format;"
+                oncommand="moreKomodoRunOutputResults.onCopyToViewCustomFindResults(true);"/>
+        </popup>
+    </popupset>
+</overlay>

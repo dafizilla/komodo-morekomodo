@@ -38,13 +38,15 @@ var prefs = new MoreKomodoPrefs();
 var oMinOpenFoundFileCount;
 var openFoundFileInfo;
 var oRestoreLastFindInFile;
+var oMaxRefreshHistoryEntries;
+var maxRefreshHistoryEntries;
 
 function OnPreferencePageOK(prefset) {
     var openFoundFileInfo = {
             minFileCount : oMinOpenFoundFileCount.value
     };
     prefs.writeOpenFoundFileInfo(openFoundFileInfo);
-    prefs.writeMaxRefreshHistoryEntries(oMaxRefreshHistoryEntries.value)
+    prefs.writeMaxRefreshHistoryEntries(oMaxRefreshHistoryEntries.value);
     prefs.useLastFindContext = oRestoreLastFindInFile.checked;
 
     return true;

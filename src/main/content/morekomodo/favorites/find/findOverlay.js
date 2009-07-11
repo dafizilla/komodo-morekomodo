@@ -37,6 +37,7 @@
 var findReplaceFavorites = {
     onLoad : function(event) {
         this.prefs = new MoreKomodoPrefs();
+
         this.initControls();
     },
 
@@ -126,7 +127,7 @@ var findReplaceFavorites = {
     restoreFindInfo : function(event) {
         try {
         var menuItem = event.target;
-        var findInfo = menuItem["favoriteInfo"];
+        var findInfo = menuItem["findInfo"];
 
         // handle three state 'case' checkbox
         // reset to ignore-case
@@ -201,10 +202,22 @@ var findReplaceFavorites = {
     appendFavoriteItem : function(menu, fo) {
         var item = document.createElement("menuitem");
 
+        // Fill data needed by tooltip
+        if (fo.optMultiline) {
+            fo.pattern = fo.multilineSearchPattern;
+        } else {
+            fo.pattern = fo.searchPattern;
+        }
+        fo.context = {type : Components.interfaces.koIFindContext.FCT_IN_FILES};
+        fo.options = {encodedFolders : fo.dirs,
+                    encodedIncludeFiletypes : fo.includes,
+                    encodedExcludeFiletypes : fo.excludes};
+
         item.setAttribute("label", fo.name);
         item.setAttribute("oncommand", "findReplaceFavorites.restoreFindInfo(event);");
-        item["favoriteInfo"] = fo;
-        item.setAttribute("tooltiptext", fo.name);
+        item["findInfo"] = fo;
+
+        item.setAttribute("tooltip", "find-favorite-tooltip");
         menu.appendChild(item);
     },
 

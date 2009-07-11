@@ -39,3 +39,15 @@
   color: #FFFFFF;
   font-style: italic;
 }
+
+#find-favorite-tooltip description {
+  font-weight: bold;
+}
+
+/**
+ * This is necessary because it the crop attribute is ignored when element is
+ * inside an hbox
+ */
+#find-favorite-tooltip label {
+  max-width: 600px;
+}

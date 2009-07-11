@@ -43,7 +43,7 @@ var gFavorites = {
         } catch (err) {
             alert(err);
         }
-        sizeToContent();
+        window.sizeToContent();
     },
 
     initControls : function() {
@@ -115,7 +115,6 @@ var gFavorites = {
     addCurrentFolder : function() {
         var mainWindow = ko.windowManager.getMainWindow();
         var document = mainWindow.ko.views.manager.currentView.document;
-        var favoriteInfo = null;
 
         if (document.isUntitled) {
             mainWindow.ko.dialogs.alert(this.bundle.getString("path.untitled.document"));

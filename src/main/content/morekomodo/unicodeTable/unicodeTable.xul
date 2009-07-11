@@ -33,7 +33,7 @@
     <keyset id="unicodeTableKeys">
         <key keycode="VK_ESCAPE" modifiers="" oncommand="window.close();"/>
     </keyset>
-    
+
     <vbox flex="1" style="padding: 5px 10px 5px 10px;">
     <menulist oncommand="gUnicodeTable.onSelectUnicodeSet(this.value)">
         <menupopup>

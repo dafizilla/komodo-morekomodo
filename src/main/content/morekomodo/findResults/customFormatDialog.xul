@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://morekomodo/locale/customFormatDialog.dtd">
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    id="custom-format-dialog"
+    title="&title.dialog;"
+    width="300"
+    height="260"
+    buttons="accept,cancel"
+    buttonlabelaccept="&button.accept.label;"
+    buttonlabelcancel="&button.cancel.label;"
+    onload="return gCustomFormatDialog.onLoad();"
+    persist="screenX screenY width height"
+    ondialogaccept="return gCustomFormatDialog.onAccept();"
+    ondialogcancel="return gCustomFormatDialog.onCancel();">
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/prefs.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/findResults/util.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/findResults/customFormatDialog.js" />
+
+    <vbox>
+        <label value="&sample.result.label;" />
+        <textbox id="sample-output" readonly="true" />
+        <checkbox id="line-number" label="&line.number.label;" value="0" />
+        <checkbox id="file-path" label="&file.path.label;" value="1" />
+        <checkbox id="content" label="&content.label;" value="2" />
+
+        <separator class="groove-thin"/>
+        <label id="legend" value="&legend.label;" style="font-weight:bold; text-align: right;" />
+    </vbox>
+</dialog>

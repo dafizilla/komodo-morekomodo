@@ -1,0 +1,10 @@
+<!ENTITY title.dialog "Output Results Format">
+<!ENTITY button.accept.label "Copy">
+<!ENTITY button.cancel.label "Close">
+<!ENTITY sample.result.label "Sample Result Output">
+
+<!ENTITY line.number.label "Line Number">
+<!ENTITY file.path.label "File Path">
+<!ENTITY content.label "Content">
+
+<!ENTITY legend.label "Fields separator used is TAB character">

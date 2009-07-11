@@ -235,7 +235,7 @@ MoreKomodoCommon.getHtmlFromClipboard = function() {
                         .getService(Components.interfaces.nsIClipboard);
     var xferable = Components.classes["@mozilla.org/widget/transferable;1"]
                         .createInstance(Components.interfaces.nsITransferable);
-    pastedText = null;
+    var pastedText = null;
     if (clipboard && xferable) {
         xferable.addDataFlavor("text/html");
 
@@ -260,7 +260,7 @@ MoreKomodoCommon.pasteFromClipboard = function() {
                         .getService(Components.interfaces.nsIClipboard);
     var xferable = Components.classes["@mozilla.org/widget/transferable;1"]
                         .createInstance(Components.interfaces.nsITransferable);
-    pastedText = null;
+    var pastedText = null;
     if (clipboard && xferable) {
         xferable.addDataFlavor("text/unicode");
 
@@ -298,7 +298,7 @@ MoreKomodoCommon.hasDataMatchingFlavors = function(flavors) {
                            .createInstance(Components.interfaces.nsISupportsCString);
             kSuppString.data = flavors[i];
             flavorArray.AppendElement(kSuppString);
-        }        
+        }
         return clipboard.hasDataMatchingFlavors(flavorArray, clipboard.kGlobalClipboard);
     } else {
         return clipboard.hasDataMatchingFlavors(flavors, flavors.length,
@@ -346,4 +346,11 @@ MoreKomodoCommon.getMruUriIndex = function(prefName, uri) {
         }
     }
     return -1;
+}
+
+MoreKomodoCommon.defineConstant = function(obj, name, value) {
+    obj.__defineGetter__(name, function() { return value; });
+    obj.__defineSetter__(name, function() {
+        throw new Error(name + " is a constant");
+    });
 }

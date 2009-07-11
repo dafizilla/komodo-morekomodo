@@ -1,7 +1,14 @@
 <?xml version="1.0"?>
 
-<!DOCTYPE overlay SYSTEM "chrome://morekomodo/locale/favorites.dtd" >
+<!DOCTYPE overlay SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % favoritesDTD SYSTEM "chrome://morekomodo/locale/favorites.dtd">
+  <!ENTITY % morekomodoDTD SYSTEM "chrome://morekomodo/locale/morekomodo.dtd">
+  %favoritesDTD;
+  %morekomodoDTD;
+]>
+
 <?xml-stylesheet href="chrome://morekomodo/skin/morekomodo.css" type="text/css"?>
+<?xml-stylesheet href="chrome://morekomodo/skin/favorites.css" type="text/css"?>
 
 <overlay id="findFavoritesOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -14,6 +21,8 @@
             src="chrome://morekomodo/content/common.js" />
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/prefs.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/findResults/util.js" />
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/findfiles/findInFilesWidgetsInitializer.js" />
     <script type="application/x-javascript"
@@ -47,4 +56,13 @@
             </menupopup>
         </button>
     </vbox>
+
+    <popupset>
+        <tooltip type="findinfotooltip" id="find-favorite-tooltip"
+            patternlabel="&morekomodo.refresh.pattern;"
+            includelabel="&morekomodo.refresh.include;"
+            excludelabel="&morekomodo.refresh.exclude;"
+            folderlabel="&morekomodo.refresh.folders;"
+            />
+    </popupset>
 </overlay>

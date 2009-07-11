@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+
+ The contents of this file are subject to the Mozilla Public License Version
+ 1.1 (the "License"); you may not use this file except in compliance with
+ the License. You may obtain a copy of the License at
+ http://www.mozilla.org/MPL/
+
+ Software distributed under the License is distributed on an "AS IS" basis,
+ WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ for the specific language governing rights and limitations under the
+ License.
+
+ The Initial Developer of the Original Code is
+ Davide Ficano.
+ Portions created by the Initial Developer are Copyright (C) 2009
+ the Initial Developer. All Rights Reserved.
+
+ Contributor(s):
+   Davide Ficano <davide.ficano@gmail.com>
+
+ Alternatively, the contents of this file may be used under the terms of
+ either the GNU General Public License Version 2 or later (the "GPL"), or
+ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ in which case the provisions of the GPL or the LGPL are applicable instead
+ of those above. If you wish to allow use of your version of this file only
+ under the terms of either the GPL or the LGPL, and not to allow others to
+ use your version of this file under the terms of the MPL, indicate your
+ decision by deleting the provisions above and replace them with the notice
+ and other provisions required by the GPL or the LGPL. If you do not delete
+ the provisions above, a recipient may use your version of this file under
+ the terms of any one of the MPL, the GPL or the LGPL.
+
+ ***** END LICENSE BLOCK ***** -->
+
+<!--
+  This tooltip uses a findInfo object to render its content.
+  The findInfo object must be set into the DOM element attached to the tooltip.
+  The name of the property must be "findInfo"
+  Example
+  var findInfo = ...;
+  var item = document.createElement("menuitem");
+  item["findInfo"] = findInfo;
+  item.setAttribute("tooltip", "findInfoTooltip");
+
+  The findInfo object structure
+  var findInfo = {
+          options : {},     // Components.interfaces.koIFindOptions
+          context: {},      // Components.interfaces.koIFindContext
+          pattern : string  // Pattern string
+          };
+-->
+<bindings id="findinfotooltipBindings"
+   xmlns="http://www.mozilla.org/xbl"
+   xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+   xmlns:xbl="http://www.mozilla.org/xbl">
+
+  <binding id="findinfotooltip" extends="chrome://global/content/bindings/popup.xml#tooltip">
+    <content>
+      <xul:hbox>
+          <xul:description xbl:inherits="value=patternlabel" />
+          <xul:label anonid="pattern" value="" crop="end" />
+      </xul:hbox>
+      <xul:vbox anonid="find-info">
+          <xul:hbox>
+              <xul:description xbl:inherits="value=includelabel" />
+              <xul:label anonid="include" crop="center" />
+          </xul:hbox>
+          <xul:hbox>
+              <xul:description xbl:inherits="value=excludelabel" />
+              <xul:label anonid="exclude" crop="center" />
+          </xul:hbox>
+          <xul:hbox>
+              <xul:description xbl:inherits="value=folderlabel" />
+              <xul:label anonid="folders" crop="center" />
+          </xul:hbox>
+      </xul:vbox>
+    </content>
+
+    <implementation>
+      <constructor><![CDATA[
+        this.koOptions = Components.classes["@activestate.com/koFindOptions;1"]
+                        .createInstance(Components.interfaces.koIFindOptions);
+      ]]></constructor>
+
+      <method name="createLabelFromPattern">
+        <parameter name="findInfo"/>
+        <body><![CDATA[
+            var arr = findInfo.pattern.split(/\r|\r\n|\n/g);
+            var label = arr[0];
+
+            if (label.length == 0) {
+                return "";
+            }
+
+            // Add a paragraph character if pattern is 'multiple line'
+            if (arr.length > 1) {
+                label += String.fromCharCode(182);
+            }
+
+            this.copyOptions(findInfo.options, this.koOptions);
+
+            return this.koOptions.searchDescFromPattern(label);
+        ]]></body>
+      </method>
+
+      <method name="copyOptions">
+        <parameter name="fromFindOptions"/>
+        <parameter name="toFindOptions"/>
+        <body><![CDATA[
+          toFindOptions.patternType = fromFindOptions.patternType;
+          toFindOptions.matchWord = fromFindOptions.matchWord;
+          toFindOptions.caseSensitivity = fromFindOptions.caseSensitivity;
+          toFindOptions.displayInFindResults2 = fromFindOptions.displayInFindResults2;
+          toFindOptions.multiline = fromFindOptions.multiline;
+          toFindOptions.cwd = fromFindOptions.cwd;
+          toFindOptions.encodedFolders = fromFindOptions.encodedFolders;
+          toFindOptions.searchInSubfolders = fromFindOptions.searchInSubfolders;
+          toFindOptions.encodedIncludeFiletypes = fromFindOptions.encodedIncludeFiletypes;
+          toFindOptions.encodedExcludeFiletypes = fromFindOptions.encodedExcludeFiletypes;
+
+          //attribute boolean searchBackward;
+          //attribute long preferredContextType;
+          //attribute boolean showReplaceAllResults;
+          //attribute boolean confirmReplacementsInFiles;
+        ]]></body>
+      </method>
+    </implementation>
+
+    <handlers>
+      <handler event="popupshowing"><![CDATA[
+        var tooltip = document.tooltipNode;
+        var findInfo = tooltip.findInfo;
+        var isFindInFile;
+
+        if (!findInfo) {
+            Components.classes["@mozilla.org/consoleservice;1"]
+              .getService(Components.interfaces.nsIConsoleService)
+              .logStringMessage("findinfotooltip: findInfo object not found on tooltip related element");
+            return true;
+        }
+        switch (findInfo.context.type) {
+            case Components.interfaces.koIFindContext.FCT_IN_FILES:
+            case Components.interfaces.koIFindContext.FCT_IN_COLLECTION:
+                isFindInFile = true;
+                break;
+            default:
+                isFindInFile = false;
+                break;
+        }
+
+        var findInfoWidget = document
+            .getAnonymousElementByAttribute(this, "anonid", "find-info");
+        if (isFindInFile) {
+            findInfoWidget.removeAttribute("hidden");
+
+            document
+              .getAnonymousElementByAttribute(this, "anonid", "include")
+              .setAttribute("value", findInfo.options.encodedIncludeFiletypes);
+            document
+              .getAnonymousElementByAttribute(this, "anonid", "exclude")
+              .setAttribute("value", findInfo.options.encodedExcludeFiletypes);
+            document
+              .getAnonymousElementByAttribute(this, "anonid", "folders")
+              .setAttribute("value", findInfo.options.encodedFolders);
+        } else {
+            findInfoWidget.setAttribute("hidden", true);
+        }
+
+        var patternDesc = this.createLabelFromPattern(findInfo);
+        if (typeof (patternDesc) == "undefined" || patternDesc == null) {
+            patternDesc = targetNode.getAttribute("label");
+        }
+        document
+          .getAnonymousElementByAttribute(this, "anonid", "pattern")
+          .setAttribute("value", patternDesc);
+        return true;
+      ]]></handler>
+    </handlers>
+  </binding>
+</bindings>

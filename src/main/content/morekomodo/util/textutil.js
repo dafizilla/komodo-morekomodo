@@ -364,7 +364,7 @@ function getCaretPosition(view) {
         firstVisibileLine : scimoz.firstVisibleLine,
         startPos : null,
         endPos : null
-    }
+    };
 
     if (view.selection.length != 0) {
         caretPosition.startPos = scimoz.selectionStart;

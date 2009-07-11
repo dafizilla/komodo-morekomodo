@@ -16,6 +16,12 @@
   list-style-image: url("chrome://morekomodo/skin/copy_hover.png");
 }
 
+.button-findresults-copy[disabled="true"],
+.button-findresults-copy[disabled="true"]:hover {
+  list-style-image: url("chrome://morekomodo/skin/copy.png");
+  opacity: 0.5;
+}
+
 .button-findresults-refresh {
   list-style-image: url("chrome://morekomodo/skin/refresh.png");
 }
@@ -62,4 +68,10 @@
 
 .button-morekomodo-runoutput-clear {
   list-style-image: url("chrome://morekomodo/skin/clear.png");
+}
+
+tooltip[type="findinfotooltip"] {
+  -moz-binding: url('chrome://morekomodo/content/bindings/findinfotooltip.xml#findinfotooltip');
+  -moz-box-orient: vertical;
+  max-width: 600px;
 }

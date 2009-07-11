@@ -13,6 +13,8 @@
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/util/textutil.js" />
     <script type="application/x-javascript"
+            src="chrome://morekomodo/content/findResults/util.js" />
+    <script type="application/x-javascript"
             src="chrome://morekomodo/content/findResults/findResults.js" />
 
     <broadcasterset id="broadcasterset_global">
@@ -26,17 +28,6 @@
                 key="key_cmd_morekomodo_refreshFindResults"
                 desc="&morekomodo.findresults.refreshFindResults.desc;"
                 oncommand="goDoCommand('cmd_morekomodo_refreshFindResults')"/>
-
-        <broadcaster
-                id="cmd_morekomodo_copyFileNames"
-                key="key_cmd_morekomodo_copyFileNames"
-                desc="&morekomodo.findresults.copyFileNames.desc;"
-                oncommand="goDoCommand('cmd_morekomodo_copyFileNames')"/>
-        <broadcaster
-                id="cmd_morekomodo_copyContents"
-                key="key_cmd_morekomodo_copyContents"
-                desc="&morekomodo.findresults.copyContents.desc;"
-                oncommand="goDoCommand('cmd_morekomodo_copyContents')"/>
 
         <broadcaster
                 id="cmd_morekomodo_copyToViewFileNames"
@@ -83,15 +74,6 @@
             orient="horizontal"
             class="button-findresults-copy">
             <menupopup id="findresults1-morekomodo-menu-copy">
-                <menuitem id="findresults1-morekomodo-copyfilenames"
-                    label="&findresults.copy.filenames;"
-                    key="key_cmd_morekomodo_copyFileNames"
-                    command="cmd_morekomodo_copyFileNames"/>
-                <menuitem id="findresults1-morekomodo-copycontents"
-                    label="&findresults.copy.contents;"
-                    key="key_cmd_morekomodo_copyContents"
-                    command="cmd_morekomodo_copyContents"/>
-                <menuseparator />
                 <menuitem id="findresults1-morekomodo-copytoviewfilenames"
                     label="&findresults.copy.to.view.filenames;"
                     key="key_cmd_morekomodo_copyToViewFileNames"
@@ -100,6 +82,9 @@
                     label="&findresults.copy.to.view.contents;"
                     key="key_cmd_morekomodo_copyToViewContents"
                     command="cmd_morekomodo_copyToViewContents"/>
+                <menuitem id="findresults1-morekomodo-copytoviewcustom"
+                    label="&findresults.use.custom.format;"
+                    oncommand="moreKomodoFindResults.onCopyToViewCustomFindResults(1, false);"/>
             </menupopup>
         </toolbarbutton>
         <button
@@ -127,7 +112,7 @@
                        onpopupshowing="return moreKomodoFindResults.initRefreshViewMenu(event, 2);"
                        oncommand="event.stopPropagation();" />
         </toolbarbutton>
-    
+
         <toolbarbutton
             id="findresults2-morekomodo-toolbar-copy"
             tooltiptext="&findresults.tooltiptext;"
@@ -135,15 +120,6 @@
             orient="horizontal"
             class="button-findresults-copy">
             <menupopup id="findresults2-morekomodo-menu-copy">
-                <menuitem id="findresults2-morekomodo-copyfilenames"
-                    label="&findresults.copy.filenames;"
-                    key="key_cmd_morekomodo_copyFileNames"
-                    command="cmd_morekomodo_copyFileNames"/>
-                <menuitem id="findresults2-morekomodo-copycontents"
-                    label="&findresults.copy.contents;"
-                    key="key_cmd_morekomodo_copyContents"
-                    command="cmd_morekomodo_copyContents"/>
-                <menuseparator />
                 <menuitem id="findresults2-morekomodo-copytoviewfilenames"
                     label="&findresults.copy.to.view.filenames;"
                     key="key_cmd_morekomodo_copyToViewFileNames"
@@ -152,6 +128,9 @@
                     label="&findresults.copy.to.view.contents;"
                     key="key_cmd_morekomodo_copyToViewContents"
                     command="cmd_morekomodo_copyToViewContents"/>
+                <menuitem id="findresults2-morekomodo-copytoviewcustom"
+                    label="&findresults.use.custom.format;"
+                    oncommand="moreKomodoFindResults.onCopyToViewCustomFindResults(2, false);"/>
             </menupopup>
         </toolbarbutton>
         <button
@@ -159,25 +138,6 @@
                 class="button-findresults-find-by-selection button-toolbar-a"
                 tooltiptext="&findresults.find.by.selection.tooltip;"
                 command="cmd_morekomodo_findBySelection" />
-    </hbox>
-
-    <hbox id="findresults720_tabpanel-toolbarbox">
-        <toolbarbutton
-            id="findresults720-morekomodo-toolbar-copy"
-            tooltiptext="&findresults.tooltiptext;"
-            type="menu"
-            orient="horizontal"
-            class="button-findresults-copy"
-            insertbefore="findresults720-jumptoprev-button">
-            <menupopup id="findresults720-morekomodo-menu-copy">
-                <menuitem id="findresults720-morekomodo-copyfilenames"
-                    label="&findresults.copy.filenames;"
-                    oncommand="moreKomodoFindResults.onCopyFindResults(720, true)"/>
-                <menuitem id="findresults720-morekomodo-copycontents"
-                    label="&findresults.copy.contents;"
-                    oncommand="moreKomodoFindResults.onCopyFindResults(720, false)"/>
-            </menupopup>
-        </toolbarbutton>
     </hbox>
 
     <popupset id="extensionPopupSet">
@@ -189,28 +149,35 @@
                     oncommand="moreKomodoFindResults.removeAllFindInfo(event);" />
         </menupopup>
 
-        <tooltip id="morekomodo-refresh-tooltip"
-                onpopupshowing="return moreKomodoFindResults.onTooltipRefresh(document.tooltipNode);"
-                maxwidth="600px"
-                orient="vertical">
-            <hbox>
-                <description value="&morekomodo.refresh.pattern;" />
-                <label id="morekomodo-refresh-tooltip-pattern" value="" />
-            </hbox>
-            <vbox id="morekomodo-refresh-tooltip-find-in-file">
-                <hbox>
-                    <description value="&morekomodo.refresh.include;" />
-                    <label id="morekomodo-refresh-include" crop="center" />
-                </hbox>
-                <hbox>
-                    <description value="&morekomodo.refresh.exclude;" />
-                    <label id="morekomodo-refresh-exclude" crop="center" />
-                </hbox>
-                <hbox>
-                    <description value="&morekomodo.refresh.folders;" />
-                    <label id="morekomodo-refresh-folders" crop="center" />
-                </hbox>
-            </vbox>
-        </tooltip>
+        <tooltip type="findinfotooltip" id="morekomodo-refresh-tooltip"
+            patternlabel="&morekomodo.refresh.pattern;"
+            includelabel="&morekomodo.refresh.include;"
+            excludelabel="&morekomodo.refresh.exclude;"
+            folderlabel="&morekomodo.refresh.folders;"
+            />
+
+        <popup id="moreKomodofindResultsContext1">
+            <menuitem id="findresults1-morekomodo-context-menu-copytoviewfilenames"
+                label="&findresults.copy.selected.filenames;"
+                oncommand="moreKomodoFindResults.onCopyToViewFindResults(1, true, true);"/>
+            <menuitem id="findresults1-morekomodo-context-menu-copytoviewcontents"
+                label="&findresults.copy.selected.contents;"
+                oncommand="moreKomodoFindResults.onCopyToViewFindResults(1, false, true);"/>
+            <menuitem id="findresults1-morekomodo-context-menu-copytoviewcustom"
+                label="&findresults.use.custom.format;"
+                oncommand="moreKomodoFindResults.onCopyToViewCustomFindResults(1, true);"/>
+        </popup>
+
+        <popup id="moreKomodofindResultsContext2">
+            <menuitem id="findresults2-morekomodo-context-menu-copytoviewfilenames"
+                label="&findresults.copy.selected.filenames;"
+                oncommand="moreKomodoFindResults.onCopyToViewFindResults(2, true, true);"/>
+            <menuitem id="findresults2-morekomodo-context-menu-copytoviewcontents"
+                label="&findresults.copy.selected.contents;"
+                oncommand="moreKomodoFindResults.onCopyToViewFindResults(2, false, true);"/>
+            <menuitem id="findresults2-morekomodo-context-menu-copytoviewcustom"
+                label="&findresults.use.custom.format;"
+                oncommand="moreKomodoFindResults.onCopyToViewCustomFindResults(2, true);"/>
+        </popup>
     </popupset>
 </overlay>

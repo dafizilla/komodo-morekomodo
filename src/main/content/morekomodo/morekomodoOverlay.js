@@ -116,7 +116,7 @@ var moreKomodo = {
                     if (view.getAttribute("type") == "editor") {
                         var caretPosition = getCaretPosition(view);
                         view.document = commandInfo.newDocument;
-                        
+
                         moveCaret(view, caretPosition);
                         this.updateView(view);
 
@@ -484,7 +484,7 @@ var moreKomodo = {
         goUpdateCommand("cmd_morekomodo_showInFileManager");
     },
 
-    goUpdateClipboarcMenuItems : function() {
+    goUpdateClipboardMenuItems : function() {
         goUpdateCommand("cmd_morekomodo_pastehtml");
     },
 
@@ -764,7 +764,7 @@ var moreKomodo = {
 
     clearTerminalView : function () {
         var terminalView = document.getElementById("runoutput-scintilla");
-    
+
         if (terminalView && terminalView.terminalHandler != null) {
             var prevReadOnly = terminalView.scimoz.readOnly;
             terminalView.scimoz.readOnly = 0;
@@ -773,13 +773,13 @@ var moreKomodo = {
         }
         ko.views.manager.currentView.setFocus();
     },
-    
+
     onOpenUnicodeDialog : function() {
         ko.windowManager.openOrFocusDialog("chrome://morekomodo/content/unicodeTable/unicodeTable.xul",
                           "morekomodo_unicodetable",
                           "chrome,close=yes,resizable=yes");
     },
-    
+
     onViewLineColChanged : function() {
         var widgetCharCode = document.getElementById("statusbar-morekomodo-charcode");
         if (widgetCharCode.hasAttribute("collapsed")) {
@@ -789,11 +789,12 @@ var moreKomodo = {
         var msg = "";
 
         if (view && (view.scimoz.selectionStart != view.scimoz.selectionEnd)) {
+            var ch;
             if (view.scimoz.currentPos == view.scimoz.selectionStart) {
                 // the cursor is at beginning of selection
                 ch = view.scimoz.getWCharAt(view.scimoz.selectionStart).charCodeAt(0);
             } else {
-                // the cursor is at end of selection 
+                // the cursor is at end of selection
                 ch = view.scimoz.getWCharAt(view.scimoz.selectionEnd - 1).charCodeAt(0);
             }
             var code = sprintf("%04X", ch);

@@ -38,7 +38,7 @@
 function MoreKomodoPrefs() {
     this._prefBranch = Components.classes["@mozilla.org/preferences-service;1"]
         .getService(Components.interfaces.nsIPrefService)
-        .getBranch("dafizilla.morokomodo.");
+        .getBranch("dafizilla.morekomodo.");
     this._prefBranch.QueryInterface(Components.interfaces.nsIPrefBranch2);
 
     this._rdf = Components.classes["@mozilla.org/rdf/rdf-service;1"]
@@ -264,7 +264,7 @@ MoreKomodoPrefs.prototype = {
         return "true" == this._readLiteral(ds,
                             this._unicodeStatusbar, this._enabledRes, "true");
     },
-    
+
     set showUnicodeStatusbar(value) {
         var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
         var ds = this._rdf.GetDataSourceBlocking(filePath);
@@ -272,7 +272,7 @@ MoreKomodoPrefs.prototype = {
         this._setProperty(ds, this._unicodeStatusbar, this._enabledRes,
                           this._getLiteralBoolean(value));
     },
-    
+
     writeFileTimeInfo : function(fileTimeInfo) {
         var timeFormat = fileTimeInfo.timeFormat;
         if (timeFormat == "") {
@@ -398,7 +398,7 @@ MoreKomodoPrefs.prototype = {
             "optConfirmReplacementsInFiles",
             "optShowReplaceAllResults",
             "optSearchInSubdirs"];
-        
+
         var stringProperties = [
             "optCaseValue",
             "searchIn",

@@ -76,7 +76,7 @@ function UnicodeTableTreeView() {
         {code : 30, name : "RS", ctrl : "^^"},
         {code : 31, name : "US", ctrl : "^_"}
     ];
-    
+
     for (var c = 0x20; c < 0xA0; c++) {
         this.latinCodes[c] = {code : c,
                     name : c == 0x20 ? "SPC" : c == 0x7F ? "DEL" : String.fromCharCode(c),
@@ -89,9 +89,8 @@ function UnicodeTableTreeView() {
                     name : String.fromCharCode(c + 0xA0),
                     ctrl : ""};
     }
-    
+
     this.items = this.createTableSet(0, 0x7F);
-    
 }
 
 UnicodeTableTreeView.prototype = {
@@ -122,36 +121,36 @@ UnicodeTableTreeView.prototype = {
         for (var i = 0; i < charInfoArr.length; i++) {
             var charInfo = charInfoArr[i];
             var item = {};
-    
+
             item.charCode = String.fromCharCode(charInfo.code);
             item["dec-treecol"] = sprintf("%6d", charInfo.code);
             item["hex-treecol"] = sprintf("%04X", charInfo.code);
             item["oct-treecol"] = sprintf("%06o", charInfo.code);
             item["char-treecol"] = charInfo.name;
             item["ctrl-char-treecol"] = charInfo.ctrl;
-    
+
             arr.push(item);
         }
-        
+
         return arr;
     },
-    
+
     setRange : function(from, to) {
         var arr = this.createTableSet(from, to);
         this.treebox.rowCountChanged(0, arr.length - this.items.length);
         this.items = arr;
         this.refresh();
     },
-    
+
     get selectedItem() {
         var selIdx = this.selection.currentIndex;
-        
+
         if (selIdx < 0) {
             return null;
         }
         return this.items[selIdx];
     },
-        
+
     refresh : function() {
         this.selection.clearSelection();
         this.selection.select(0);
@@ -181,6 +180,7 @@ UnicodeTableTreeView.prototype = {
         switch (column.id || column) {
             case "char-treecol":
                 props.AppendElement(charNameAtom);
+            break;
         }
     },
 

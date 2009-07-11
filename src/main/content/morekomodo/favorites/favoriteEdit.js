@@ -42,7 +42,7 @@ var gFavoriteEdit = {
         } catch (err) {
             alert(err);
         }
-        sizeToContent();
+        window.sizeToContent();
     },
 
     initControls : function() {
@@ -51,7 +51,7 @@ var gFavoriteEdit = {
         this.initValues();
 
         if (typeof this.param.title != "undefined") {
-            title = this.param.title;
+            window.title = this.param.title;
         }
     },
 

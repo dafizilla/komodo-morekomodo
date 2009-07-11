@@ -28,7 +28,7 @@
             commandupdater="true"
             events="focus"/>
         <commandset id="morekomodo_filecommand"
-            oncommandupdate="moreKomodo.goUpdateClipboarcMenuItems(this)"
+            oncommandupdate="moreKomodo.goUpdateClipboardMenuItems(this)"
             commandupdater="true"
             events="clipboard"/>
     </commandset>
