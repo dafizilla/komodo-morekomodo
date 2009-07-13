@@ -43,6 +43,7 @@ var gCustomFormatDialog = {
             this.sample = [];
 
             this.initControls();
+            window.sizeToContent();
         } catch (err) {
             alert(err);
         }
@@ -62,7 +63,7 @@ var gCustomFormatDialog = {
             this.checks[i].addEventListener("CheckboxStateChange",
                             this.handle_checkboxStateChange, false);
         }
-        
+
         this.sampleOutputWidget = document.getElementById("sample-output");
         this.acceptWidget = document.documentElement.getButton("accept");
         this.initValues();
