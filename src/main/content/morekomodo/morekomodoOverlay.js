@@ -158,6 +158,7 @@ var moreKomodo = {
                     var view = list[i];
                     view.scintilla.scimoz.readOnly = commandInfo.readOnly;
                     this._updateLockEdit(view);
+                    view.prefs.setBooleanPref("morekomodo.lockbuffer", commandInfo.readOnly);
                 }
                 break;
         }
@@ -693,8 +694,10 @@ var moreKomodo = {
         }
     },
 
-    onToogleLockEdit : function() {
-        var view = ko.views.manager.currentView;
+    onToogleLockEdit : function(view) {
+        if (typeof(view) == "undefined" || view == null) {
+            view = ko.views.manager.currentView;
+        }
         if (view && view.getAttribute('type') == 'editor') {
             var data = {document : view.document,
                         readOnly : !view.scintilla.scimoz.readOnly,
@@ -721,12 +724,18 @@ var moreKomodo = {
             self.onViewLineColChanged(event);
         };
 
+        this.handle_current_view_opened_setup = function(event) {
+            self.onCurrentViewOpened(event);
+        }
+
         window.addEventListener('current_view_changed',
                                 this.handle_current_view_changed_setup, false);
         window.addEventListener('view_closed',
                                 this.handle_current_view_closed_setup, false);
         window.addEventListener('current_view_linecol_changed',
                                 this.handle_current_view_linecol_changed_setup, false);
+        window.addEventListener('view_opened',
+                                this.handle_current_view_opened_setup, false);
     },
 
     removeListeners : function() {
@@ -736,6 +745,8 @@ var moreKomodo = {
                                 this.handle_current_view_closed_setup, false);
         window.removeEventListener('current_view_linecol_changed',
                                 this.handle_current_view_linecol_changed_setup, false);
+        window.removeEventListener('view_opened',
+                                this.handle_current_view_opened_setup, false);
     },
 
     onCurrentViewChanged : function(event) {
@@ -802,6 +813,15 @@ var moreKomodo = {
         }
 
         widgetCharCode.setAttribute("label", msg);
+    },
+
+    onCurrentViewOpened : function(event) {
+        var view = event.originalTarget;
+
+        if (view.prefs.hasBooleanPref("morekomodo.lockbuffer")
+            && view.prefs.getBooleanPref("morekomodo.lockbuffer")) {
+            this.onToogleLockEdit(view);
+        }
     }
 };
 
