@@ -160,7 +160,8 @@ FavoriteInfo.prototype = {
         try {
             // Using ko.views.manager.doFileOpen the document isn't shared
             // among multiple windows so the ko.open package is used
-            var koOpen = ko.windowManager.getMainWindow().ko.open;
+            var koNS = ko.windowManager.getMainWindow().ko;
+            var koOpen = koNS.open;
             switch (this._type) {
                 case FAVORITE_FILE:
                     koOpen.URI(this._path);
@@ -189,7 +190,7 @@ FavoriteInfo.prototype = {
                     koOpen.URI(this._path);
                     break;
                 case FAVORITE_REMOTE_DIR:
-                    ko.filepicker.openRemoteFiles(this._path);
+                    koNS.filepicker.openRemoteFiles(this._path);
                     break;
             }
         } catch (err) {
