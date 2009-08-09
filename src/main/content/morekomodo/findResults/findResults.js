@@ -152,48 +152,11 @@ var moreKomodoFindResults = {
         //attribute boolean confirmReplacementsInFiles;
     },
 
-    onOpenFoundFiles : function(tabIndex) {
-        var tab = FindResultsTab_GetManager(tabIndex);
-        var columnId = "findresults" + tabIndex + "-filename";
+    onOpenFoundFiles : function(tabIndex, useSelectedItems) {
+        var view = FindResultsTab_GetManager(tabIndex).view;
+        var columnId = this.getColumnIdFromType(tabIndex, moreKomodoFindResultsUtil.FILE_PATH);
 
-        var files = moreKomodoFindResultsUtil.getContentResults(tab.view, [columnId], true);
-        var filesToOpen = null;
-        var locMsg = MoreKomodoCommon.getLocalizedMessage;
-        var locFmtMsg = MoreKomodoCommon.getFormattedMessage;
-        if (files.length) {
-            var prefs = new MoreKomodoPrefs();
-            if (files.length > prefs.readOpenFoundFileInfo().minFileCount) {
-                filesToOpen = ko.dialogs.selectFromList(
-                        locMsg("findresults.openfoundfiles.select.title"),
-                        locFmtMsg("findresults.openfoundfiles.select.text", [files.length]),
-                        files,
-                        "zero-or-more",
-                        null,
-                        null,
-                        false,
-                        null);
-            } else {
-                filesToOpen = files;
-            }
-        }
-        if (filesToOpen) {
-            var response = "Yes";
-            if (filesToOpen.length > 10) {
-                response = ko.dialogs.yesNo(
-                    locFmtMsg("findresults.openfoundfiles.confirm.text", [filesToOpen.length]),
-                                 null,
-                                 null,
-                                 locMsg("findresults.openfoundfiles.confirm.title"),
-                                 null);
-            }
-            if (response == "Yes") {
-                for (var i = 0; i < filesToOpen.length; i++) {
-                    // Using ko.views.manager.doFileOpen the document isn't shared
-                    // among multiple windows so the ko.open package is used
-                    ko.open.URI(filesToOpen[i]);
-                }
-            }
-        }
+        moreKomodoFindResultsUtil.openFiles(view, columnId, useSelectedItems);
     },
 
     onFindBySelection : function(tabIndex) {

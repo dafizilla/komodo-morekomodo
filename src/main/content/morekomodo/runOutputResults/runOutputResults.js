@@ -72,17 +72,22 @@ var moreKomodoRunOutputResults = {
     },
 
     enableCopyButton : function(isEnabled) {
-        var button = document.getElementById("runoutput-morekomodo-toolbar-copy");
+        var buttons = ["runoutput-morekomodo-openfoundfiles",
+                       "runoutput-morekomodo-toolbar-copy"];
 
-        if (isEnabled) {
-            button.removeAttribute("disabled");
-        } else {
-            button.setAttribute("disabled", "true");
+        for (var i in buttons) {
+            var button = document.getElementById(buttons[i]);
+            if (isEnabled) {
+                button.removeAttribute("disabled");
+            } else {
+                button.setAttribute("disabled", "true");
+            }
         }
     },
 
     supportsCommand : function(cmd) {
         switch (cmd) {
+            case "cmd_morekomodo_openRunOutputToViewFoundFiles":
             case "cmd_morekomodo_copyRunOutputToViewFileNames":
             case "cmd_morekomodo_copyRunOutputToViewContents":
                 return true;
@@ -92,6 +97,7 @@ var moreKomodoRunOutputResults = {
 
     isCommandEnabled : function(cmd) {
         switch (cmd) {
+            case "cmd_morekomodo_openRunOutputToViewFoundFiles":
             case "cmd_morekomodo_copyRunOutputToViewFileNames":
             case "cmd_morekomodo_copyRunOutputToViewContents":
                 return true;
@@ -101,6 +107,9 @@ var moreKomodoRunOutputResults = {
 
     doCommand : function(cmd) {
         switch (cmd) {
+            case "cmd_morekomodo_openRunOutputToViewFoundFiles":
+                this.onOpenFoundFiles(false);
+                break;
             case "cmd_morekomodo_copyRunOutputToViewFileNames":
                 this.onCopyToViewRunOutputResults(true);
                 break;
@@ -164,6 +173,13 @@ var moreKomodoRunOutputResults = {
                         copyFileNames,
                         useSelectedItems);
         }
+    },
+
+    onOpenFoundFiles : function(useSelectedItems) {
+        var view = this.runOutputTreeView;
+        var columnId = this.getColumnIdFromType(moreKomodoFindResultsUtil.FILE_PATH);
+
+        moreKomodoFindResultsUtil.openFiles(view, columnId, useSelectedItems);
     }
 }
 

@@ -157,6 +157,9 @@
             />
 
         <popup id="moreKomodofindResultsContext1">
+            <menuitem id="findresults1-morekomodo-context-menu-openselectedfiles"
+                label="&findresults.open.selected.files;"
+                oncommand="moreKomodoFindResults.onOpenFoundFiles(1, true);"/>
             <menuitem id="findresults1-morekomodo-context-menu-copytoviewfilenames"
                 label="&findresults.copy.selected.filenames;"
                 oncommand="moreKomodoFindResults.onCopyToViewFindResults(1, true, true);"/>
@@ -169,6 +172,9 @@
         </popup>
 
         <popup id="moreKomodofindResultsContext2">
+            <menuitem id="findresults2-morekomodo-context-menu-openselectedfiles"
+                label="&findresults.open.selected.files;"
+                oncommand="moreKomodoFindResults.onOpenFoundFiles(2, true);"/>
             <menuitem id="findresults2-morekomodo-context-menu-copytoviewfilenames"
                 label="&findresults.copy.selected.filenames;"
                 oncommand="moreKomodoFindResults.onCopyToViewFindResults(2, true, true);"/>

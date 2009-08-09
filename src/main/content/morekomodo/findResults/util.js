@@ -174,6 +174,60 @@ var moreKomodoFindResultsUtil = {
             return param.format;
         }
         return null;
+    },
+
+    /**
+     * Open files obtaining file paths from tabView.
+     * If useSelectedItems is false and the files count is greater that
+     * minFileCount pref a dialog is shown from which user can choose files to open
+     * @param tabView tree view used to get elements
+     * @param columnId the tree file path column id
+     * @param useSelectedItems if true returns only selected tree items
+     */
+    openFiles : function(tabView, columnId, useSelectedItems) {
+        var files = moreKomodoFindResultsUtil.getContentResults(
+                            tabView, [columnId], true, useSelectedItems);
+        var filesToOpen = null;
+        var locMsg = MoreKomodoCommon.getLocalizedMessage;
+        var locFmtMsg = MoreKomodoCommon.getFormattedMessage;
+        if (useSelectedItems) {
+            filesToOpen = files;
+        } else {
+            if (files.length) {
+                var prefs = new MoreKomodoPrefs();
+                if (files.length > prefs.readOpenFoundFileInfo().minFileCount) {
+                    filesToOpen = ko.dialogs.selectFromList(
+                            locMsg("findresults.openfoundfiles.select.title"),
+                            locFmtMsg("findresults.openfoundfiles.select.text", [files.length]),
+                            files,
+                            "zero-or-more",
+                            null,
+                            null,
+                            false,
+                            null);
+                } else {
+                    filesToOpen = files;
+                }
+            }
+        }
+        if (filesToOpen) {
+            var response = "Yes";
+            if (filesToOpen.length > 10) {
+                response = ko.dialogs.yesNo(
+                    locFmtMsg("findresults.openfoundfiles.confirm.text", [filesToOpen.length]),
+                                 null,
+                                 null,
+                                 locMsg("findresults.openfoundfiles.confirm.title"),
+                                 null);
+            }
+            if (response == "Yes") {
+                for (var i = 0; i < filesToOpen.length; i++) {
+                    // Using ko.views.manager.doFileOpen the document isn't shared
+                    // among multiple windows so the ko.open package is used
+                    ko.open.URI(filesToOpen[i]);
+                }
+            }
+        }
     }
 }
 

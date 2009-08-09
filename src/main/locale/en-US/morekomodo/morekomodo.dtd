@@ -32,7 +32,7 @@
 <!ENTITY findresults.tooltiptext "Copy Find Results">
 <!ENTITY findresults.copy.to.view.filenames "Copy File Names to View">
 <!ENTITY findresults.copy.to.view.contents "Copy Content to View">
-<!ENTITY findresults.use.custom.format "Use Custom Format...">
+<!ENTITY findresults.use.custom.format "Copy Using Custom Format...">
 <!ENTITY findresults.refresh.tooltip "Run Last Find Again">
 <!ENTITY findresults.openfoundfiles.tooltip "Open Found Files">
 <!ENTITY findresults.find.by.selection.tooltip "Find Using Selected Text">
@@ -40,6 +40,7 @@
 
 <!ENTITY findresults.copy.selected.filenames "Copy Selected File Names to View">
 <!ENTITY findresults.copy.selected.contents "Copy Selected Contents to View">
+<!ENTITY findresults.open.selected.files "Open Selected File(s)">
 
 <!ENTITY lockedit.label "Lock Edit">
 <!ENTITY toolbar.lockedit.tooltip "Lock Edit Buffer">

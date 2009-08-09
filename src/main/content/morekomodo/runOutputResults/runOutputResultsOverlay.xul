@@ -19,6 +19,11 @@
 
     <broadcasterset id="broadcasterset_global">
         <broadcaster
+                id="cmd_morekomodo_openRunOutputToViewFoundFiles"
+                key="key_cmd_morekomodo_openRunOutputToViewFoundFiles"
+                desc="&morekomodo.findresults.openfoundfiles.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_openRunOutputToViewFoundFiles')"/>
+        <broadcaster
                 id="cmd_morekomodo_copyRunOutputToViewFileNames"
                 key="key_cmd_morekomodo_copyRunOutputToViewFileNames"
                 desc="&morekomodo.runoutputresults.copyToViewFileNames.desc;"
@@ -31,6 +36,12 @@
     </broadcasterset>
 
     <hbox id="runoutput-button-box">
+        <button
+            id="runoutput-morekomodo-openfoundfiles"
+            class="button-findresults-openfoundfiles button-toolbar-a"
+            tooltiptext="&findresults.openfoundfiles.tooltip;"
+            insertbefore="runoutput-list-button"
+            command="cmd_morekomodo_openRunOutputToViewFoundFiles" />
         <toolbarbutton
             id="runoutput-morekomodo-toolbar-copy"
             tooltiptext="&morekomodo.runoutput.results.tooltiptext;"
@@ -56,6 +67,9 @@
 
     <popupset id="extensionPopupSet">
         <popup id="moreKomodoRunOutputResultsContext">
+            <menuitem id="runoutput-morekomodo-context-menu-openselectedfiles"
+                label="&findresults.open.selected.files;"
+                oncommand="moreKomodoRunOutputResults.onOpenFoundFiles(true);"/>
             <menuitem id="runoutput-morekomodo-context-menu-copytoviewfilenames"
                 label="&findresults.copy.selected.filenames;"
                 oncommand="moreKomodoRunOutputResults.onCopyToViewRunOutputResults(true, true)"/>
