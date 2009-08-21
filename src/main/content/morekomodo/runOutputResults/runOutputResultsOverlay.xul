@@ -21,7 +21,7 @@
         <broadcaster
                 id="cmd_morekomodo_openRunOutputToViewFoundFiles"
                 key="key_cmd_morekomodo_openRunOutputToViewFoundFiles"
-                desc="&morekomodo.findresults.openfoundfiles.desc;"
+                desc="&morekomodo.runoutput.openfiles.desc;"
                 oncommand="goDoCommand('cmd_morekomodo_openRunOutputToViewFoundFiles')"/>
         <broadcaster
                 id="cmd_morekomodo_copyRunOutputToViewFileNames"

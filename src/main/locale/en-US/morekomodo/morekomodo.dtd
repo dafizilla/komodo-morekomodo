@@ -74,8 +74,9 @@
 <!ENTITY morekomodo.findresults.copyToViewContents.desc "MoreKomodo: Find Results - Copy Content to View">
 <!ENTITY morekomodo.findresults.findBySelection.desc "MoreKomodo: Find Results - Find Using Selected Text">
 
-<!ENTITY morekomodo.runoutputresults.copyToViewFileNames.desc "MoreKomodo: Run Output Results - Copy File Names to View">
-<!ENTITY morekomodo.runoutputresults.copyToViewContents.desc "MoreKomodo: Run Output Results - Copy Content to View">
+<!ENTITY morekomodo.runoutput.openfiles.desc "MoreKomodo: Command Output - Open Files...">
+<!ENTITY morekomodo.runoutputresults.copyToViewFileNames.desc "MoreKomodo: Command Output - Copy File Names to View">
+<!ENTITY morekomodo.runoutputresults.copyToViewContents.desc "MoreKomodo: Command Output - Copy Content to View">
 
 <!ENTITY morekomodo.refresh.pattern "Pattern:">
 <!ENTITY morekomodo.refresh.include "Include:">
