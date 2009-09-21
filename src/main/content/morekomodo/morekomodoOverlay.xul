@@ -194,18 +194,21 @@
         <menuitem id="morekomodo-cutappend"
                     class="menuitem-iconic-wide"
                     label="&menuitem-cutappend.label;"
+                    accesskey="&menuitem-cutappend.accesskey;"
                     command="cmd_morekomodo_cutappend"
                     key="key_cmd_morekomodo-menuitem-cutappend"
                     insertafter="pasteButton"/>
         <menuitem id="morekomodo-copyappend"
                     class="menuitem-iconic-wide"
                     label="&menuitem-copyappend.label;"
+                    accesskey="&menuitem-copyappend.accesskey;"
                     command="cmd_morekomodo_copyappend"
                     key="key_cmd_morekomodo_copyappend"
                     insertafter="pasteButton"/>
         <menuitem id="morekomodo-pastehtml"
                     class="menuitem-iconic-wide"
                     label="&menuitem-pastehtml.label;"
+                    accesskey="&menuitem-pastehtml.accesskey;"
                     command="cmd_morekomodo_pastehtml"
                     key="key_cmd_morekomodo_pastehtml"
                     insertafter="pasteButton"/>
@@ -215,18 +218,21 @@
         <menuitem id="morekomodo-context-cutappend"
                     class="menuitem-iconic-wide"
                     label="&menuitem-cutappend.label;"
+                    accesskey="&menuitem-cutappend.accesskey;"
                     command="cmd_morekomodo_cutappend"
                     key="key_cmd_morekomodo-menuitem-cutappend"
                     insertafter="editor-context-paste"/>
         <menuitem id="morekomodo-context-copyappend"
                     class="menuitem-iconic-wide"
                     label="&menuitem-copyappend.label;"
+                    accesskey="&menuitem-copyappend.accesskey;"
                     command="cmd_morekomodo_copyappend"
                     key="key_cmd_morekomodo_copyappend"
                     insertafter="editor-context-paste"/>
         <menuitem id="morekomodo-context-pastehtml"
                     class="menuitem-iconic-wide"
                     label="&menuitem-pastehtml.label;"
+                    accesskey="&menuitem-pastehtml.accesskey;"
                     command="cmd_morekomodo_pastehtml"
                     insertafter="editor-context-paste"/>
     </menupopup>
@@ -235,6 +241,7 @@
         <menuitem id="morekomodo-openfavorites"
                     class="menuitem-iconic-wide"
                     label="&menuitem-openfavorites.label;"
+                    accesskey="&menuitem-openfavorites.accesskey;"
                     command="cmd_morekomodo_favorites"
                     key="key_cmd_morekomodo_favorites"
                     insertafter="menu_openTemplateFile"/>
@@ -244,6 +251,7 @@
         <menuitem id="morekomodo-sort"
                     class="menuitem-iconic-wide"
                     label="&menuitem-sort.label;"
+                    accesskey="&menuitem-sort.accesskey;"
                     command="cmd_morekomodo_sort"
                     key="key_cmd_morekomodo_sort"
                     insertbefore="menu_closeProject"/>
@@ -253,6 +261,7 @@
         <menuitem id="morekomodo-menu-makebackup"
                     class="menuitem-iconic-wide"
                     label="&make.backup.label;"
+                    accesskey="&make.backup.accesskey;"
                     command="cmd_morekomodo_makeBackup"
                     key="key_cmd_morekomodo_makeBackup"
                     insertbefore="menu_save"/>
@@ -278,11 +287,13 @@
         <menu id="morekomodo-textconversion"
               class="menu-iconic-wide"
               label="&menuitem-textconversion.label;"
+              accesskey="&menuitem-textconversion.accesskey;"
               insertafter="menu_convertLowerCase">
             <menupopup id="morekomodo-popuptextconversion">
                 <menuitem id="morekomodo-capitalize"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-capitalize.label;"
+                            accesskey="&menuitem-textconversion-capitalize.accesskey;"
                             command="cmd_morekomodo_cvt_capitalize"
                             key="key_cmd_morekomodo_cvt_capitalize"
                             />
@@ -290,18 +301,21 @@
                 <menuitem id="morekomodo-htmlencode"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-encodehtml.label;"
+                            accesskey="&menuitem-textconversion-encodehtml.accesskey;"
                             command="cmd_morekomodo_cvt_htmlencode"
                             key="key_cmd_morekomodo_cvt_htmlencode"
                             />
                 <menuitem id="morekomodo-htmlencodenumeric"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-encodehtmlnumeric.label;"
+                            accesskey="&menuitem-textconversion-encodehtmlnumeric.accesskey;"
                             command="cmd_morekomodo_cvt_htmlencodenumeric"
                             key="key_cmd_morekomodo_cvt_htmlencodenumeric"
                             />
                 <menuitem id="morekomodo-htmldecode"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-decodehtml.label;"
+                            accesskey="&menuitem-textconversion-decodehtml.accesskey;"
                             command="cmd_morekomodo_cvt_htmldecode"
                             key="key_cmd_morekomodo_cvt_htmldecode"
                             />
@@ -309,18 +323,21 @@
                 <menuitem id="morekomodo-d2upath"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-d2upath.label;"
+                            accesskey="&menuitem-textconversion-d2upath.accesskey;"
                             command="cmd_morekomodo_cvt_d2upath"
                             key="key_cmd_morekomodo_cvt_d2upath"
                             />
                 <menuitem id="morekomodo-doubledossep"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-doubledossep.label;"
+                            accesskey="&menuitem-textconversion-doubledossep.accesskey;"
                             command="cmd_morekomodo_cvt_doubledossep"
                             key="key_cmd_morekomodo_cvt_doubledossep"
                             />
                 <menuitem id="morekomodo-stripdos"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-stripdos.label;"
+                            accesskey="&menuitem-textconversion-stripdos.accesskey;"
                             command="cmd_morekomodo_cvt_stripdos"
                             key="key_cmd_morekomodo_cvt_stripdos"
                             />
@@ -332,24 +349,28 @@
         <menuitem id="morekomodo-rename"
                     class="menuitem-iconic-wide"
                     label="&rename.label;"
+                    accesskey="&rename.accesskey;"
                     command="cmd_morekomodo_rename"
                     key="key_cmd_morekomodo_rename"
                     insertbefore="menu_save2"/>
         <menuitem id="morekomodo-delete"
                     class="menuitem-iconic-wide"
                     label="&delete.label;"
+                    accesskey="&delete.accesskey;"
                     command="cmd_morekomodo_delete"
                     key="key_cmd_morekomodo_delete"
                     insertbefore="menu_save2"/>
         <menuitem id="morekomodo-move"
                     class="menuitem-iconic-wide"
                     label="&move.label;"
+                    accesskey="&move.accesskey;"
                     command="cmd_morekomodo_move"
                     key="key_cmd_morekomodo_move"
                     insertbefore="menu_save2"/>
         <menuitem id="morekomodo-makebackup"
                     class="menuitem-iconic-wide"
                     label="&make.backup.label;"
+                    accesskey="&make.backup.accesskey;"
                     command="cmd_morekomodo_makeBackup"
                     key="key_cmd_morekomodo_makeBackup"
                     insertbefore="menu_save2"/>
@@ -358,18 +379,21 @@
         <menuitem id="morekomodo-copyFullPath"
                     class="menuitem-iconic-wide"
                     label="&copy.full.path.label;"
+                    accesskey="&copy.full.path.accesskey;"
                     command="cmd_morekomodo_copyFullPath"
                     key="key_cmd_morekomodo_copyFullPath"
                     insertbefore="menu_save2"/>
         <menuitem id="morekomodo-copyFileName"
                     class="menuitem-iconic-wide"
                     label="&copy.file.name.label;"
+                    accesskey="&copy.file.name.accesskey;"
                     command="cmd_morekomodo_copyFileName"
                     key="key_cmd_morekomodo_copyFileName"
                     insertbefore="menu_save2"/>
         <menuitem id="morekomodo-copyDirectoryPath"
                     class="menuitem-iconic-wide"
                     label="&copy.directory.path.label;"
+                    accesskey="&copy.directory.path.accesskey;"
                     command="cmd_morekomodo_copyDirectoryPath"
                     key="key_cmd_morekomodo_copyDirectoryPath"
                     insertbefore="menu_save2"/>
@@ -378,6 +402,7 @@
         <menuitem id="morekomodo-showInFileManager"
                     class="menuitem-iconic-wide"
                     label="&show.file.manager;"
+                    accesskey="&show.file.accesskey;"
                     command="cmd_morekomodo_showInFileManager"
                     key="key_cmd_morekomodo_showInFileManager"
                     insertbefore="menu_save2"/>

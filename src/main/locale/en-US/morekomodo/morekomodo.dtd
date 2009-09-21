@@ -1,33 +1,72 @@
 <!ENTITY rename.label "Rename...">
+<!ENTITY rename.accesskey "R">
+
 <!ENTITY delete.label "Delete...">
+<!ENTITY delete.accesskey "D">
+
 <!ENTITY move.label "Move...">
+<!ENTITY move.accesskey "M">
+
 <!ENTITY make.backup.label "Make Backup...">
+<!ENTITY make.backup.accesskey "B">
+
 <!ENTITY lockedit.label "Lock Edit">
+
 <!ENTITY copy.file.name.label "Copy File Name">
+<!ENTITY copy.file.name.accesskey "N">
+
 <!ENTITY copy.full.path.label "Copy Full Path">
+<!ENTITY copy.full.path.accesskey "P">
+
 <!ENTITY copy.directory.path.label "Copy Directory Name">
+<!ENTITY copy.directory.path.accesskey "D">
 
 <!ENTITY show.file.manager "Show In File Manager">
+<!ENTITY show.file.accesskey "M">
+
 <!ENTITY menuitem-openfavorites.label "Open Favorites...">
 <!ENTITY menuitem-openfavorites.accesskey "v">
+
 <!ENTITY menuitem-favoritelist.label "Favorites List">
 <!ENTITY toolbar.favorites.label "Favorites">
 <!ENTITY toolbar.favorites.tooltip "Access To Favorite Files And Directories">
 
 <!ENTITY menuitem-textconversion.label "Convert Selected Text">
+<!ENTITY menuitem-textconversion.accesskey "v">
+
 <!ENTITY menuitem-textconversion-capitalize.label "Capitalize">
+<!ENTITY menuitem-textconversion-capitalize.accesskey "p">
+
 <!ENTITY menuitem-textconversion-encodehtmlnumeric.label "Encode HTML Entities As Numeric">
+<!ENTITY menuitem-textconversion-encodehtmlnumeric.accesskey "N">
+
 <!ENTITY menuitem-textconversion-encodehtml.label "Encode HTML Entities">
+<!ENTITY menuitem-textconversion-encodehtml.accesskey "E">
+
 <!ENTITY menuitem-textconversion-decodehtml.label "Decode HTML Entities">
+<!ENTITY menuitem-textconversion-decodehtml.accesskey "D">
+
 <!ENTITY menuitem-textconversion-d2upath.label "Convert DOS To Unix Separators">
+<!ENTITY menuitem-textconversion-d2upath.accesskey "U">
+
 <!ENTITY menuitem-textconversion-doubledossep.label "Double DOS Separators">
+<!ENTITY menuitem-textconversion-doubledossep.accesskey "D">
+
 <!ENTITY menuitem-textconversion-stripdos.label "Remove Double DOS Separators">
+<!ENTITY menuitem-textconversion-stripdos.accesskey "R">
+
 
 <!ENTITY menuitem-sort.label "Sort...">
+<!ENTITY menuitem-sort.accesskey "o">
 
 <!ENTITY menuitem-pastehtml.label "Paste HTML">
+<!ENTITY menuitem-pastehtml.accesskey "H">
+
 <!ENTITY menuitem-copyappend.label "Copy And Append">
+<!ENTITY menuitem-copyappend.accesskey "o">
+
 <!ENTITY menuitem-cutappend.label "Cut And Append">
+<!ENTITY menuitem-cutappend.accesskey "u">
 
 <!ENTITY findresults.tooltiptext "Copy Find Results">
 <!ENTITY findresults.copy.to.view.filenames "Copy File Names to View">
