@@ -799,7 +799,8 @@ var moreKomodo = {
         var view = ko.views.manager.currentView;
         var msg = "";
 
-        if (view && (view.scimoz.selectionStart != view.scimoz.selectionEnd)) {
+        if (view && view.scimoz
+            && (view.scimoz.selectionStart != view.scimoz.selectionEnd)) {
             var ch;
             if (view.scimoz.currentPos == view.scimoz.selectionStart) {
                 // the cursor is at beginning of selection
