@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://morekomodo/locale/morekomodo.dtd" >
-<?xml-stylesheet href="chrome://morekomodo/skin/morekomodo.css" type="text/css"?>
+<?xml-stylesheet href="chrome://morekomodo/skin/findresults.css" type="text/css"?>
 
 <overlay id="findresultsOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -14,6 +14,8 @@
             src="chrome://morekomodo/content/util/textutil.js" />
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/findResults/util.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/findResults/history.js" />
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/findResults/findResults.js" />
 
@@ -186,4 +188,68 @@
                 oncommand="moreKomodoFindResults.onCopyToViewCustomFindResults(2, true);"/>
         </popup>
     </popupset>
+
+    <menupopup id="menu_view_tabs_popup">
+        <menuitem id="show_morekomodo_findresults_history_tab2"
+            observes="show_morekomodo_findresults_history_tab"
+            class="menuitem-iconic-wide"
+            oncommand="ko.uilayout.ensureTabShown('morekomodo_findresults_history_tab', true)"
+            label="&findresults.history.label;"
+            type="checkbox"
+            />
+    </menupopup>
+
+    <tabs id="output_tabs">
+        <tab id="morekomodo_findresults_history_tab"
+            label="&findresults.history.label;"
+             onmousedown="document.getElementById('morekomodo-findResultsHistoryTreechildren').focus();"
+             onfocus="document.getElementById('morekomodo-findResultsHistoryTreechildren').focus();" />
+    </tabs>
+
+    <tabpanels id="output_tabpanels">
+        <tabpanel id="morekomodo_findresults_history_tabpanel"
+                  orient="vertical"
+                  flex="1">
+            <hbox>
+                <label />
+                <separator flex="1"/>
+                <button
+                        id="morekomodo-findresults-history-delete"
+                        class="button-findresults-history-delete button-toolbar-a"
+                        tooltiptext="&findresults.history.delete.tooltip;"
+                        disabled="false"
+                        oncommand="moreKomodoFindResultsHistory.deleteSelectedItems()" />
+                <button
+                        id="morekomodo-findresults-history-disable"
+                        class="button-findresults-history-disable button-toolbar-a"
+                        tooltiptext="&findresults.history.disable.tooltip;"
+                        persist="off"
+                        oncommand="moreKomodoFindResultsHistory.toggleDisableHistory()" />
+            </hbox>
+            <tree id="morekomodo-findResultsHistory-tree"
+                  hidecolumnpicker="true"
+                  flex="1">
+                <treecols>
+                    <treecol id="morekomodo-findResultsHistoryUrl"
+                             label="&findresults.history.file.label;"
+                             primary="true"
+                             crop="left"
+                             persist="width"
+                             flex="5"/>
+                    <splitter class="tree-splitter"/>
+                    <treecol id="morekomodo-findResultsHistoryLine"
+                             label="&findresults.history.line.label;"
+                             persist="width"
+                             flex="1"/>
+                    <splitter class="tree-splitter"/>
+                    <treecol id="morekomodo-findResultsHistoryContent"
+                             label="&findresults.history.content.label;"
+                             persist="width"
+                             flex="1"/>
+                </treecols>
+                <treechildren id="morekomodo-findResultsHistoryTreechildren"
+                  ondblclick="return moreKomodoFindResultsHistory.onDblClick(event)"/>
+            </tree>
+        </tabpanel>
+    </tabpanels>
 </overlay>

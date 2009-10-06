@@ -35,6 +35,9 @@
 # ***** END LICENSE BLOCK *****
 */
 var moreKomodoFindResultsUtil = {
+    koFindOptions : Components.classes["@activestate.com/koFindOptions;1"]
+                        .createInstance(Components.interfaces.koIFindOptions),
+
     copyResultsToView : function(tabView,
                                  columnIds,
                                  removeDuplicates,
@@ -228,6 +231,47 @@ var moreKomodoFindResultsUtil = {
                 }
             }
         }
+    },
+
+    createLabelFromFindInfo : function(findInfo) {
+        var arr = findInfo.pattern.split(/\r|\r\n|\n/g);
+        var label = arr[0];
+
+        if (label.length == 0) {
+            return "";
+        }
+
+        // Add a paragraph character if pattern is 'multiple line'
+        if (arr.length > 1) {
+            label += String.fromCharCode(182);
+        }
+
+        this.copyFindOptions(findInfo.options, this.koFindOptions);
+
+        return this.koFindOptions.searchDescFromPattern(label);
+    },
+
+    /**
+     * Copy koFindOptions from an object to another
+     * @param from koFindOptions to copy
+     * @param to koFindOptions destination
+     */
+    copyFindOptions : function(from, to) {
+        to.patternType = from.patternType;
+        to.matchWord = from.matchWord;
+        to.caseSensitivity = from.caseSensitivity;
+        to.displayInFindResults2 = from.displayInFindResults2;
+        to.multiline = from.multiline;
+        to.cwd = from.cwd;
+        to.encodedFolders = from.encodedFolders;
+        to.searchInSubfolders = from.searchInSubfolders;
+        to.encodedIncludeFiletypes = from.encodedIncludeFiletypes;
+        to.encodedExcludeFiletypes = from.encodedExcludeFiletypes;
+
+        //attribute boolean searchBackward;
+        //attribute long preferredContextType;
+        //attribute boolean showReplaceAllResults;
+        //attribute boolean confirmReplacementsInFiles;
     }
 }
 

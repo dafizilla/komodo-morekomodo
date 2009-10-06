@@ -8,36 +8,6 @@
   cursor: pointer;
 }
 
-.button-findresults-copy {
-  list-style-image: url("chrome://morekomodo/skin/copy.png");
-}
-
-.button-findresults-copy:hover {
-  list-style-image: url("chrome://morekomodo/skin/copy_hover.png");
-}
-
-.button-findresults-copy[disabled="true"],
-.button-findresults-copy[disabled="true"]:hover {
-  list-style-image: url("chrome://morekomodo/skin/copy.png");
-  opacity: 0.5;
-}
-
-.button-findresults-refresh {
-  list-style-image: url("chrome://morekomodo/skin/refresh.png");
-}
-
-.button-findresults-refresh[disabled="true"] {
-  opacity: 0.5;
-}
-
-.button-findresults-openfoundfiles {
-  list-style-image: url("chrome://morekomodo/skin/folder.png");
-}
-
-.button-findresults-openfoundfiles[disabled="true"] {
-  opacity: 0.5;
-}
-
 .button-morekomodo-lockedit[checked] {
   list-style-image: url("chrome://morekomodo/skin/edit_lock.png");
 }
@@ -50,16 +20,12 @@
   opacity: 0.5;
 }
 
-.button-findresults-find-by-selection {
-  list-style-image: url("chrome://morekomodo/skin/find_by_selection.png");
-}
-
 #morekomodo-refresh-tooltip description {
   font-weight: bold;
 }
 
 /**
- * This is necessary because it the crop attribute is ignored when element is
+ * This is necessary because the crop attribute is ignored when element is
  * inside an hbox
  */
 #morekomodo-refresh-tooltip label {

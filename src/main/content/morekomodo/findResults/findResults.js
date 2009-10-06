@@ -58,6 +58,7 @@ var moreKomodoFindResults = {
         this._findSvc = Components.classes["@activestate.com/koFindService;1"].
                getService(Components.interfaces.koIFindService);
 
+        moreKomodoFindResultsHistory.init();
         window.controllers.appendController(this);
      },
 
@@ -111,6 +112,10 @@ var moreKomodoFindResults = {
                 moreKomodoFindResults.copyOptions(
                     moreKomodoFindResults.lastUsedFindOptions,
                     moreKomodoFindResults._findSvc.options);
+
+                    moreKomodoFindResultsHistory.saveHistory(
+                                    idName.match("([0-9]+)")[1],
+                                    moreKomodoFindResults.lastUsedFindOptions);
                 }, 400);
         }
     },

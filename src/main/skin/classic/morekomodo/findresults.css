@@ -1,0 +1,45 @@
+.button-findresults-copy {
+  list-style-image: url("chrome://morekomodo/skin/copy.png");
+}
+
+.button-findresults-copy:hover {
+  list-style-image: url("chrome://morekomodo/skin/copy_hover.png");
+}
+
+.button-findresults-copy[disabled="true"],
+.button-findresults-copy[disabled="true"]:hover {
+  list-style-image: url("chrome://morekomodo/skin/copy.png");
+  opacity: 0.5;
+}
+
+.button-findresults-refresh {
+  list-style-image: url("chrome://morekomodo/skin/refresh.png");
+}
+
+.button-findresults-refresh[disabled="true"] {
+  opacity: 0.5;
+}
+
+.button-findresults-openfoundfiles {
+  list-style-image: url("chrome://morekomodo/skin/folder.png");
+}
+
+.button-findresults-openfoundfiles[disabled="true"] {
+  opacity: 0.5;
+}
+
+.button-findresults-find-by-selection {
+  list-style-image: url("chrome://morekomodo/skin/find_by_selection.png");
+}
+
+.button-findresults-history-delete {
+  list-style-image: url("chrome://morekomodo/skin/find_delete.png");
+}
+
+.button-findresults-history-disable {
+  list-style-image: url("chrome://morekomodo/skin/off.png");
+}
+
+.button-findresults-history-disable[off="true"] {
+  list-style-image: url("chrome://morekomodo/skin/off_grayed.png");
+}
