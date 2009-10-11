@@ -258,6 +258,17 @@ var moreKomodoFindResultsHistory = {
         } catch (ex) {
             MoreKomodoCommon.log(ex);
         }
+    },
+
+    onTreeKeyPress : function(event) {
+        if (event.ctrlKey) {
+            var key = String.fromCharCode(event.which).toLowerCase();
+            if (key == 'a') {
+                var selection = this.treeView.selection;
+
+                selection.rangedSelect(0, this.treeView.rowCount - 1, true);
+            }
+        }
     }
 }
 

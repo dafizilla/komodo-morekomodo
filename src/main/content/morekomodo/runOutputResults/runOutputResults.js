@@ -156,23 +156,10 @@ var moreKomodoRunOutputResults = {
     },
 
     onCopyToViewCustomFindResults : function(useSelectedItems) {
-        var format = moreKomodoFindResultsUtil.openCustomFormatDialog();
-
-        if (format) {
-            var copyFileNames = format.length == 1
-                && format[0] == moreKomodoFindResultsUtil.FILE_PATH;
-            var arrIds = [];
-
-            for (var i = 0; i < format.length; i++) {
-                arrIds.push(this.getColumnIdFromType(parseInt(format[i])));
-            }
-
-            moreKomodoFindResultsUtil.copyResultsToView(
-                        this.runOutputTreeView,
-                        arrIds,
-                        copyFileNames,
-                        useSelectedItems);
-        }
+        moreKomodoFindResultsUtil.onCopyToViewCustomFindResults(
+                    this.runOutputTreeView,
+                    this.getColumnIdFromType,
+                    useSelectedItems);
     },
 
     onOpenFoundFiles : function(useSelectedItems) {

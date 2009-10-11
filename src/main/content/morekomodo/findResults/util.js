@@ -272,6 +272,26 @@ var moreKomodoFindResultsUtil = {
         //attribute long preferredContextType;
         //attribute boolean showReplaceAllResults;
         //attribute boolean confirmReplacementsInFiles;
+    },
+
+    onCopyToViewCustomFindResults : function(treeView, columnIdCallback, useSelectedItems) {
+        var format = moreKomodoFindResultsUtil.openCustomFormatDialog();
+
+        if (format) {
+            var copyFileNames = format.length == 1
+                && format[0] == moreKomodoFindResultsUtil.FILE_PATH;
+            var arrIds = [];
+
+            for (var i = 0; i < format.length; i++) {
+                arrIds.push(columnIdCallback(parseInt(format[i])));
+            }
+
+            moreKomodoFindResultsUtil.copyResultsToView(
+                        treeView,
+                        arrIds,
+                        copyFileNames,
+                        useSelectedItems);
+        }
     }
 }
 

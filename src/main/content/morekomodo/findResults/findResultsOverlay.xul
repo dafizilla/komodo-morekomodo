@@ -228,6 +228,7 @@
             </hbox>
             <tree id="morekomodo-findResultsHistory-tree"
                   hidecolumnpicker="true"
+                  onkeypress="moreKomodoFindResultsHistory.onTreeKeyPress(event);"
                   flex="1">
                 <treecols>
                     <treecol id="morekomodo-findResultsHistoryUrl"

@@ -92,7 +92,7 @@ var moreKomodoFindResults = {
             moreKomodoFindResults.updateFindInfo(event.target.id);
 
             if (this.findStartedFromUI) {
-                this.copyOptions(this._findSvc.options, this.lastUsedFindOptions);
+                moreKomodoFindResultsUtil.copyFindOptions(this._findSvc.options, this.lastUsedFindOptions);
             } else {
                 this.findStartedFromUI = true;
             }
@@ -109,7 +109,7 @@ var moreKomodoFindResults = {
             // restore to last used settings so find dialog shows them correctly
             // timeOut ensures the description is updated before restoring settings
             window.setTimeout(function() {
-                moreKomodoFindResults.copyOptions(
+                moreKomodoFindResultsUtil.copyFindOptions(
                     moreKomodoFindResults.lastUsedFindOptions,
                     moreKomodoFindResults._findSvc.options);
 
@@ -131,30 +131,12 @@ var moreKomodoFindResults = {
                     context: tab.context_,
                     pattern : tab._pattern
                     };
-            this.copyOptions(this._findSvc.options, findInfo.options);
+            moreKomodoFindResultsUtil.copyFindOptions(this._findSvc.options, findInfo.options);
             this.pushItem(this.arrFind, findInfo,
                 new MoreKomodoPrefs().readMaxRefreshHistoryEntries());
         } else {
             MoreKomodoCommon.log("Unable to find tabIndex for id " + id);
         }
-    },
-
-    copyOptions : function(from, to) {
-        to.patternType = from.patternType;
-        to.matchWord = from.matchWord;
-        to.caseSensitivity = from.caseSensitivity;
-        to.displayInFindResults2 = from.displayInFindResults2;
-        to.multiline = from.multiline;
-        to.cwd = from.cwd;
-        to.encodedFolders = from.encodedFolders;
-        to.searchInSubfolders = from.searchInSubfolders;
-        to.encodedIncludeFiletypes = from.encodedIncludeFiletypes;
-        to.encodedExcludeFiletypes = from.encodedExcludeFiletypes;
-
-        //attribute boolean searchBackward;
-        //attribute long preferredContextType;
-        //attribute boolean showReplaceAllResults;
-        //attribute boolean confirmReplacementsInFiles;
     },
 
     onOpenFoundFiles : function(tabIndex, useSelectedItems) {
@@ -248,7 +230,7 @@ var moreKomodoFindResults = {
     },
 
     executeFind : function(tabIndex, options, context, pattern) {
-        this.copyOptions(options, this._findSvc.options);
+        moreKomodoFindResultsUtil.copyFindOptions(options, this._findSvc.options);
         // Ensure output goes on correct tab
         this._findSvc.options.displayInFindResults2 = tabIndex == 2;
 
@@ -365,25 +347,13 @@ var moreKomodoFindResults = {
     },
 
     onCopyToViewCustomFindResults : function(tabIndex, useSelectedItems) {
-        var format = moreKomodoFindResultsUtil.openCustomFormatDialog();
-
-        if (format) {
-            var copyFileNames = format.length == 1
-                && format[0] == moreKomodoFindResultsUtil.FILE_PATH;
-            var arrIds = [];
-
-            for (var i = 0; i < format.length; i++) {
-                arrIds.push(this.getColumnIdFromType(tabIndex, parseInt(format[i])));
-            }
-
-            var view = FindResultsTab_GetManager(tabIndex).view;
-
-            moreKomodoFindResultsUtil.copyResultsToView(
-                        view,
-                        arrIds,
-                        copyFileNames,
-                        useSelectedItems);
-        }
+        var self = this;
+        moreKomodoFindResultsUtil.onCopyToViewCustomFindResults(
+                    FindResultsTab_GetManager(tabIndex).view,
+                    function(resultType) {
+                        return self.getColumnIdFromType(tabIndex, resultType);
+                    },
+                    useSelectedItems);
     }
 }
 
