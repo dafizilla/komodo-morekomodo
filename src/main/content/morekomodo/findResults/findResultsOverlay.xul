@@ -199,6 +199,13 @@
             />
     </menupopup>
 
+    <menupopup id="tabPicker_popup">
+        <menuitem id="show_morekomodo_findresults_history_tab"
+            oncommand="ko.uilayout.ensureTabShown('morekomodo_findresults_history_tab', true)"
+            label="&findresults.history.label;"
+            />
+    </menupopup>
+
     <tabs id="output_tabs">
         <tab id="morekomodo_findresults_history_tab"
             label="&findresults.history.label;"
