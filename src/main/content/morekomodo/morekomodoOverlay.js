@@ -236,7 +236,22 @@ var moreKomodo = {
         var viewDoc = currView.document;
         var title = MoreKomodoCommon.getLocalizedMessage("rename.title");
         var oldName = viewDoc.file.baseName;
-        var newName = ko.dialogs.prompt(oldName, null, oldName, title);
+        var extPos = oldName.lastIndexOf('.');
+        if (extPos < 0) {
+            extPos = oldName.length;
+        }
+        var newName = ko.dialogs.prompt(oldName, null, oldName, title,
+                                    null, //  mruName,
+                                    null, //  validator,
+                                    null, //  multiline,
+                                    null, //  screenX,
+                                    null, //  screenY,
+                                    null, //  tacType,
+                                    null, //  tacParam,
+                                    null, //  tacShowCommentColumn,
+                                    0, //  selectionStart,
+                                    extPos //  selectionEnd
+                                    );
 
         try {
             if (newName && newName != oldName) {
