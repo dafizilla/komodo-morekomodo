@@ -231,6 +231,9 @@ FavoritesTreeView.prototype = {
     },
 
     setTree: function(treebox){
+        if (treebox) {
+            treebox.treeBody.parentNode.controllers.appendController(this);
+        }
         this.treebox = treebox;
     },
 
@@ -240,11 +243,37 @@ FavoritesTreeView.prototype = {
         }
     },
 
+    isContainerOpen: function(index) {},
+    isContainerEmpty: function(index) {},
+    canDrop: function(index, orientation, dataTransfer) {},
+    drop: function(row, orientation, dataTransfer) {},
+    getParentIndex: function(rowIndex) {},
+    hasNextSibling: function(rowIndex, afterIndex) {},
+    getProgressMode: function(row, col) {},
+    getCellValue: function(row, col) {},
+    toggleOpenState: function(index) {},
+    selectionChanged: function() {},
+    isEditable: function(row, col) {},
+    isSelectable: function(row, col) {},
+    setCellValue: function(row, col, value) {},
+    setCellText: function(row, col, value) {},
+    performAction: function(action) {},
+    performActionOnRow: function(action, row) {},
+    performActionOnCell: function(action, row, col) {},
     cycleHeader: function(col, elem) {},
     isContainer: function(row){ return false; },
     isSeparator: function(row){ return false; },
     isSorted: function(row){ return false; },
     getLevel: function(row){ return 0; },
     getRowProperties: function(row,props){},
-    getColumnProperties: function(colid,col,props){}
+    getColumnProperties: function(colid,col,props){},
+
+    onEvent : function(evt) {},
+    supportsCommand : function(cmd) {return cmd == "cmd_selectAll";},
+    isCommandEnabled : function(cmd) {return true;},
+    doCommand : function(cmd) {
+        if (cmd == "cmd_selectAll") {
+            this.selection.selectAll();
+        }
+    }
 };

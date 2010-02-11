@@ -258,17 +258,6 @@ var moreKomodoFindResultsHistory = {
         } catch (ex) {
             MoreKomodoCommon.log(ex);
         }
-    },
-
-    onTreeKeyPress : function(event) {
-        if (event.ctrlKey) {
-            var key = String.fromCharCode(event.which).toLowerCase();
-            if (key == 'a') {
-                var selection = this.treeView.selection;
-
-                selection.rangedSelect(0, this.treeView.rowCount - 1, true);
-            }
-        }
     }
 }
 
@@ -439,6 +428,9 @@ moreKomodoFindResultsHistoryTreeView.prototype = {
     },
 
     setTree : function(treebox){
+        if (treebox) {
+            treebox.treeBody.parentNode.controllers.appendController(this);
+        }
         this.treebox = treebox;
     },
 
@@ -463,6 +455,15 @@ moreKomodoFindResultsHistoryTreeView.prototype = {
     drop : function(row, orientation, dataTransfer) {},
     getProgressMode : function(row, col) {return false;},
     getCellValue : function(row, col) {return null;},
-    selectionChanged : function() {}
+    selectionChanged : function() {},
+
+    onEvent : function(evt) {},
+    supportsCommand : function(cmd) {return cmd == "cmd_selectAll";},
+    isCommandEnabled : function(cmd) {return true;},
+    doCommand : function(cmd) {
+        if (cmd == "cmd_selectAll") {
+            this.selection.selectAll();
+        }
+    }
 };
 

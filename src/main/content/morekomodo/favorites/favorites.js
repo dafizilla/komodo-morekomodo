@@ -253,18 +253,6 @@ var gFavorites = {
         }
     },
 
-    onTreeKeyPress : function(event) {
-        if (event.ctrlKey) {
-            var key = String.fromCharCode(event.which).toLowerCase();
-            if (key == 'a') {
-                var view = event.target.treeBoxObject.view;
-                var selection = view.selection;
-
-                selection.rangedSelect(0, view.rowCount - 1, true);
-            }
-        }
-    },
-
     onDblClick : function(event) {
         if (event.button == 0) {
             var view = this.oFileListTree.view;

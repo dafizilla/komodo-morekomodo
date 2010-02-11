@@ -57,7 +57,7 @@ var gCustomFormatDialog = {
         var self = this;
         this.handle_checkboxStateChange = function(event) {
             self.onToggleCheckbox(event);
-        }
+        };
 
         for (var i in this.checks) {
             this.checks[i].addEventListener("CheckboxStateChange",

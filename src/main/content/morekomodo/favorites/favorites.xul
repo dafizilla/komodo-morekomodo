@@ -40,8 +40,7 @@
                 flex="1"
                 hidecolumnpicker="true"
                 seltype="multiple"
-                onselect="gFavorites.onSelect()"
-                onkeypress="gFavorites.onTreeKeyPress(event);">
+                onselect="gFavorites.onSelect()">
           <treecols>
             <treecol id="file-treecol"
                       label="&favorites.tree.label;"
