@@ -1,9 +1,9 @@
 <!DOCTYPE extension [
-<!ENTITY extension.version "1.7">
+<!ENTITY extension.version "1.7.1">
 ]>
 
 <extension name="morekomodo">
-    <title-name>Dafizilla MoreKomodo</title-name>
+    <title-name>MoreKomodo</title-name>
     <uuid>morekomodo@dafizilla.sourceforge.net</uuid>
     <version>&extension.version;</version>
     <description>Add new features to Komodo. Favorites, file and clipboard operation, text conversion</description>
@@ -14,6 +14,9 @@
     <author>Davide Ficano</author>
     <ohloh-project-name>morekomodo</ohloh-project-name>
     
+    <!-- Do not add to install.rdf deprecated infos about content, skin and locales (i.e. contents.rdf) -->
+    <use-only-chrome-manifest>true</use-only-chrome-manifest>
+
     <!-- Point to directory containing content, locales and skins. -->
     <!-- If present must start with / (slash) -->
     <chrome-extension-directory>/morekomodo</chrome-extension-directory>
@@ -55,14 +58,14 @@
             <description>Komodo IDE</description>
             <id>{36E66FA0-F259-11D9-850E-000D935D3368}</id>
             <minVersion>4.2</minVersion>
-            <maxVersion>5.*</maxVersion>
+            <maxVersion>6.*</maxVersion>
         </application>
         
         <application>
             <description>Komodo Edit</description>
             <id>{b1042fb5-9e9c-11db-b107-000d935d3368}</id>
             <minVersion>4.0</minVersion>
-            <maxVersion>5.*</maxVersion>
+            <maxVersion>6.*</maxVersion>
         </application>
     </compatibility>
 
