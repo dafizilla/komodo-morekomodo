@@ -51,6 +51,8 @@
         <overlay description="FindResults-ko5" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/findResults/findResultsOverlay-ko5.xul appversion&gt;4.4.1" />
         <overlay description="Find Dialog" uri="chrome://komodo/content/find/find2.xul" value="chrome://morekomodo/content/favorites/find/findOverlay.xul" />
         <overlay description="Run Output Results" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/runOutputResults/runOutputResultsOverlay.xul" />
+        <overlay description="CodeConversion-ko5" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/codeConversionOverlay-ko5.xul appversion&lt;6b1" />
+        <overlay description="CodeConversion-ko6" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/codeConversionOverlay-ko6.xul appversion&gt;6b1" />
     </overlays>
 
     <compatibility>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<overlay id="codeConversionOverlay-ko6"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <menupopup id="codeConvert_menupopup">
+        <menuitem id="morekomodo-capitalize" insertafter="menu_convertLowerCase"/>
+        <menuseparator />
+        <menuitem id="morekomodo-htmlencode" />
+        <menuitem id="morekomodo-htmlencodenumeric" />
+        <menuitem id="morekomodo-htmldecode" />
+        <menuseparator />
+        <menuitem id="morekomodo-d2upath" />
+        <menuitem id="morekomodo-doubledossep" />
+        <menuitem id="morekomodo-stripdos" />
+    </menupopup>
+
+</overlay>

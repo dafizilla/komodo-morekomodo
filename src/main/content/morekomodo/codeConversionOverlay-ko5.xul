@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://morekomodo/locale/morekomodo.dtd" >
+
+<overlay id="codeConversionOverlay-ko5"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <menupopup id="popup_sourcecode">
+        <menu id="morekomodo-textconversion"
+              class="menu-iconic-wide"
+              label="&menuitem-textconversion.label;"
+              accesskey="&menuitem-textconversion.accesskey;"
+              insertafter="menu_convertLowerCase">
+            <menupopup id="morekomodo-popuptextconversion">
+                <menuitem id="morekomodo-capitalize" />
+                <menuseparator />
+                <menuitem id="morekomodo-htmlencode" />
+                <menuitem id="morekomodo-htmlencodenumeric" />
+                <menuitem id="morekomodo-htmldecode" />
+                <menuseparator />
+                <menuitem id="morekomodo-d2upath" />
+                <menuitem id="morekomodo-doubledossep" />
+                <menuitem id="morekomodo-stripdos" />
+            </menupopup>
+        </menu>
+    </menupopup>
+
+</overlay>

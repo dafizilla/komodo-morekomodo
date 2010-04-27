@@ -283,13 +283,7 @@
         -->
     </menupopup>
 
-    <menupopup id="popup_sourcecode">
-        <menu id="morekomodo-textconversion"
-              class="menu-iconic-wide"
-              label="&menuitem-textconversion.label;"
-              accesskey="&menuitem-textconversion.accesskey;"
-              insertafter="menu_convertLowerCase">
-            <menupopup id="morekomodo-popuptextconversion">
+
                 <menuitem id="morekomodo-capitalize"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-capitalize.label;"
@@ -297,7 +291,6 @@
                             command="cmd_morekomodo_cvt_capitalize"
                             key="key_cmd_morekomodo_cvt_capitalize"
                             />
-                <menuseparator />
                 <menuitem id="morekomodo-htmlencode"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-encodehtml.label;"
@@ -319,7 +312,6 @@
                             command="cmd_morekomodo_cvt_htmldecode"
                             key="key_cmd_morekomodo_cvt_htmldecode"
                             />
-                <menuseparator />
                 <menuitem id="morekomodo-d2upath"
                             class="menuitem-iconic-wide"
                             label="&menuitem-textconversion-d2upath.label;"
@@ -341,9 +333,6 @@
                             command="cmd_morekomodo_cvt_stripdos"
                             key="key_cmd_morekomodo_cvt_stripdos"
                             />
-                </menupopup>
-            </menu>
-    </menupopup>
 
     <menupopup id="tabContextMenu">
         <menuitem id="morekomodo-rename"
