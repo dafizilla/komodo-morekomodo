@@ -1,0 +1,7 @@
+<!ENTITY title.dialog "Hex Dump">
+<!ENTITY dump.label "Dump">
+<!ENTITY close.label "Close">
+<!ENTITY output.option.label "Output Options">
+<!ENTITY bytes.per.row.label "Bytes per row">
+<!ENTITY file.dump.label "File to Dump">
+<!ENTITY use.remote.file.label "Use Remote File">

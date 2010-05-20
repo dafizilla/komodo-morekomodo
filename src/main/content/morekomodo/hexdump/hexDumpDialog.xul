@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://morekomodo/locale/hexDumpDialog.dtd">
+<?xml-stylesheet href="chrome://morekomodo/skin/hexDump.css" type="text/css"?>
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    id="hexdump-dialog"
+    title="&title.dialog;"
+    minwidth="300"
+    minheight="260"
+    buttons="accept,cancel"
+    buttonlabelaccept="&dump.label;"
+    buttonlabelcancel="&close.label;"
+    onload="return gHexDumpDialog.onLoad();"
+    persist="screenX screenY"
+    ondialogaccept="return gHexDumpDialog.onAccept();">
+
+    <!-- Komodo specific code -->
+    <script type="application/x-javascript"
+            src="chrome://komodo/content/library/logging.js" />
+    <script type="application/x-javascript"
+            src="chrome://komodo/content/library/windowManager.js" />
+    <script type="application/x-javascript;version=1.7"
+            src="chrome://komodo/content/library/filepickers.js"/>
+
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/common.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/util/textUtil.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/util/hexDump.js" />
+    <script type="application/x-javascript"
+            src="chrome://morekomodo/content/hexDump/hexDumpDialog.js" />
+
+    <vbox>
+        <groupbox>
+            <caption label="&file.dump.label;" />
+            <checkbox id="use-remote-file" label="&use.remote.file.label;" persist="checked"/>
+            <hbox flex="1">
+                <textbox id="file-path" flex="1" readonly="true"/><button class="filepicker-browse" onclick="gHexDumpDialog.onFilePick();"/>
+            </hbox>
+        </groupbox>
+        <groupbox>
+            <caption label="&output.option.label;" />
+            <label value="&bytes.per.row.label;" control="bytes-per-row"/>
+            <radiogroup id="bytes-per-row" persist="selected" style="display: inline">
+                <radio id="b8" label="8" value="8" persist="selected"/>
+                <radio id="b16" label="16" value="16" persist="selected"/>
+                <radio id="b24" label="24" value="24" persist="selected"/>
+                <radio id="b32" label="32" value="32" persist="selected"/>
+            </radiogroup>
+        </groupbox>
+    </vbox>
+</dialog>
