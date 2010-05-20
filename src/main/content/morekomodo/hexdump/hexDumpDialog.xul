@@ -31,7 +31,7 @@
     <script type="application/x-javascript"
             src="chrome://morekomodo/content/util/hexDump.js" />
     <script type="application/x-javascript"
-            src="chrome://morekomodo/content/hexDump/hexDumpDialog.js" />
+            src="chrome://morekomodo/content/hexdump/hexDumpDialog.js" />
 
     <vbox>
         <groupbox>
