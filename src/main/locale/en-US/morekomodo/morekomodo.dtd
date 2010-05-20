@@ -55,9 +55,11 @@
 <!ENTITY menuitem-textconversion-stripdos.label "Remove Double DOS Separators">
 <!ENTITY menuitem-textconversion-stripdos.accesskey "R">
 
-
 <!ENTITY menuitem-sort.label "Sort...">
 <!ENTITY menuitem-sort.accesskey "o">
+
+<!ENTITY menuitem-hexdump.label "Hex Dump File...">
+<!ENTITY menuitem-hexdump.accesskey "H">
 
 <!ENTITY menuitem-pastehtml.label "Paste HTML">
 <!ENTITY menuitem-pastehtml.accesskey "H">
@@ -114,6 +116,7 @@
 <!ENTITY morekomodo.rename.desc "MoreKomodo: File - Rename">
 <!ENTITY morekomodo.show.in.file.manager.desc "MoreKomodo: File - Show in File Manager">
 <!ENTITY morekomodo.delete.desc "MoreKomodo: File - Delete">
+<!ENTITY morekomodo.hexdump.desc "MoreKomodo: File - Hex Dump Dialog...">
 
 <!ENTITY morekomodo.findresults.openfoundfiles.desc "MoreKomodo: Find Results - Open Found Files...">
 <!ENTITY morekomodo.findresults.refreshFindResults.desc "MoreKomodo: Find Results - Run Last Find Again">

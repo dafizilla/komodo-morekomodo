@@ -520,6 +520,7 @@ var moreKomodo = {
             case "cmd_morekomodo_move":
             case "cmd_morekomodo_showInFileManager":
             case "cmd_morekomodo_unicodetable":
+            case "cmd_morekomodo_hexdump":
                 return true;
         }
         return false;
@@ -564,6 +565,7 @@ var moreKomodo = {
             case "cmd_morekomodo_lockedit":
                 return view && view.getAttribute('type') == 'editor' && view.document;
             case "cmd_morekomodo_unicodetable":
+            case "cmd_morekomodo_hexdump":
                 return true;
         }
         return false;
@@ -612,6 +614,9 @@ var moreKomodo = {
                 break;
             case "cmd_morekomodo_unicodetable":
                 this.onOpenUnicodeDialog();
+                break;
+            case "cmd_morekomodo_hexdump":
+                this.onOpenHexDumpDialog();
                 break;
         }
     },
@@ -838,6 +843,12 @@ var moreKomodo = {
             && view.prefs.getBooleanPref("morekomodo.lockbuffer")) {
             this.onToogleLockEdit(view);
         }
+    },
+
+    onOpenHexDumpDialog : function() {
+       window.openDialog("chrome://morekomodo/content/hexdump/hexDumpDialog.xul",
+                          "_blank",
+                          "chrome,modal,resizable=yes,dependent=yes");
     }
 };
 

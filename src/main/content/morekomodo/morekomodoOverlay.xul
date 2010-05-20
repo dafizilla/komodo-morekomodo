@@ -79,6 +79,11 @@
                 key="key_cmd_morekomodo_sort"
                 desc="&morekomodo.sort.desc;"
                 oncommand="goDoCommand('cmd_morekomodo_sort')"/>
+        <broadcaster
+                id="cmd_morekomodo_hexdump"
+                key="key_cmd_morekomodo_hexdump"
+                desc="&morekomodo.hexdump.desc;"
+                oncommand="goDoCommand('cmd_morekomodo_hexdump')"/>
 
         <!--keycode="VK_F5"-->
         <broadcaster
@@ -256,6 +261,15 @@
                     key="key_cmd_morekomodo_sort"
                     insertbefore="menu_closeProject"/>
         <menuseparator id="morekomodo-sort-menusep"
+                       insertbefore="menu_closeProject"/>
+        <menuitem id="morekomodo-hexdump"
+                    class="menuitem-iconic-wide"
+                    label="&menuitem-hexdump.label;"
+                    accesskey="&menuitem-hexdump.accesskey;"
+                    command="cmd_morekomodo_hexdump"
+                    key="key_cmd_morekomodo_hexdump"
+                    insertbefore="menu_closeProject"/>
+        <menuseparator id="morekomodo-hexdump-menusep"
                        insertbefore="menu_closeProject"/>
 
         <menuitem id="morekomodo-menu-makebackup"
