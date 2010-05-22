@@ -130,12 +130,16 @@ MoreKomodoCommon.createDocumentFromURI = function(uri) {
     return newDoc;
 }
 
-MoreKomodoCommon.renameFile = function(uri, newName) {
+MoreKomodoCommon.renameFile = function(uri, newName, askConfirm) {
+    askConfirm = typeof(askConfirm) == "undefined" || askConfirm == null ? true : askConfirm;
     function canRename(isFile, newName) {
         if (isFile) {
-            var msgConfirmRename = MoreKomodoCommon
-                    .getFormattedMessage("rename.confirm", [newName]);
-            return ko.dialogs.yesNo(msgConfirmRename, "No") == "Yes";
+            if (askConfirm) {
+                var msgConfirmRename = MoreKomodoCommon
+                        .getFormattedMessage("rename.confirm", [newName]);
+                return ko.dialogs.yesNo(msgConfirmRename, "No") == "Yes";
+            }
+            return true;
         }
         var errInvalidFile = MoreKomodoCommon
             .getFormattedMessage("rename.err.invalid.file", [newName]);
@@ -353,4 +357,63 @@ MoreKomodoCommon.defineConstant = function(obj, name, value) {
     obj.__defineSetter__(name, function() {
         throw new Error(name + " is a constant");
     });
+}
+
+MoreKomodoCommon.getJSON = function() {
+    // test for Firefox 3.1
+    if (typeof(JSON) != "undefined") {
+        return JSON;
+    }
+    var json = Components.classes["@mozilla.org/dom/json;1"]
+        .createInstance(Components.interfaces.nsIJSON);
+    return { stringify : json.encode, parse : json.decode};
+}
+
+MoreKomodoCommon.loadTextFile = function(fileName) {
+    var file = MoreKomodoCommon.makeLocalFile(fileName);
+
+    if (!file.exists()) {
+        return null;
+    }
+
+    var fileContent = MoreKomodoCommon.read(file);
+
+    return fileContent;
+}
+
+MoreKomodoCommon.saveTextFile = function(fileName, fileContent, permissions) {
+    var os = MoreKomodoCommon.makeOutputStream(fileName, false, permissions);
+    os.write(fileContent, fileContent.length);
+    os.flush();
+    os.close();
+}
+
+MoreKomodoCommon.read = function(file) {
+    var str = "";
+    var fiStream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+        .createInstance(Components.interfaces.nsIFileInputStream);
+    var siStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
+        .createInstance(Components.interfaces.nsIScriptableInputStream);
+
+    fiStream.init(file, 1, 0, false);
+    siStream.init(fiStream);
+    str += siStream.read(-1);
+    siStream.close();
+    fiStream.close();
+    return str;
+}
+
+MoreKomodoCommon.makeOutputStream = function(fileNameOrLocalFile, append, permissions) {
+    permissions = typeof(permissions) == "undefined" ? 0600 : permissions;
+    var os = Components.classes["@mozilla.org/network/file-output-stream;1"]
+        .createInstance(Components.interfaces.nsIFileOutputStream);
+    var flags = 0x02 | 0x08 | 0x20; // wronly | create | truncate
+    if (append != null && append != undefined && append) {
+        flags = 0x02 | 0x10; // wronly | append
+    }
+    var file = MoreKomodoCommon.makeLocalFile(fileNameOrLocalFile);
+
+    os.init(file, flags, permissions, 0);
+
+    return os;
 }
