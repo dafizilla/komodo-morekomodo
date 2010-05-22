@@ -40,6 +40,246 @@ function MoreKomodoPrefs() {
         .getService(Components.interfaces.nsIPrefService)
         .getBranch("dafizilla.morekomodo.");
     this._prefBranch.QueryInterface(Components.interfaces.nsIPrefBranch2);
+    this._settings = null;
+}
+
+MoreKomodoPrefs.prototype = {
+    getString : function(prefName, defValue) {
+        var prefValue;
+        try {
+            prefValue = this._prefBranch.getCharPref(prefName);
+        } catch (ex) {
+            prefValue = null;
+        }
+        return prefValue == null ? defValue : prefValue;
+    },
+
+    setString : function(prefName, prefValue) {
+        this._prefBranch.setCharPref(prefName, prefValue);
+    },
+
+    getBool : function(prefName, defValue) {
+        var prefValue = false;
+        try {
+            prefValue = this._prefBranch.getBoolPref(prefName);
+        } catch (ex) {
+            if (defValue != undefined) {
+                prefValue = defValue;
+            }
+        }
+
+        return prefValue;
+    },
+
+    setBool : function(prefName, prefValue) {
+        this._prefBranch.setBoolPref(prefName, prefValue);
+    },
+
+    loadSettings : function() {
+        if (this._settings == null) {
+            var content = MoreKomodoCommon.loadTextFile(this.configPath);
+            if (content == null || content == "") {
+                this._settings = {
+                    favorites : [],
+                    maxFavoriteMenuItems : -1,
+                    fileTimeInfo : {isEnabled:true,timeFormat:this.getDefaultTimeFormat()},
+                    unicodeStatusbar : true,
+                    openFoundFileInfo : {minFileCount: this.getDefaultMinOpenFileCount()},
+                    maxRefreshHistoryEntries : this.getDefaultMaxRefreshHistoryEntries(),
+                    findReplaceFavorites : [],
+                    useLastFindContext : true,
+                    lastFindContext : ""
+                };
+            } else {
+                this._settings = MoreKomodoCommon.getJSON().parse(content);
+            }
+        }
+        return this._settings;
+    },
+    
+    saveSettings : function() {
+        var content = MoreKomodoCommon.getJSON().stringify(this._settings);
+        MoreKomodoCommon.saveTextFile(this.configPath, content);
+    },
+    
+    refreshSettings : function() {
+        this._settings = null;        
+    },
+
+    get configPath() {
+        var configPath = this.getString("configPath", null);
+        if (!configPath) {
+            var f = MoreKomodoCommon.getProfileDir();
+            f.append("dafizilla");
+            f.append("morekomodo.json");
+            configPath = f.path;
+
+            if (!f.parent.exists()) {
+                f.parent.create(
+                        Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
+            }
+            this.setString("configPath", configPath);
+        } else if (configPath.substring(configPath.length - 4) == ".rdf") {
+            var rdfPath = configPath;
+            this._settings = new MoreKomodoRdfPrefs().toObject();
+            this.setString("configPath", "");
+            // saveSettings calls configPath that will be set property because is null
+            this.saveSettings();
+            var newPath = MoreKomodoCommon.renameFile(rdfPath, "morekomodo.rdf.old", false);
+            configPath = this.getString("configPath", null);
+        }
+        return configPath;
+    },
+
+    /**
+     * Read the favorites, returns FavoriteInfo array.
+     * @returns favoriteInfo array
+     */
+    readFavorites : function() {
+        var favorites = this.loadSettings().favorites;
+        var paths = [];
+
+        for (var i in favorites) {
+            var fav = favorites[i];
+            paths.push(new FavoriteInfo(fav.path, fav.type, fav.description));
+        }
+        return paths;
+    },
+
+    /**
+     * Write favorites.
+     * @param favoriteInfoArr array
+     */
+    writeFavorites : function(favoriteInfoArr) {
+        var favorites = [];
+
+        for (var i in favoriteInfoArr) {
+            var fi = favoriteInfoArr[i];
+            favorites.push({path : fi.path,
+                           type : fi.type,
+                           description : fi.description});
+        }
+
+        this.loadSettings().favorites = favorites;
+        this.saveSettings();
+    },
+
+    readMaxFavoriteMenuItems : function() {
+        return this.loadSettings().maxFavoriteMenuItems;
+    },
+
+    writeMaxFavoriteMenuItems : function(maxItems) {
+        maxItems = parseInt(maxItems);
+        if (isNaN(maxItems) || maxItems < 0) {
+            maxItems = -1;
+        }
+        this.loadSettings().maxFavoriteMenuItems = maxItems;
+        this.saveSettings();
+    },
+
+    getDefaultTimeFormat : function() {
+        return "%d/%m/%Y %H:%M.%S";
+    },
+
+    getDefaultMinOpenFileCount : function() {
+        return 3;
+    },
+
+    readFileTimeInfo : function() {
+        return this.loadSettings().fileTimeInfo;
+    },
+
+    writeFileTimeInfo : function(fileTimeInfo) {
+        if (fileTimeInfo.timeFormat == "") {
+            fileTimeInfo.timeFormat = this.getDefaultTimeFormat();
+        }
+
+        this.loadSettings().fileTimeInfo = fileTimeInfo;
+        this.saveSettings();
+    },
+
+    get showUnicodeStatusbar() {
+        return this.loadSettings().unicodeStatusbar;
+    },
+
+    set showUnicodeStatusbar(value) {
+        this.loadSettings().unicodeStatusbar = value;
+        this.saveSettings();
+    },
+
+    readOpenFoundFileInfo : function() {
+        return this.loadSettings().openFoundFileInfo;
+    },
+
+    writeOpenFoundFileInfo : function(openFoundFileInfo) {
+        var minFileCount = parseInt(openFoundFileInfo.minFileCount);
+        if (isNaN(minFileCount) || minFileCount < 0) {
+            minFileCount = this.getDefaultMinOpenFileCount();
+        }
+        this.loadSettings().openFoundFileInfo.minFileCount = minFileCount;
+        this.saveSettings();
+    },
+
+    getDefaultMaxRefreshHistoryEntries : function() {
+        return 5;
+    },
+
+    readMaxRefreshHistoryEntries : function() {
+        return this.loadSettings().maxRefreshHistoryEntries;
+    },
+
+    writeMaxRefreshHistoryEntries : function(maxEntries) {
+        maxEntries = parseInt(maxEntries);
+        if (isNaN(maxEntries) || maxEntries < 0) {
+            maxEntries = this.getDefaultMaxRefreshHistoryEntries();
+        }
+        this.loadSettings().maxRefreshHistoryEntries = maxEntries;
+        this.saveSettings();
+    },
+
+    /**
+     * Read the find replace favorites, returns FavoriteInfo array.
+     * @returns favoriteInfo array
+     */
+    readFindReplaceFavorites : function() {
+        return this.loadSettings().findReplaceFavorites;
+    },
+
+    /**
+     * Write find replace favorites.
+     * @param favoriteInfoArr array
+     */
+    writeFindReplaceFavorites : function(favoriteInfoArr) {
+        this.loadSettings().findReplaceFavorites = favoriteInfoArr.slice();
+        this.saveSettings();
+    },
+
+    get useLastFindContext() {
+        return this.getBool("useLastFindContext", true);
+    },
+
+    set useLastFindContext(value) {
+        this.setBool("useLastFindContext", value);
+    },
+
+    get lastFindContext() {
+        return this.getString("lastFindContext", "");
+    },
+
+    set lastFindContext(value) {
+        this.setString("lastFindContext", value);
+    }
+};
+
+///////////
+/// MoreKomodoRdfPrefs used to migrate configuration from rdf to json
+///////////
+
+function MoreKomodoRdfPrefs() {
+    this._prefBranch = Components.classes["@mozilla.org/preferences-service;1"]
+        .getService(Components.interfaces.nsIPrefService)
+        .getBranch("dafizilla.morekomodo.");
+    this._prefBranch.QueryInterface(Components.interfaces.nsIPrefBranch2);
 
     this._rdf = Components.classes["@mozilla.org/rdf/rdf-service;1"]
                         .getService(Components.interfaces.nsIRDFService);
@@ -69,7 +309,7 @@ function MoreKomodoPrefs() {
     this._unicodeStatusbar = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#unicodeStatusbar");
 }
 
-MoreKomodoPrefs.prototype = {
+MoreKomodoRdfPrefs.prototype = {
     getString : function(prefName, defValue) {
         var prefValue;
         try {
@@ -145,54 +385,6 @@ MoreKomodoPrefs.prototype = {
         return paths;
     },
 
-    /**
-     * Write favorites.
-     * @param favoriteInfoArr array
-     */
-    writeFavorites : function(favoriteInfoArr) {
-        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
-        var ds = this._rdf.GetDataSourceBlocking(filePath);
-
-        var pathEnum = ds.GetTargets(this._favoriteRes, this._pathRes, true);
-
-        // remove all previous favorites
-        while (pathEnum.hasMoreElements()) {
-            var pathNode = pathEnum.getNext();
-
-            try {
-                // old versions use nsIRDFLiteral so we now check
-                // if we can remove new structure
-                pathNode.QueryInterface(Components.interfaces.nsIRDFResource);
-                this.removeBySubject(ds, pathNode);
-            } catch (err) {
-            }
-            ds.Unassert(this._favoriteRes, this._pathRes, pathNode);
-        }
-
-        ds.Assert(this._rootRes, this._favoriteRes, this._pathRes, true);
-
-        for (var i = 0;  i < favoriteInfoArr.length; i++) {
-            var favoriteInfo = favoriteInfoArr[i];
-            var infoRes = this._rdf.GetAnonymousResource();
-            var name = this._rdf.GetLiteral(favoriteInfo.path);
-            ds.Assert(infoRes, this._nameRes, name, true);
-
-            if (favoriteInfo.description != "") {
-                var description = this._rdf.GetLiteral(favoriteInfo.description);
-                ds.Assert(infoRes, this._descriptionRes, description, true);
-            }
-
-            if (favoriteInfo.isRemote()) {
-                var typeLiteral = this._rdf.GetLiteral(favoriteInfo.type);
-                ds.Assert(infoRes, this._typeRes, typeLiteral, true);
-            }
-            ds.Assert(this._favoriteRes, this._pathRes, infoRes, true);
-        }
-
-        ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-        ds.Flush();
-    },
-
     readMaxFavoriteMenuItems : function() {
         var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
         var ds = this._rdf.GetDataSourceBlocking(filePath);
@@ -200,23 +392,6 @@ MoreKomodoPrefs.prototype = {
         return this._readLiteral(ds,
                             this._favoriteRes, this._maxFavoriteMenuItemsRes,
                             -1);
-    },
-
-    writeMaxFavoriteMenuItems : function(maxItems) {
-        maxItems = new Number(maxItems);
-        if (isNaN(maxItems) || maxItems < 0) {
-            maxItems = -1;
-        }
-        var maxItemsLiteral = this._rdf.GetLiteral(maxItems);
-
-        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
-        var ds = this._rdf.GetDataSourceBlocking(filePath);
-
-        this._setProperty(ds, this._favoriteRes, this._maxFavoriteMenuItemsRes, maxItemsLiteral);
-
-        ds.Assert(this._rootRes, this._favoriteRes, this._maxFavoriteMenuItemsRes, true);
-        ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-        ds.Flush();
     },
 
     /**
@@ -273,26 +448,6 @@ MoreKomodoPrefs.prototype = {
                           this._getLiteralBoolean(value));
     },
 
-    writeFileTimeInfo : function(fileTimeInfo) {
-        var timeFormat = fileTimeInfo.timeFormat;
-        if (timeFormat == "") {
-            timeFormat = this.getDefaultTimeFormat();
-        }
-        var timeFormatLiteral = this._rdf.GetLiteral(timeFormat);
-
-        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
-        var ds = this._rdf.GetDataSourceBlocking(filePath);
-
-        this._setProperty(ds, this._fileTimeRes, this._enabledRes,
-                          this._getLiteralBoolean(fileTimeInfo.isEnabled));
-        this._setProperty(ds, this._fileTimeRes, this._timeFormatRes, timeFormatLiteral);
-
-        ds.Assert(this._rootRes, this._fileTimeRes, this._enabledRes, true);
-        ds.Assert(this._rootRes, this._fileTimeRes, this._timeFormatRes, true);
-        ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-        ds.Flush();
-    },
-
     readOpenFoundFileInfo : function() {
         var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
         var ds = this._rdf.GetDataSourceBlocking(filePath);
@@ -302,23 +457,6 @@ MoreKomodoPrefs.prototype = {
                             this._openFoundFileRes, this._minOpenFileCount,
                             this.getDefaultMinOpenFileCount());
         return openFoundFileInfo;
-    },
-
-    writeOpenFoundFileInfo : function(openFoundFileInfo) {
-        var minFileCount = new Number(openFoundFileInfo.minFileCount);
-        if (isNaN(minFileCount) || minFileCount < 0) {
-            minFileCount = this.getDefaultMinOpenFileCount();
-        }
-        var minFileCountLiteral = this._rdf.GetLiteral(minFileCount);
-
-        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
-        var ds = this._rdf.GetDataSourceBlocking(filePath);
-
-        this._setProperty(ds, this._openFoundFileRes, this._minOpenFileCount, minFileCountLiteral);
-
-        ds.Assert(this._rootRes, this._openFoundFileRes, this._minOpenFileCount, true);
-        ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-        ds.Flush();
     },
 
     getDefaultMaxRefreshHistoryEntries : function() {
@@ -333,23 +471,6 @@ MoreKomodoPrefs.prototype = {
                             this._refreshHistoryRes,
                             this._maxRefreshHistoryEntries,
                             this.getDefaultMaxRefreshHistoryEntries());
-    },
-
-    writeMaxRefreshHistoryEntries : function(maxEntries) {
-        maxEntries = new Number(maxEntries);
-        if (isNaN(maxEntries) || maxEntries < 0) {
-            maxEntries = this.getDefaultMaxRefreshHistoryEntries();
-        }
-        var maxEntriesLiteral = this._rdf.GetLiteral(maxEntries);
-
-        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
-        var ds = this._rdf.GetDataSourceBlocking(filePath);
-
-        this._setProperty(ds, this._refreshHistoryRes, this._maxRefreshHistoryEntries, maxEntriesLiteral);
-
-        ds.Assert(this._rootRes, this._refreshHistoryRes, this._maxRefreshHistoryEntries, true);
-        ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-        ds.Flush();
     },
 
     _readLiteral : function(ds, source, property, defaultValue) {
@@ -440,48 +561,6 @@ MoreKomodoPrefs.prototype = {
         return paths;
     },
 
-    /**
-     * Write find replace favorites.
-     * @param favoriteInfoArr array
-     */
-    writeFindReplaceFavorites : function(favoriteInfoArr) {
-        var filePath = MoreKomodoCommon.makeFileURL(this.configPath).spec;
-        var ds = this._rdf.GetDataSourceBlocking(filePath);
-
-        var pathEnum = ds.GetTargets(this._findReplaceRes, this._nameRes, true);
-
-        // remove all previous favorites
-        while (pathEnum.hasMoreElements()) {
-            var pathNode = pathEnum.getNext();
-
-            try {
-                // old versions use nsIRDFLiteral so we now check
-                // if we can remove new structure
-                pathNode.QueryInterface(Components.interfaces.nsIRDFResource);
-                this.removeBySubject(ds, pathNode);
-            } catch (err) {
-            }
-            ds.Unassert(this._findReplaceRes, this._nameRes, pathNode);
-        }
-
-        ds.Assert(this._rootRes, this._favoriteRes, this._nameRes, true);
-
-        for (var i = 0;  i < favoriteInfoArr.length; i++) {
-            var favoriteInfo = favoriteInfoArr[i];
-            var infoRes = this._rdf.GetAnonymousResource();
-
-            for (var prop in favoriteInfo) {
-                var res = this._rdf.GetResource("http://dafizilla.sourceforge.net/rdf#" + prop);
-                ds.Assert(infoRes, res, this._rdf.GetLiteral(favoriteInfo[prop]), true);
-            }
-
-            ds.Assert(this._findReplaceRes, this._nameRes, infoRes, true);
-        }
-
-        ds.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-        ds.Flush();
-    },
-
     get useLastFindContext() {
         return this.getBool("useLastFindContext", true);
     },
@@ -496,5 +575,33 @@ MoreKomodoPrefs.prototype = {
 
     set lastFindContext(value) {
         this.setString("lastFindContext", value);
+    },
+    
+    toObject : function() {
+        var favs = this.readFavorites(); // [path, type]
+        var maxFavoriteMenuItems = parseInt(this.readMaxFavoriteMenuItems()); // integer
+        var fileTimeInfo = this.readFileTimeInfo(); // isEnabled, timeFormat
+        var unicodeStatusbar = this.showUnicodeStatusbar; // boolean
+        var openFoundFileInfo = this.readOpenFoundFileInfo(); // minFileCount
+        var maxRefreshHistoryEntries = parseInt(this.readMaxRefreshHistoryEntries()); // integer
+        var findReplaceFavorites = this.readFindReplaceFavorites(); // []
+        var useLastFindContext = this.useLastFindContext; // boolean
+        var lastFindContext = this.lastFindContext; // string
+        
+        var newCfg = {
+            favorites : [],
+            maxFavoriteMenuItems : maxFavoriteMenuItems,
+            fileTimeInfo : {isEnabled:true,timeFormat:"%d/%m/%Y %H:%M.%S"},
+            unicodeStatusbar : unicodeStatusbar,
+            openFoundFileInfo : {minFileCount: parseInt(openFoundFileInfo.minFileCount)},
+            maxRefreshHistoryEntries : maxRefreshHistoryEntries,
+            findReplaceFavorites : findReplaceFavorites,
+            useLastFindContext : useLastFindContext,
+            lastFindContext : lastFindContext
+            };
+        for (var i = 0; i < favs.length; i++) {
+            newCfg.favorites.push({path : favs[i]._path, type : favs[i]._type, description : favs[i]._description});
+        }
+        return newCfg;
     }
 };
