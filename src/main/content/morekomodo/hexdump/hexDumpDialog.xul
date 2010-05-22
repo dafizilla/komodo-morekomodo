@@ -44,7 +44,7 @@
         <groupbox>
             <caption label="&output.option.label;" />
             <label value="&bytes.per.row.label;" control="bytes-per-row"/>
-            <radiogroup id="bytes-per-row" persist="selected" style="display: inline">
+            <radiogroup id="bytes-per-row" persist="selected" orient="horizontal">
                 <radio id="b8" label="8" value="8" persist="selected"/>
                 <radio id="b16" label="16" value="16" persist="selected"/>
                 <radio id="b24" label="24" value="24" persist="selected"/>

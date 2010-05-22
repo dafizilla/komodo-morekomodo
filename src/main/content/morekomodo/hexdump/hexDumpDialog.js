@@ -1,9 +1,12 @@
 var gHexDumpDialog = {
     onLoad : function() {
         this.widget = {};
+        this.widget.accept = document.documentElement.getButton("accept");
         this.widget.filePath = document.getElementById('file-path');
         this.widget.bytesPerRow = document.getElementById('bytes-per-row');
         this.widget.isRemoteFile = document.getElementById('use-remote-file');
+
+        this.widget.accept.setAttribute('disabled', 'true');
     },
 
     onAccept : function() {
@@ -22,6 +25,7 @@ var gHexDumpDialog = {
                     hexArr.push("") // add an empty line
                     var hexDump = hexArr.join('\n');
                     view.scintilla.scimoz.replaceSel(hexDump);
+                    view.scimoz.gotoPos(0);
                 };
 
                 // Since Komodo 5.0.3 doNewView is deprecated
@@ -48,5 +52,7 @@ var gHexDumpDialog = {
         } else {
             this.widget.filePath.value = ko.filepicker.openFile();
         }
+        this.widget.accept.setAttribute('disabled',
+                                this.widget.filePath.value ? 'false' : 'true');
     }
 };
