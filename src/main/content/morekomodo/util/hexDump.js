@@ -7,6 +7,9 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
 }
 
 (function() {
+    var hexBytes = null;
+    var asciiCodes = null;
+
     function getPadCount(len) {
         var c = 4;
 
@@ -25,16 +28,15 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
 
         for (var r = offset; r < offset + bytesPerRow; r++) {
             var ch = bytesArray[r];
-            var h = new Number(ch).toString(16);
 
-            hex.push(h.length == 1 ? '0' + h : h);
-            if (ch < 32 || ch > 127) {
+            hex.push(hexBytes[ch]);
+            if (ch < 32 || ch >= 127) {
                 txt.push('.');
             } else {
-                txt.push(String.fromCharCode(ch));
+                txt.push(asciiCodes[ch]);
             }
         }
-        return hex.join(' ').toUpperCase() + textSep + txt.join('');
+        return hex.join(' ') + textSep + txt.join('');
     }
 
     this.dumpFile = function(filePath, bytesPerRow) {
@@ -49,14 +51,26 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
         return this.dumpArray(arr, bytesPerRow);
     }
 
+    function initLookupTables() {
+        if (!asciiCodes) {
+            asciiCodes = [];
+            hexBytes = []
+            for (var i = 0; i < 256; i++) {
+                hexBytes[i] = (i < 16 ? '0' : '') + i.toString(16).toUpperCase();
+                asciiCodes[i] = String.fromCharCode(i);
+            }
+        }
+    }
+
     this.dumpArray = function(bytesArray, bytesPerRow) {
-        var n = new Number(bytesArray.length).toString(16).toUpperCase();
+        initLookupTables();
+        var n = bytesArray.length.toString(16).toUpperCase();
         var padZeroes = new Array(getPadCount(n.length) + 1).join('0');
         var textSep = '    ';
 
         var count = bytesArray.length;
         var hexContent = [];
-        var offset = new Number(0);
+        var offset = 0;
 
         while (count > 0) {
             if (count < bytesPerRow) {
