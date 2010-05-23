@@ -10,16 +10,15 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
     var hexBytes = null;
     var asciiCodes = null;
 
-    function getPadCount(len) {
-        var c = 4;
-
-        for (var i = 1; i <= len; i++) {
-            if (c < len) {
-                c <<= 1;
+    function initLookupTables() {
+        if (!asciiCodes) {
+            asciiCodes = [];
+            hexBytes = []
+            for (var i = 0; i < 256; i++) {
+                hexBytes[i] = (i < 16 ? '0' : '') + i.toString(16).toUpperCase();
+                asciiCodes[i] = String.fromCharCode(i);
             }
         }
-
-        return c;
     }
 
     function createLine(bytesArray, bytesPerRow, offset, textSep) {
@@ -51,37 +50,27 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
         return this.dumpArray(arr, bytesPerRow);
     }
 
-    function initLookupTables() {
-        if (!asciiCodes) {
-            asciiCodes = [];
-            hexBytes = []
-            for (var i = 0; i < 256; i++) {
-                hexBytes[i] = (i < 16 ? '0' : '') + i.toString(16).toUpperCase();
-                asciiCodes[i] = String.fromCharCode(i);
-            }
-        }
-    }
-
     this.dumpArray = function(bytesArray, bytesPerRow) {
         initLookupTables();
-        var n = bytesArray.length.toString(16).toUpperCase();
-        var padZeroes = new Array(getPadCount(n.length) + 1).join('0');
-        var textSep = '    ';
 
+        var textSep = '    ';
         var count = bytesArray.length;
         var hexContent = [];
         var offset = 0;
+        var lineBytesCount = count < 256 ? 2 : 4;
+        var lineContent;
+        var lineNum;
 
         while (count > 0) {
             if (count < bytesPerRow) {
                 textSep = textSep + new Array(bytesPerRow - count + 1).join('   ');
             }
-            var lineContent = createLine(bytesArray, Math.min(bytesPerRow, count), offset, textSep);
-            var lineNum = offset.toString(16).toUpperCase();
+            lineContent = createLine(bytesArray, Math.min(bytesPerRow, count), offset, textSep);
+            lineNum = "";
 
-            // pad line number
-            for (var sp = padZeroes.length - lineNum.length; sp; sp--) {
-                lineNum = '0' + lineNum;
+            for (var i = 0, o = offset; i < lineBytesCount; i++) {
+                lineNum = hexBytes[o & 0xFF] + lineNum;
+                o >>= 8;
             }
 
             hexContent.push(lineNum + ': ' + lineContent);
