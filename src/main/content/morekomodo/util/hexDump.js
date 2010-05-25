@@ -7,6 +7,7 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
 }
 
 (function() {
+    var bytesPerGroup = 8;
     var hexBytes = null;
     var asciiCodes = null;
 
@@ -25,8 +26,8 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
         var hex = [];
         var txt = [];
 
-        for (var r = offset; r < offset + bytesPerRow; r++) {
-            var ch = bytesArray[r];
+        for (var r = 0; r < bytesPerRow; r++) {
+            var ch = bytesArray[r + offset];
 
             hex.push(hexBytes[ch]);
             if (ch < 32 || ch >= 127) {
@@ -34,6 +35,13 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
             } else {
                 txt.push(asciiCodes[ch]);
             }
+            // add group separator
+            if (((r + 1) % bytesPerGroup) == 0) {
+                hex.push(' ');
+            }
+        }
+        if (hex[hex.length - 1] == ' ') {
+            hex.pop();
         }
         return hex.join(' ') + textSep + txt.join('');
     }
@@ -63,7 +71,9 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
 
         while (count > 0) {
             if (count < bytesPerRow) {
-                textSep = textSep + new Array(bytesPerRow - count + 1).join('   ');
+                var printedBytes = 1 + (bytesPerRow - count) * 3;
+                var remainingGroups = (Math.ceil(bytesPerRow / bytesPerGroup) - Math.ceil(count / bytesPerGroup)) * 2;
+                textSep = new Array(printedBytes + remainingGroups).join(' ') + textSep;
             }
             lineContent = createLine(bytesArray, Math.min(bytesPerRow, count), offset, textSep);
             lineNum = "";
