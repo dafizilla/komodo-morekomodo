@@ -1,5 +1,5 @@
 <!DOCTYPE extension [
-<!ENTITY extension.version "1.7.1">
+<!ENTITY extension.version "1.8">
 ]>
 
 <extension name="morekomodo">
@@ -47,8 +47,7 @@
         <overlay description="Preferences" uri="chrome://komodo/content/pref/pref.xul" value="chrome://morekomodo/content/pref/prefOverlay.xul" />
         <overlay description="Filebrowser" uri="chrome://komodo/content/dialogs/filebrowser/filebrowser.xul"
                     value="chrome://morekomodo/content/favorites/filebrowser/filebrowserOverlay.xul" />
-        <overlay description="FindResults-ko4" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/findResults/findResultsOverlay-ko4.xul appversion&lt;=4.4.1" />
-        <overlay description="FindResults-ko5" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/findResults/findResultsOverlay-ko5.xul appversion&gt;4.4.1" />
+        <overlay description="FindResults-ko5" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/findResults/findResultsOverlay-ko5.xul" />
         <overlay description="Find Dialog" uri="chrome://komodo/content/find/find2.xul" value="chrome://morekomodo/content/favorites/find/findOverlay.xul" />
         <overlay description="Run Output Results" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/runOutputResults/runOutputResultsOverlay.xul" />
         <overlay description="CodeConversion-ko5" uri="chrome://komodo/content/komodo.xul" value="chrome://morekomodo/content/codeConversionOverlay-ko5.xul appversion&lt;6b1" />
@@ -59,14 +58,14 @@
         <application>
             <description>Komodo IDE</description>
             <id>{36E66FA0-F259-11D9-850E-000D935D3368}</id>
-            <minVersion>4.2</minVersion>
+            <minVersion>5.0</minVersion>
             <maxVersion>6.*</maxVersion>
         </application>
         
         <application>
             <description>Komodo Edit</description>
             <id>{b1042fb5-9e9c-11db-b107-000d935d3368}</id>
-            <minVersion>4.0</minVersion>
+            <minVersion>5.0</minVersion>
             <maxVersion>6.*</maxVersion>
         </application>
     </compatibility>
