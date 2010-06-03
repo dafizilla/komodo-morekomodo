@@ -587,11 +587,11 @@ MoreKomodoRdfPrefs.prototype = {
         var findReplaceFavorites = this.readFindReplaceFavorites(); // []
         var useLastFindContext = this.useLastFindContext; // boolean
         var lastFindContext = this.lastFindContext; // string
-        
+
         var newCfg = {
             favorites : [],
             maxFavoriteMenuItems : maxFavoriteMenuItems,
-            fileTimeInfo : {isEnabled:true,timeFormat:"%d/%m/%Y %H:%M.%S"},
+            fileTimeInfo : {isEnabled:fileTimeInfo.isEnabled, timeFormat:fileTimeInfo.timeFormat},
             unicodeStatusbar : unicodeStatusbar,
             openFoundFileInfo : {minFileCount: parseInt(openFoundFileInfo.minFileCount)},
             maxRefreshHistoryEntries : maxRefreshHistoryEntries,
