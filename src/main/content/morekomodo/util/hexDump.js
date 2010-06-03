@@ -65,7 +65,7 @@ if (typeof(morekomodo.hexDump) == 'undefined') {
         var count = bytesArray.length;
         var hexContent = [];
         var offset = 0;
-        var lineBytesCount = count < 256 ? 2 : 4;
+        var lineBytesCount = count < 65536 ? 2 : 4;
         var lineContent;
         var lineNum;
 
