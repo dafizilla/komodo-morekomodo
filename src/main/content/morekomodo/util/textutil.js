@@ -442,3 +442,20 @@ function getNewlineFromScimoz(scimoz) {
             return '\n';
     }
 }
+
+function getCurrentLine(view) {
+    var scimoz = view.scintilla.scimoz;
+    var lineStart = scimoz.lineFromPosition(scimoz.currentPos);
+    var lineStartPos = scimoz.positionFromLine(lineStart);
+    var nextLineStartPos = scimoz.positionFromLine(lineStart + 1);
+
+    if (scimoz.getLineEndPosition(lineStart) == nextLineStartPos) {
+        // At last line of doc, buffer doesn't end with an EOL
+        var line = scimoz.getTextRange(lineStartPos, nextLineStartPos);
+        var eol = eolText[view.document.new_line_endings];
+        return line + eol;
+    } else {
+        return scimoz.getTextRange(lineStartPos, nextLineStartPos);
+    }
+    return "";
+}

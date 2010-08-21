@@ -39,6 +39,8 @@ xtk.include("domutils");
 var moreKomodo = {
     _fileTimeInfo : null,
     _prefs : new MoreKomodoPrefs(),
+    _koPrefs : Components.classes["@activestate.com/koPrefService;1"]
+                        .getService(Components.interfaces.koIPrefService).prefs,
 
     _bundle : Components.classes["@mozilla.org/intl/stringbundle;1"]
                 .getService(Components.interfaces.nsIStringBundleService)
@@ -637,17 +639,47 @@ var moreKomodo = {
 
     onCopyAppend : function() {
         var view = ko.views.manager.currentView;
-        var curr = "";
+        var scimoz = view.scintilla.scimoz;
+        var textToAppend;
 
-        if (MoreKomodoCommon.hasDataMatchingFlavors(["text/unicode"])) {
-            curr = MoreKomodoCommon.pasteFromClipboard();
+        if (scimoz.selectionStart != scimoz.selectionEnd) {
+            textToAppend = getSelection(view);
+        } else if (this._koPrefs.getBooleanPref('editSmartCutCopyWithoutSelection')) {
+            textToAppend = getCurrentLine(view);
         }
-        MoreKomodoCommon.copyToClipboard(curr + getSelection(view));
+        if (textToAppend) {
+            var curr = "";
+            if (MoreKomodoCommon.hasDataMatchingFlavors(["text/unicode"])) {
+                curr = MoreKomodoCommon.pasteFromClipboard();
+            }
+            MoreKomodoCommon.copyToClipboard(curr + textToAppend);
+        }
     },
 
     onCutAppend : function() {
-        this.onCopyAppend();
-        ko.commands.doCommand("cmd_delete");
+        var view = ko.views.manager.currentView;
+        var scimoz = view.scintilla.scimoz;
+
+        if (scimoz.selectionStart != scimoz.selectionEnd) {
+            this.onCopyAppend();
+            ko.commands.doCommand("cmd_delete");
+            return;
+        } else if (this._koPrefs.getBooleanPref('editSmartCutCopyWithoutSelection')) {
+            var curr = "";
+            
+            // save current clipboard content before the cut
+            if (MoreKomodoCommon.hasDataMatchingFlavors(["text/unicode"])) {
+                curr = MoreKomodoCommon.pasteFromClipboard();
+            }
+            var textToAppend = getCurrentLine(view);
+            // call the standard cut, this can introduce performance problems
+            // due to the double copy to clipboard, copy produced from standard cut
+            // plus our copyToClipboard
+            ko.commands.doCommand("cmd_cut");
+            if (textToAppend) {
+                MoreKomodoCommon.copyToClipboard(curr + textToAppend);
+            }
+        }
     },
 
     onShowInFileManager : function() {

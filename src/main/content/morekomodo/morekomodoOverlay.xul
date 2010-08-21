@@ -196,19 +196,19 @@
   </toolboxrow>
 
     <menupopup id="popup_edit">
-        <menuitem id="morekomodo-cutappend"
-                    class="menuitem-iconic-wide"
-                    label="&menuitem-cutappend.label;"
-                    accesskey="&menuitem-cutappend.accesskey;"
-                    command="cmd_morekomodo_cutappend"
-                    key="key_cmd_morekomodo-menuitem-cutappend"
-                    insertafter="pasteButton"/>
         <menuitem id="morekomodo-copyappend"
                     class="menuitem-iconic-wide"
                     label="&menuitem-copyappend.label;"
                     accesskey="&menuitem-copyappend.accesskey;"
                     command="cmd_morekomodo_copyappend"
                     key="key_cmd_morekomodo_copyappend"
+                    insertafter="pasteButton"/>
+        <menuitem id="morekomodo-cutappend"
+                    class="menuitem-iconic-wide"
+                    label="&menuitem-cutappend.label;"
+                    accesskey="&menuitem-cutappend.accesskey;"
+                    command="cmd_morekomodo_cutappend"
+                    key="key_cmd_morekomodo-menuitem-cutappend"
                     insertafter="pasteButton"/>
         <menuitem id="morekomodo-pastehtml"
                     class="menuitem-iconic-wide"
