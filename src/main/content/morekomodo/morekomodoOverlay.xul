@@ -259,18 +259,16 @@
                     accesskey="&menuitem-sort.accesskey;"
                     command="cmd_morekomodo_sort"
                     key="key_cmd_morekomodo_sort"
-                    insertbefore="menu_closeProject"/>
+                    insertbefore="menu_save"/>
         <menuseparator id="morekomodo-sort-menusep"
-                       insertbefore="menu_closeProject"/>
+                    insertbefore="menu_save"/>
         <menuitem id="morekomodo-hexdump"
                     class="menuitem-iconic-wide"
                     label="&menuitem-hexdump.label;"
                     accesskey="&menuitem-hexdump.accesskey;"
                     command="cmd_morekomodo_hexdump"
                     key="key_cmd_morekomodo_hexdump"
-                    insertbefore="menu_closeProject"/>
-        <menuseparator id="morekomodo-hexdump-menusep"
-                       insertbefore="menu_closeProject"/>
+                    insertafter="menu_file_open"/>
 
         <menuitem id="morekomodo-menu-makebackup"
                     class="menuitem-iconic-wide"
