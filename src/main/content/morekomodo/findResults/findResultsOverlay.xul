@@ -203,6 +203,7 @@
         <menuitem id="show_morekomodo_findresults_history_tab"
             oncommand="ko.uilayout.ensureTabShown('morekomodo_findresults_history_tab', true)"
             label="&findresults.history.label;"
+            type="checkbox"
             />
     </menupopup>
 
