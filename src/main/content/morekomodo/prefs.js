@@ -255,7 +255,10 @@ MoreKomodoPrefs.prototype = {
     },
 
     get useLastFindContext() {
-        return this.getBool("useLastFindContext", true);
+        // RestoreLastFindInFile is implemented in KO6 so isn't necessary to use it
+        var isKomodo6 = parseInt(Components.classes["@activestate.com/koInfoService;1"]
+                                    .getService().version.split('.', 1)[0]) >= 6;
+        return isKomodo6 ? false : this.getBool("useLastFindContext", true);
     },
 
     set useLastFindContext(value) {

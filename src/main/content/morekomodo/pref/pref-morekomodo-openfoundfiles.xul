@@ -33,7 +33,7 @@
       </hbox>
   </groupbox>
 
-  <groupbox orient="vertical">
+  <groupbox id="restoreLastFindInFileGroup" orient="vertical">
     <caption label="&find.dialog.label;"/>
 
     <checkbox id="restoreLastFindInFile"

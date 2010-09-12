@@ -68,4 +68,13 @@ function OnPreferencePageLoading(prefset) {
 
 function openFoundFileOnLoad() {
     parent.hPrefWindow.onpageload();
+
+    // RestoreLastFindInFile is implemented in KO6 so isn't necessary to use it
+    var isKomodo6 = parseInt(Components.classes["@activestate.com/koInfoService;1"]
+                                    .getService().version.split('.', 1)[0]) >= 6;
+    if (isKomodo6) {
+        document.getElementById('restoreLastFindInFileGroup').setAttribute('hidden', true);
+    } else {
+        prefs.useLastFindContext = oRestoreLastFindInFile.checked;
+    }
 }
