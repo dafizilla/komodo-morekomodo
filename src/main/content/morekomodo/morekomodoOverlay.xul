@@ -375,7 +375,8 @@
                     command="cmd_morekomodo_makeBackup"
                     key="key_cmd_morekomodo_makeBackup"
                     insertbefore="menu_save2"/>
-        <menuseparator insertbefore="menu_save2" />
+        <menuseparator id="tabContextMenu_morekomodo_separator_1"
+                    insertbefore="menu_save2" />
 
         <menuitem id="morekomodo-copyFullPath"
                     class="menuitem-iconic-wide"
@@ -398,7 +399,8 @@
                     command="cmd_morekomodo_copyDirectoryPath"
                     key="key_cmd_morekomodo_copyDirectoryPath"
                     insertbefore="menu_save2"/>
-        <menuseparator insertbefore="menu_save2" />
+         <menuseparator id="tabContextMenu_morekomodo_separator2"
+                    insertbefore="menu_save2" />
 
         <menuitem id="morekomodo-showInFileManager"
                     class="menuitem-iconic-wide"
@@ -406,7 +408,7 @@
                     accesskey="&show.file.accesskey;"
                     command="cmd_morekomodo_showInFileManager"
                     key="key_cmd_morekomodo_showInFileManager"
-                    insertbefore="menu_save2"/>
+                    insertbefore="tabContextMenu_separator_2, menu_save2"/>
     </menupopup>
 
     <statusbar id="statusbarviewbox">
