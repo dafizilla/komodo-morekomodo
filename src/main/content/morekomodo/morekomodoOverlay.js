@@ -233,9 +233,32 @@ var moreKomodo = {
         bar.setAttribute("label", date);
     },
 
+    checkDirtyFile : function(viewDoc) {
+        if (viewDoc.isDirty) {
+            var fileXIsDirty = MoreKomodoCommon.getFormattedMessage("save.dirty.file.confirm", [viewDoc.displayPath]);
+	    var res = ko.dialogs.yesNoCancel(fileXIsDirty, "Cancel");
+	    if (res == "Cancel") {
+                return false;
+	    } else if (res == "Yes") {
+                try {
+                    viewDoc.save(false);
+	 	} catch(ex) {
+                    dump("checkDirtyFile: save: " + ex + "\n");
+                    return false;
+                }
+	    }
+	}
+        return true;
+    },        
+
     onRenameFile : function() {
         var currView = ko.views.manager.currentView;
         var viewDoc = currView.document;
+
+        if (!this.checkDirtyFile(viewDoc)) {
+            return;
+        }
+
         var title = MoreKomodoCommon.getLocalizedMessage("rename.title");
         var oldName = viewDoc.file.baseName;
         var extPos = oldName.lastIndexOf('.');
@@ -694,6 +717,12 @@ var moreKomodo = {
     onMoveFile : function() {
         try {
             var currView = ko.views.manager.currentView;
+            var viewDoc = currView.document;
+
+            if (!this.checkDirtyFile(viewDoc)) {
+                return;
+            }
+
             var file = currView.document.file;
             var currentPath = MoreKomodoCommon.makeLocalFile(file.path);
             var msg = MoreKomodoCommon.getLocalizedMessage("select.move.file.title");
