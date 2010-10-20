@@ -1,0 +1,13 @@
+<!ENTITY rename.label "Yeniden Adlandır...">
+<!ENTITY delete.label "Sil...">
+<!ENTITY move.label "Taşı...">
+<!ENTITY make.backup.label "Yedekle...">
+<!ENTITY lockedit.label "Kilit Düzenle">
+<!ENTITY copy.file.name.label "Dosya Adını Kopyala">
+<!ENTITY copy.full.path.label "Tam Dosya Dizinini Kopyala">
+<!ENTITY copy.directory.path.label "Dizin Adını Kopyala">
+<!ENTITY show.file.manager "Dosya Yöneticisinde Göster">
+<!ENTITY menuitem-openfavorites.label "Sık Kullanılanları Aç...">
+<!ENTITY menuitem-openfavorites.accesskey "v">
+<!ENTITY menuitem-favoritelist.label "Sık Kullanılanlar Listesi">
+<!ENTITY toolbar.favorites.label "Sık Kullanılanlar">

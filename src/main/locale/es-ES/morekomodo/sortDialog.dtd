@@ -1,0 +1,10 @@
+<!ENTITY title.dialog "Opciones de ordenación">
+<!ENTITY order.reverse "Invertir el resultado de las comparaciones">
+<!ENTITY remove.duplicate "Eliminar duplicados">
+<!ENTITY ignore.case "Ignorar Mayúsculas/Minúsculas">
+<!ENTITY numeric.sort "Orden Numérico">
+<!ENTITY caption.sort.option "Opciones de ordenación">
+<!ENTITY sort "Ordenar">
+<!ENTITY close "Cerrar">
+<!ENTITY label.sel "Ordenar texto seleccionado">
+<!ENTITY label.all "Ordenar documento completo">

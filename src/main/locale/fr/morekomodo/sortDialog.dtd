@@ -1,0 +1,10 @@
+<!ENTITY title.dialog "Trier les options">
+<!ENTITY order.reverse "Inverser le résultat des comparaisons">
+<!ENTITY remove.duplicate "Supprimer les doublons">
+<!ENTITY ignore.case "Ignorer la casse">
+<!ENTITY numeric.sort "Tri numérique">
+<!ENTITY caption.sort.option "Tri des options">
+<!ENTITY sort "Trier">
+<!ENTITY close "Fermer">
+<!ENTITY label.sel "Trier le texte sélectionné">
+<!ENTITY label.all "Trier l'ensemble du document">

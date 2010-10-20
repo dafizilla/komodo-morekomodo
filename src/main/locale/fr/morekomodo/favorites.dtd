@@ -1,0 +1,32 @@
+<!ENTITY favorites.title "Gestionnaire des favoris">
+<!ENTITY favorites.close "Fermer">
+<!ENTITY openfile.button.label "Fichiers ouverts">
+<!ENTITY openfile.accesskey "o">
+<!ENTITY add.menu.label "Ajouter…">
+<!ENTITY add.menu.accesskey "A">
+<!ENTITY addfiles.button.label "Autre(s) fichier(s)…">
+<!ENTITY addfiles.accesskey "u">
+<!ENTITY addCurrentFile.button.label "Fichier courant">
+<!ENTITY addCurrentFile.accesskey "u">
+<!ENTITY addCurrentFolder.button.label "Dossier courant">
+<!ENTITY addCurrentFolder.accesskey "D">
+<!ENTITY addAllFiles.button.label "Tous les fichiers ouverts">
+<!ENTITY addAllFiles.accesskey "T">
+<!ENTITY addFolder.button.label "Autre dossier…">
+<!ENTITY addFolder.accesskey "d">
+<!ENTITY remove.button.label "Supprimer">
+<!ENTITY remove.accesskey "S">
+<!ENTITY edit.button.label "Éditer…">
+<!ENTITY edit.accesskey "d">
+<!ENTITY favorites.tree.label "Liste des fichiers">
+<!ENTITY description.from.path.label "Utiliser le nom pour la description">
+<!ENTITY description.from.path.accesskey "U">
+<!ENTITY favorite.edit.dialog.title "Éditer le favori">
+<!ENTITY favorite.edit.path.label "Répertoire">
+<!ENTITY favorite.edit.description.label "Description">
+<!ENTITY findreplace.favorite.label "Favoris">
+<!ENTITY findreplace.favorite.accesskey "F">
+<!ENTITY findreplace.add.to.favorites "Ajouter aux favoris…">
+<!ENTITY findreplace.add.to.favorites.accesskey "A">
+<!ENTITY findreplace.delete.favorites "Supprimer les favoris…">
+<!ENTITY findreplace.delete.accesskey "u">

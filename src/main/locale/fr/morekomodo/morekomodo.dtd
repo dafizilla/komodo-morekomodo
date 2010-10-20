@@ -1,0 +1,61 @@
+<!ENTITY rename.label "Renommer…">
+<!ENTITY delete.label "Supprimer…">
+<!ENTITY move.label "Déplacer…">
+<!ENTITY make.backup.label "Créer une sauvegarde…">
+<!ENTITY lockedit.label "Verrouiller l'édition">
+<!ENTITY copy.file.name.label "Copier le nom de fichier">
+<!ENTITY copy.full.path.label "Copier le chemin complet">
+<!ENTITY copy.directory.path.label "Copier le nom du répertoire">
+<!ENTITY show.file.manager "Afficher dans le gestionnaire de fichier">
+<!ENTITY menuitem-openfavorites.label "Ouvrir les favoris…">
+<!ENTITY menuitem-openfavorites.accesskey "O">
+<!ENTITY menuitem-favoritelist.label "Liste des favoris">
+<!ENTITY toolbar.favorites.label "Favoris">
+<!ENTITY toolbar.favorites.tooltip "Accès aux fichiers et dossiers favoris">
+<!ENTITY menuitem-textconversion.label "Convertir le texte sélectionné">
+<!ENTITY menuitem-textconversion-capitalize.label "Mettre en capitale chaque lettre initiale">
+<!ENTITY menuitem-textconversion-encodehtmlnumeric.label "Encoder les entités HTML en valeurs numériques">
+<!ENTITY menuitem-textconversion-encodehtml.label "Encoder les entités HTML">
+<!ENTITY menuitem-textconversion-decodehtml.label "Décoder les entités HTML">
+<!ENTITY menuitem-textconversion-d2upath.label "Convertir les séparateurs DOS (\) en Unix (/)">
+<!ENTITY menuitem-textconversion-doubledossep.label "Doubler les séparateurs DOS (\\)">
+<!ENTITY menuitem-textconversion-stripdos.label "Supprimer les doubles séparateurs DOS">
+<!ENTITY menuitem-sort.label "Trier…">
+<!ENTITY menuitem-pastehtml.label "Coller l'HTML">
+<!ENTITY menuitem-copyappend.label "Copier et ajouter">
+<!ENTITY menuitem-cutappend.label "Couper et ajouter">
+<!ENTITY findresults.tooltiptext "Copier les résultats de recherche">
+<!ENTITY findresults.copy.filenames "Copier les noms de fichiers dans le presse-papiers">
+<!ENTITY findresults.copy.contents "Copier le contenu dans le presse-papiers">
+<!ENTITY findresults.copy.to.view.filenames "Copier les noms de fichiers dans une nouvelle vue">
+<!ENTITY findresults.copy.to.view.contents "Copier le contenu dans une nouvelle vue">
+<!ENTITY findresults.refresh.tooltip "Relancer le dernier trouvé">
+<!ENTITY findresults.openfoundfiles.tooltip "Ouvrir les fichiers trouvés">
+<!ENTITY findresults.find.by.selection.tooltip "Chercher en utilisant le texte sélectionné">
+<!ENTITY findresults.refresh.clear.history "Effacer l'historique">
+<!ENTITY toolbar.lockedit.tooltip "Verrouiller l'édition de l'onglet">
+<!ENTITY morekomodo.make.backup.desc "MoreKomodo : Fichier - Sauvegarde">
+<!ENTITY morekomodo.copy.append.desc "MoreKomodo : Presse-papiers - Ajouter (préserve le contenu courant)">
+<!ENTITY morekomodo.cut.append.desc "MoreKomodo : Presse-papiers - Couper (préserve le contenu courant)">
+<!ENTITY morekomodo.favorites.desc "MoreKomodo : Favoris - Afficher le dialogue">
+<!ENTITY morekomodo.lock.edit.desc "MoreKomodo : Afficher - Verrouiller l'édition">
+<!ENTITY morekomodo.paste.html.desc "MoreKomodo : Presse-papiers - Coller le code source HTML">
+<!ENTITY morekomodo.sort.desc "MoreKomodo : Trier - Afficher le dialogue…">
+<!ENTITY morekomodo.capitalize.text.desc "MoreKomodo : Convertir - Majuscules en initiales de mots">
+<!ENTITY morekomodo.html.encode.entities.desc "MoreKomodo : Convertir - Encoder les entités HTML">
+<!ENTITY morekomodo.html.encode.numeric.desc "MoreKomodo : Convertir - Encoder les entités HTML au format numérique">
+<!ENTITY morekomodo.html.decode.desc "MoreKomodo : Convertir - Décoder les entités HTML">
+<!ENTITY morekomodo.d2u.path.desc "MoreKomodo : Convertir - Séparateur DOS &gt; Unix">
+<!ENTITY morekomodo.double.dos.sep.desc "MoreKomodo : Convertir - Double séparateur DOS (pour les caractères échappés)">
+<!ENTITY morekomodo.strip.dos.desc "MoreKomodo : Convertir - Supprimer les doubles séparateurs DOS">
+<!ENTITY morekomodo.copy.directory.path.desc "MoreKomodo : Presse-papiers - Copier le chemin du répertoire d'affichage">
+<!ENTITY morekomodo.copy.file.name.desc "MoreKomodo : Presse-papiers - Copier le nom de fichier de l'affichage">
+<!ENTITY morekomodo.copy.full.path.desc "MoreKomodo : Presse-papier - Copier le répertoire intégral de l'affichage">
+<!ENTITY morekomodo.move.desc "MoreKomodo : Fichier - Déplacer">
+<!ENTITY morekomodo.rename.desc "MoreKomodo : Fichier - Renommer">
+<!ENTITY morekomodo.show.in.file.manager.desc "MoreKomodo : Fichier - Afficher dans le gestionnaire de fichiers">
+<!ENTITY morekomodo.delete.desc "MoreKomodo : Fichier - supprimer">
+<!ENTITY morekomodo.refresh.pattern "Format de l'adresse :">
+<!ENTITY morekomodo.refresh.include "Inclure :">
+<!ENTITY morekomodo.refresh.exclude "Exclure :">
+<!ENTITY morekomodo.refresh.folders "Répertoires :">

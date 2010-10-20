@@ -1,0 +1,11 @@
+<!ENTITY morekomodo.label "MoreKomodo">
+<!ENTITY morekomodo.description "MoreKomodo mejora la experiencia Komodo.">
+<!ENTITY show.statusbar.label "Mostrar Barra de Estado">
+<!ENTITY timeformat.label "Formato de Hora">
+<!ENTITY default.timeformat.label "Restaurar formato por defecto">
+<!ENTITY homepage.label "Visita la web de MoreKomodo">
+<!ENTITY homepage.tooltip "MoreKomodo creado por by Davide Ficano">
+<!ENTITY homepage.url "http://dafizilla.sourceforge.net/morekomodo">
+<!ENTITY find.results.label "Encuentra Resultados">
+<!ENTITY do.not.show.dialog "Mostrar cuadro de diálogo sólo cuando la cuenta es mayor que">
+<!ENTITY refresh.number.entries "Número de Entradas">
