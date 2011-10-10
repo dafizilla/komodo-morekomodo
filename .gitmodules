@@ -1,0 +1,3 @@
+[submodule "builder"]
+	path = builder
+	url = git@github.com:dafi/mozilla-extension-builder.git
